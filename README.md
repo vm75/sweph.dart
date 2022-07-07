@@ -42,7 +42,7 @@ If you own a professional license for the Swiss Ephemeris, you may use any versi
 
 ## Versioning
 
-This library is version locked to the Swiss Ephemeris in addition to its own revisions. For example, version `2.10.02+2` corresponds to the Swiss Ephemeris version `2.10.02` and this library's revision `1`.
+This library is version locked to the Swiss Ephemeris in addition to its own revisions. For example, version `2.10.02+1` corresponds to the Swiss Ephemeris version `2.10.02` and this library's revision `1`.
 
 Updates to this library will be released under new revisions, while updates to Swiss Ephemeris will be released under matching semver versions.
 
