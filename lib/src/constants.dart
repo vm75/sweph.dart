@@ -114,28 +114,47 @@ class SwephFlag extends AbstractFlag<SwephFlag> {
   static const SEFLG_SWIEPH = SwephFlag(2); /* use SWISSEPH ephemeris */
   static const SEFLG_MOSEPH = SwephFlag(4); /* use Moshier ephemeris */
   static const SEFLG_HELCTR = SwephFlag(8); /* heliocentric position */
-  static const SEFLG_TRUEPOS = SwephFlag(16); /* true/geometric position, not apparent position */
-  static const SEFLG_J2000 = SwephFlag(32); /* no precession, i.e. give J2000 equinox */
-  static const SEFLG_NONUT = SwephFlag(64); /* no nutation, i.e. mean equinox of date */
-  static const SEFLG_SPEED3 = SwephFlag(128); /* speed from 3 positions (do not use it, SEFLG_SPEED is faster and more precise.) */
+  static const SEFLG_TRUEPOS =
+      SwephFlag(16); /* true/geometric position, not apparent position */
+  static const SEFLG_J2000 =
+      SwephFlag(32); /* no precession, i.e. give J2000 equinox */
+  static const SEFLG_NONUT =
+      SwephFlag(64); /* no nutation, i.e. mean equinox of date */
+  static const SEFLG_SPEED3 = SwephFlag(
+      128); /* speed from 3 positions (do not use it, SEFLG_SPEED is faster and more precise.) */
   static const SEFLG_SPEED = SwephFlag(256); /* high precision speed  */
-  static const SEFLG_NOGDEFL = SwephFlag(512); /* turn off gravitational deflection */
-  static const SEFLG_NOABERR = SwephFlag(1024); /* turn off 'annual' aberration of light */
-  static final SEFLG_ASTROMETRIC = SEFLG_NOABERR | SEFLG_NOGDEFL; /* astrometric position, i.e. with light-time, but without aberration and light deflection */
-  static const SEFLG_EQUATORIAL = SwephFlag(2 * 1024); /* equatorial positions are wanted */
-  static const SEFLG_XYZ = SwephFlag(4 * 1024); /* cartesian, not polar, coordinates */
-  static const SEFLG_RADIANS = SwephFlag(8 * 1024); /* coordinates in radians, not degrees */
+  static const SEFLG_NOGDEFL =
+      SwephFlag(512); /* turn off gravitational deflection */
+  static const SEFLG_NOABERR =
+      SwephFlag(1024); /* turn off 'annual' aberration of light */
+  static final SEFLG_ASTROMETRIC = SEFLG_NOABERR |
+      SEFLG_NOGDEFL; /* astrometric position, i.e. with light-time, but without aberration and light deflection */
+  static const SEFLG_EQUATORIAL =
+      SwephFlag(2 * 1024); /* equatorial positions are wanted */
+  static const SEFLG_XYZ =
+      SwephFlag(4 * 1024); /* cartesian, not polar, coordinates */
+  static const SEFLG_RADIANS =
+      SwephFlag(8 * 1024); /* coordinates in radians, not degrees */
   static const SEFLG_BARYCTR = SwephFlag(16 * 1024); /* barycentric position */
   static const SEFLG_TOPOCTR = SwephFlag(32 * 1024); /* topocentric position */
-  static const SEFLG_ORBEL_AA = SEFLG_TOPOCTR; /* used for Astronomical Almanac mode in calculation of Kepler elipses */
+  static const SEFLG_ORBEL_AA =
+      SEFLG_TOPOCTR; /* used for Astronomical Almanac mode in calculation of Kepler elipses */
   static const SEFLG_TROPICAL = SwephFlag(0); /* tropical position (default; */
   static const SEFLG_SIDEREAL = SwephFlag(64 * 1024); /* sidereal position */
-  static const SEFLG_ICRS = SwephFlag(128 * 1024); /* ICRS (DE406 reference frame; */
-  static const SEFLG_DPSIDEPS_1980 = SwephFlag(256 * 1024); /* reproduce JPL Horizons 1962 - today to 0.002 arcsec. */
+  static const SEFLG_ICRS =
+      SwephFlag(128 * 1024); /* ICRS (DE406 reference frame; */
+  static const SEFLG_DPSIDEPS_1980 = SwephFlag(
+      256 * 1024); /* reproduce JPL Horizons 1962 - today to 0.002 arcsec. */
   static const SEFLG_JPLHOR = SEFLG_DPSIDEPS_1980;
-  static const SEFLG_JPLHOR_APPROX = SwephFlag(512 * 1024); /* approximate JPL Horizons 1962 - today */
-  static const SEFLG_CENTER_BODY = SwephFlag(1024 * 1024); /* calculate position of center of body (COB) of planet, not barycenter of its system */
-  static final SEFLG_TEST_PLMOON = const SwephFlag(2 * 1024 * 1024) | SEFLG_J2000 | SEFLG_ICRS | SEFLG_HELCTR | SEFLG_TRUEPOS; /* test raw data in files sepm9* */
+  static const SEFLG_JPLHOR_APPROX =
+      SwephFlag(512 * 1024); /* approximate JPL Horizons 1962 - today */
+  static const SEFLG_CENTER_BODY = SwephFlag(1024 *
+      1024); /* calculate position of center of body (COB) of planet, not barycenter of its system */
+  static final SEFLG_TEST_PLMOON = const SwephFlag(2 * 1024 * 1024) |
+      SEFLG_J2000 |
+      SEFLG_ICRS |
+      SEFLG_HELCTR |
+      SEFLG_TRUEPOS; /* test raw data in files sepm9* */
 }
 
 class SiderealModeFlag extends AbstractFlag<SiderealModeFlag> {
@@ -220,7 +239,8 @@ class SiderealMode extends AbstractFlag<SiderealMode> {
   static const SE_SIDM_KRISHNAMURTI_VP291 = SiderealMode(45);
   static const SE_SIDM_LAHIRI_ICRC = SiderealMode(46);
   //#define SE_SIDM_MANJULA         43
-  static const SE_SIDM_USER = SiderealMode(255); /* user-defined ayanamsha, t0 is TT */
+  static const SE_SIDM_USER =
+      SiderealMode(255); /* user-defined ayanamsha, t0 is TT */
 }
 
 class NodApsFlag extends AbstractFlag<NodApsFlag> {
@@ -233,8 +253,10 @@ class NodApsFlag extends AbstractFlag<NodApsFlag> {
 
   static const SE_NODBIT_MEAN = NodApsFlag(1); /* mean nodes/apsides */
   static const SE_NODBIT_OSCU = NodApsFlag(2); /* osculating nodes/apsides */
-  static const SE_NODBIT_OSCU_BAR = NodApsFlag(4); /* same, but motion about solar system barycenter is considered */
-  static const SE_NODBIT_FOPOINT = NodApsFlag(256); /* focal point of orbit instead of aphelion */
+  static const SE_NODBIT_OSCU_BAR = NodApsFlag(
+      4); /* same, but motion about solar system barycenter is considered */
+  static const SE_NODBIT_FOPOINT =
+      NodApsFlag(256); /* focal point of orbit instead of aphelion */
 }
 
 /* defines for eclipse computations */
@@ -254,23 +276,42 @@ class EclipseFlag extends AbstractFlag<EclipseFlag> {
   static const SE_ECL_ANNULAR_TOTAL = EclipseFlag(32);
   static const SE_ECL_HYBRID = EclipseFlag(32); // = annular-total
   static const SE_ECL_PENUMBRAL = EclipseFlag(64);
-  static final SE_ECL_ALLTYPES_SOLAR = SE_ECL_CENTRAL | SE_ECL_NONCENTRAL | SE_ECL_TOTAL | SE_ECL_ANNULAR | SE_ECL_PARTIAL | SE_ECL_ANNULAR_TOTAL;
-  static final SE_ECL_ALLTYPES_LUNAR = SE_ECL_TOTAL | SE_ECL_PARTIAL | SE_ECL_PENUMBRAL;
+  static final SE_ECL_ALLTYPES_SOLAR = SE_ECL_CENTRAL |
+      SE_ECL_NONCENTRAL |
+      SE_ECL_TOTAL |
+      SE_ECL_ANNULAR |
+      SE_ECL_PARTIAL |
+      SE_ECL_ANNULAR_TOTAL;
+  static final SE_ECL_ALLTYPES_LUNAR =
+      SE_ECL_TOTAL | SE_ECL_PARTIAL | SE_ECL_PENUMBRAL;
   static const SE_ECL_VISIBLE = EclipseFlag(128);
   static const SE_ECL_MAX_VISIBLE = EclipseFlag(256);
-  static const SE_ECL_1ST_VISIBLE = EclipseFlag(512); /* begin of partial eclipse */
-  static const SE_ECL_PARTBEG_VISIBLE = EclipseFlag(512); /* begin of partial eclipse */
-  static const SE_ECL_2ND_VISIBLE = EclipseFlag(1024); /* begin of total eclipse */
-  static const SE_ECL_TOTBEG_VISIBLE = EclipseFlag(1024); /* begin of total eclipse */
-  static const SE_ECL_3RD_VISIBLE = EclipseFlag(2048); /* end of total eclipse */
-  static const SE_ECL_TOTEND_VISIBLE = EclipseFlag(2048); /* end of total eclipse */
-  static const SE_ECL_4TH_VISIBLE = EclipseFlag(4096); /* end of partial eclipse */
-  static const SE_ECL_PARTEND_VISIBLE = EclipseFlag(4096); /* end of partial eclipse */
-  static const SE_ECL_PENUMBBEG_VISIBLE = EclipseFlag(8192); /* begin of penumbral eclipse */
-  static const SE_ECL_PENUMBEND_VISIBLE = EclipseFlag(16384); /* end of penumbral eclipse */
-  static const SE_ECL_OCC_BEG_DAYLIGHT = EclipseFlag(8192); /* occultation begins during the day */
-  static const SE_ECL_OCC_END_DAYLIGHT = EclipseFlag(16384); /* occultation ends during the day */
-  static const SE_ECL_ONE_TRY = EclipseFlag(32 * 1024); /* check if the next conjunction of the moon with a planet is an occultation; don't search further */
+  static const SE_ECL_1ST_VISIBLE =
+      EclipseFlag(512); /* begin of partial eclipse */
+  static const SE_ECL_PARTBEG_VISIBLE =
+      EclipseFlag(512); /* begin of partial eclipse */
+  static const SE_ECL_2ND_VISIBLE =
+      EclipseFlag(1024); /* begin of total eclipse */
+  static const SE_ECL_TOTBEG_VISIBLE =
+      EclipseFlag(1024); /* begin of total eclipse */
+  static const SE_ECL_3RD_VISIBLE =
+      EclipseFlag(2048); /* end of total eclipse */
+  static const SE_ECL_TOTEND_VISIBLE =
+      EclipseFlag(2048); /* end of total eclipse */
+  static const SE_ECL_4TH_VISIBLE =
+      EclipseFlag(4096); /* end of partial eclipse */
+  static const SE_ECL_PARTEND_VISIBLE =
+      EclipseFlag(4096); /* end of partial eclipse */
+  static const SE_ECL_PENUMBBEG_VISIBLE =
+      EclipseFlag(8192); /* begin of penumbral eclipse */
+  static const SE_ECL_PENUMBEND_VISIBLE =
+      EclipseFlag(16384); /* end of penumbral eclipse */
+  static const SE_ECL_OCC_BEG_DAYLIGHT =
+      EclipseFlag(8192); /* occultation begins during the day */
+  static const SE_ECL_OCC_END_DAYLIGHT =
+      EclipseFlag(16384); /* occultation ends during the day */
+  static const SE_ECL_ONE_TRY = EclipseFlag(32 *
+      1024); /* check if the next conjunction of the moon with a planet is an occultation; don't search further */
 }
 
 /* for swe_rise_transit() */
@@ -286,16 +327,26 @@ class RiseSetTransitFlag extends AbstractFlag<RiseSetTransitFlag> {
   static const SE_CALC_SET = 2;
   static const SE_CALC_MTRANSIT = 4;
   static const SE_CALC_ITRANSIT = 8;
-  static const SE_BIT_DISC_CENTER = 256; /* to be or'ed to SE_CALC_RISE/SET, if rise or set of disc center is required */
-  static const SE_BIT_DISC_BOTTOM = 8192; /* to be or'ed to SE_CALC_RISE/SET, if rise or set of lower limb of disc is requried */
-  static const SE_BIT_GEOCTR_NO_ECL_LAT = 128; /* use geocentric rather than topocentric position of object and ignore its ecliptic latitude */
-  static const SE_BIT_NO_REFRACTION = 512; /* to be or'ed to SE_CALC_RISE/SET, if refraction is to be ignored */
-  static const SE_BIT_CIVIL_TWILIGHT = 1024; /* to be or'ed to SE_CALC_RISE/SET */
-  static const SE_BIT_NAUTIC_TWILIGHT = 2048; /* to be or'ed to SE_CALC_RISE/SET */
-  static const SE_BIT_ASTRO_TWILIGHT = 4096; /* to be or'ed to SE_CALC_RISE/SET */
-  static const SE_BIT_FIXED_DISC_SIZE = 16384; /* or'ed to SE_CALC_RISE/SET: neglect the effect of distance on disc size */
-  static const SE_BIT_FORCE_SLOW_METHOD = 32768; /* This is only an Astrodienst in-house test flag. It forces the usage of the old, slow calculation of risings and settings. */
-  static const SE_BIT_HINDU_RISING = SE_BIT_DISC_CENTER | SE_BIT_NO_REFRACTION | SE_BIT_GEOCTR_NO_ECL_LAT;
+  static const SE_BIT_DISC_CENTER =
+      256; /* to be or'ed to SE_CALC_RISE/SET, if rise or set of disc center is required */
+  static const SE_BIT_DISC_BOTTOM =
+      8192; /* to be or'ed to SE_CALC_RISE/SET, if rise or set of lower limb of disc is requried */
+  static const SE_BIT_GEOCTR_NO_ECL_LAT =
+      128; /* use geocentric rather than topocentric position of object and ignore its ecliptic latitude */
+  static const SE_BIT_NO_REFRACTION =
+      512; /* to be or'ed to SE_CALC_RISE/SET, if refraction is to be ignored */
+  static const SE_BIT_CIVIL_TWILIGHT =
+      1024; /* to be or'ed to SE_CALC_RISE/SET */
+  static const SE_BIT_NAUTIC_TWILIGHT =
+      2048; /* to be or'ed to SE_CALC_RISE/SET */
+  static const SE_BIT_ASTRO_TWILIGHT =
+      4096; /* to be or'ed to SE_CALC_RISE/SET */
+  static const SE_BIT_FIXED_DISC_SIZE =
+      16384; /* or'ed to SE_CALC_RISE/SET: neglect the effect of distance on disc size */
+  static const SE_BIT_FORCE_SLOW_METHOD =
+      32768; /* This is only an Astrodienst in-house test flag. It forces the usage of the old, slow calculation of risings and settings. */
+  static const SE_BIT_HINDU_RISING =
+      SE_BIT_DISC_CENTER | SE_BIT_NO_REFRACTION | SE_BIT_GEOCTR_NO_ECL_LAT;
 }
 
 /* for swe_azalt() and swe_azalt_rev() */
@@ -350,8 +401,10 @@ class SplitDegFlags extends AbstractFlag<SplitDegFlags> {
   static const SE_SPLIT_DEG_ROUND_DEG = SplitDegFlags(4);
   static const SE_SPLIT_DEG_ZODIACAL = SplitDegFlags(8);
   static const SE_SPLIT_DEG_NAKSHATRA = SplitDegFlags(1024);
-  static const SE_SPLIT_DEG_KEEP_SIGN = SplitDegFlags(16); /* don't round to next sign, e.g. 29.9999999 will be rounded to 29d59'59" (or 29d59' or 29d) */
-  static const SE_SPLIT_DEG_KEEP_DEG = SplitDegFlags(32); /* don't round to next degree e.g. 13.9999999 will be rounded to 13d59'59" (or 13d59' or 13d) */
+  static const SE_SPLIT_DEG_KEEP_SIGN = SplitDegFlags(
+      16); /* don't round to next sign, e.g. 29.9999999 will be rounded to 29d59'59" (or 29d59' or 29d) */
+  static const SE_SPLIT_DEG_KEEP_DEG = SplitDegFlags(
+      32); /* don't round to next degree e.g. 13.9999999 will be rounded to 13d59'59" (or 13d59' or 13d) */
 }
 
 /* for heliacal functions */
@@ -369,8 +422,10 @@ class HeliacalEventType extends AbstractEnum<HeliacalEventType> {
   static const SE_EVENING_LAST = SE_HELIACAL_SETTING;
   static const SE_EVENING_FIRST = HeliacalEventType(3);
   static const SE_MORNING_LAST = HeliacalEventType(4);
-  static const SE_ACRONYCHAL_RISING = HeliacalEventType(5); /* still not implemented */
-  static const SE_ACRONYCHAL_SETTING = HeliacalEventType(6); /* still not implemented */
+  static const SE_ACRONYCHAL_RISING =
+      HeliacalEventType(5); /* still not implemented */
+  static const SE_ACRONYCHAL_SETTING =
+      HeliacalEventType(6); /* still not implemented */
   static const SE_COSMICAL_SETTING = SE_ACRONYCHAL_SETTING;
 }
 
