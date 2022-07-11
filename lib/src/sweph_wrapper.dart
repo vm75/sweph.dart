@@ -10,9 +10,9 @@ import 'sweph_bindings_generated.dart' as sweph;
 import 'constants.dart';
 import 'native_utils.dart';
 
-//////////////////////////
-/// Various return objects
-//////////////////////////
+// ----------------------
+// Various return objects
+// ----------------------
 
 /// Ecliptic or Equatorial coordinates
 class Coordinates {
@@ -95,7 +95,7 @@ class HouseCuspData {
   HouseCuspData(this.cusps, this.ascmc, [this.cuspsSpeed, this.ascmcSpeed]);
 }
 
-/// Huose coordinates
+/// House coordinates
 class HousePosition {
   final double longitude;
   final double latitude;
@@ -103,6 +103,7 @@ class HousePosition {
   HousePosition(this.longitude, this.latitude, this.position);
 }
 
+/// Information about crossing of heavenly body
 class CrossingInfo {
   final double longitude;
   final double latitude;
@@ -110,6 +111,13 @@ class CrossingInfo {
   CrossingInfo(this.longitude, this.latitude, this.timeOfCrossing);
 }
 
+/// Atmospheric conditions data
+///  data[0]: atmospheric pressure in mbar (hPa) ;
+///  data[1]: atmospheric temperature in degrees Celsius;
+///  data[2]: relative humidity in %;
+///  data[3]: if data[3]>=1, then it is Meteorological Range [km] ;
+///   if 1>data[3]>0, then it is the total atmospheric coefficient (ktot) ;
+///  data[3]=0, then the other atmospheric parameters determine the total atmospheric coefficient (ktot)
 class AtmosphericConditions {
   final List<double> data;
   AtmosphericConditions(this.data) {
@@ -120,6 +128,15 @@ class AtmosphericConditions {
   }
 }
 
+/// Observer data
+/// Details for data[] (array of six doubles):
+///  data[0]: age of observer in years (default = 36)
+///  data[1]: Snellen ratio of observers eyes (default = 1 = normal)
+/// The following parameters are only relevant if the flag SE_HELFLAG_OPTICAL_PARAMS is set:
+///  data[2]: 0 = monocular, 1 = binocular (actually a boolean)
+///  data[3]: telescope magnification: 0 = default to naked eye (binocular), 1 = naked eye
+///  data[4]: optical aperture (telescope diameter) in mm
+///  data[5]: optical transmission
 class ObserverConditions {
   final List<double> data;
   ObserverConditions(this.data) {
@@ -130,6 +147,11 @@ class ObserverConditions {
   }
 }
 
+/// Nodes and apsides data with the following:
+///  List of 6 double for ascending node
+///  List of 6 double for descending node
+///  List of 6 double for perihelion
+///  List of 6 double for aphelion
 class NodesAndAspides {
   final List<double> nodesAscending;
   final List<double> nodesDescending;
@@ -139,6 +161,10 @@ class NodesAndAspides {
       this.aphelion);
 }
 
+/// Eclipse information with the following:
+///  List if eclipse times (refer to docs for details)
+///  List of attributes (refer to docs for details)
+///  Geographic position of eclipse
 class EclipseInfo {
   final List<double>? times;
   final List<double>? attributes;
@@ -146,6 +172,7 @@ class EclipseInfo {
   EclipseInfo({this.times, this.attributes, this.geoPosition});
 }
 
+/// Details of loaded Ephemeris file
 class FileData {
   final String path;
   final double startTime;
@@ -154,12 +181,14 @@ class FileData {
   FileData(this.path, this.startTime, this.endTime, this.jplEphemerisNumber);
 }
 
+/// Star name and coordinates
 class StarInfo {
   String name;
   CoordinatesWithSpeed coordinates;
   StarInfo(this.name, this.coordinates);
 }
 
+/// Azimuth and altitude info
 class AzimuthAltitudeInfo {
   final double azimuth;
   final double trueAltitude;
@@ -263,14 +292,14 @@ class Sweph {
         year, month, day, hour, minute, second, milliSecond, microSecond);
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////
-  /// Summary of SWISSEPH functions (https://www.astro.com/swisseph/swephprg.htm#_Toc78973625)
-  ////////////////////////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------------------------
+  // Summary of SWISSEPH functions (https://www.astro.com/swisseph/swephprg.htm#_Toc78973625)
+  // -----------------------------------------------------------------------------------------
 
-  /////////////////////////////////////////////////////////////////////
-  /// Calculation of planets and stars
-  /// Planets, moon, asteroids, lunar nodes, apogees, fictitious bodies
-  /////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------
+  // Calculation of planets and stars
+  // Planets, moon, asteroids, lunar nodes, apogees, fictitious bodies
+  // -----------------------------------------------------------------
 
   /// planetary positions from UT
   CoordinatesWithSpeed swe_calc_ut(
@@ -359,9 +388,9 @@ class Sweph {
     });
   }
 
-  ///////////////
-  /// Fixed stars
-  ///////////////
+  // -----------
+  // Fixed stars
+  // -----------
 
   /// positions of fixed stars from UT, faster function if many stars are calculated
   StarInfo swe_fixstar2_ut(String star, double tjd_ut, SwephFlag flags) {
@@ -468,9 +497,9 @@ class Sweph {
     _bindings.swe_set_topo(geolon, geolat, geoalt);
   }
 
-  //////////////////////////////////////////////////
-  /// Set the sidereal mode and get ayanamsha values
-  //////////////////////////////////////////////////
+  // ----------------------------------------------
+  // Set the sidereal mode and get ayanamsha values
+  // ----------------------------------------------
 
   /// set sidereal mode
   void swe_set_sid_mode(SiderealMode mode,
@@ -526,9 +555,9 @@ class Sweph {
         .toDartString();
   }
 
-  ////////////////////////////////////
-  /// Eclipses and planetary phenomena
-  ////////////////////////////////////
+  // --------------------------------
+  // Eclipses and planetary phenomena
+  // --------------------------------
 
   /// Find the next solar eclipse for a given geographic position
   EclipseInfo swe_sol_eclipse_when_loc(
@@ -1133,9 +1162,9 @@ class Sweph {
     _bindings.swe_set_tid_acc(tidalAcceleration);
   }
 
-  ////////////////////
-  /// Equation of time
-  ////////////////////
+  // ----------------
+  // Equation of time
+  // ----------------
 
   /// function returns the difference between local apparent and local mean time. e = LAT – LMT. tjd_et is ephemeris time
   double swe_time_equ(double julianDay) {
@@ -1178,9 +1207,9 @@ class Sweph {
     });
   }
 
-  ////////////////////////////////////////////////
-  /// Initialization, setup, and closing functions
-  ////////////////////////////////////////////////
+  // --------------------------------------------
+  // Initialization, setup, and closing functions
+  // --------------------------------------------
 
   /// Set directory path of ephemeris files
   Future<void> swe_set_ephe_path(String folderPath) async {
@@ -1243,9 +1272,9 @@ class Sweph {
     });
   }
 
-  /////////////////////
-  /// House calculation
-  /////////////////////
+  // -----------------
+  // House calculation
+  // -----------------
 
   /// Sidereal time
   double swe_sidtime(double tjd_ut) {
@@ -1260,7 +1289,7 @@ class Sweph {
     _bindings.swe_set_interpolate_nut(do_interpolate.value);
   }
 
-  /// Name of a house method
+  /// Get name of a house method
   String swe_house_name(int hsys) {
     return using((Arena arena) {
       final result = _bindings.swe_house_name(hsys);
@@ -1268,7 +1297,7 @@ class Sweph {
     });
   }
 
-  /// House cusps, ascendant and MC
+  /// Get house cusps, ascendant and MC
   HouseCuspData swe_houses(
       double tjd_ut, double geolat, double geolon, int hsys) {
     return using((Arena arena) {
@@ -1282,7 +1311,7 @@ class Sweph {
     });
   }
 
-  /// Extended house function; to compute tropical or sidereal positions
+  /// compute tropical or sidereal positions
   HouseCuspData swe_houses_ex(
       double tjd_ut, SwephFlag flags, double geolat, double geolon, int hsys) {
     return using((Arena arena) {
@@ -1297,6 +1326,7 @@ class Sweph {
     });
   }
 
+  /// compute tropical or sidereal positions with speeds
   HouseCuspData swe_houses_ex2(
       double tjd_ut, SwephFlag flags, double geolat, double geolon, int hsys) {
     return using((Arena arena) {
@@ -1319,6 +1349,7 @@ class Sweph {
     });
   }
 
+  /// compute tropical or sidereal positions when a sidereal time [armc] is given but no actual date is known
   HouseCuspData swe_houses_armc(
       double armc, double geolat, double eps, int hsys) {
     return using((Arena arena) {
@@ -1332,6 +1363,7 @@ class Sweph {
     });
   }
 
+  /// compute tropical or sidereal positions with speeds when a sidereal time [armc] is given but no actual date is known
   HouseCuspData swe_houses_armc_ex2(
       double armc, double geolat, double eps, int hsys) {
     return using((Arena arena) {
@@ -1400,10 +1432,11 @@ class Sweph {
     });
   }
 
-  /////////////////////////////////////////////////////////
-  /// Functions to find crossings of planets over positions
-  /////////////////////////////////////////////////////////
+  // -----------------------------------------------------
+  // Functions to find crossings of planets over positions
+  // -----------------------------------------------------
 
+  /// find the crossing of the Sun over a given ecliptic position at [tjd_et] in ET
   double swe_solcross(double x2cross, double tjd_et, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1416,6 +1449,7 @@ class Sweph {
     });
   }
 
+  /// find the crossing of the Sun over a given ecliptic position at [tjd_ut] in UT
   double swe_solcross_ut(double x2cross, double tjd_ut, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1428,6 +1462,7 @@ class Sweph {
     });
   }
 
+  /// find the crossing of the Moon over a given ecliptic position at [tjd_et] in ET
   double swe_mooncross(double x2cross, double tjd_et, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1440,6 +1475,7 @@ class Sweph {
     });
   }
 
+  /// find the crossing of the Moon over a given ecliptic position at [tjd_ut] in UT
   double swe_mooncross_ut(double x2cross, double tjd_ut, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1452,6 +1488,7 @@ class Sweph {
     });
   }
 
+  /// find the crossing of the Moon over its true node, i.e. crossing through the ecliptic at [tjd_et] in ET
   CrossingInfo swe_mooncross_node(double tjd_et, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1470,6 +1507,7 @@ class Sweph {
     });
   }
 
+  /// find the crossing of the Moon over its true node, i.e. crossing through the ecliptic at [tjd_ut] in UT
   CrossingInfo swe_mooncross_node_ut(double tjd_ut, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Char> error = arena<Char>(256);
@@ -1488,6 +1526,7 @@ class Sweph {
     });
   }
 
+  /// heliocentric crossings over a position [x2cross] at [tjd_et] in ET
   double swe_helio_cross(HeavenlyBody target, double x2cross, double tjd_et,
       SwephFlag flags, int dir) {
     return using((Arena arena) {
@@ -1502,6 +1541,7 @@ class Sweph {
     });
   }
 
+  /// heliocentric crossings over a position [x2cross] at [tjd_ut] in UT
   double swe_helio_cross_ut(HeavenlyBody target, double x2cross, double tjd_ut,
       SwephFlag flags, int dir) {
     return using((Arena arena) {
@@ -1516,9 +1556,9 @@ class Sweph {
     });
   }
 
-  ///////////////////////
-  /// Auxiliary functions
-  ///////////////////////
+  // -------------------
+  // Auxiliary functions
+  // -------------------
 
   /// coordinate transformation, from ecliptic to equator or vice-versa
   Coordinates swe_cotrans(Coordinates coordinates, double eps) {
@@ -1559,10 +1599,12 @@ class Sweph {
     return _bindings.swe_radnorm(radians);
   }
 
+  /// Radians midpoint
   double swe_rad_midp(double rad1, double rad2) {
     return _bindings.swe_rad_midp(rad1, rad2);
   }
 
+  /// Degrees midpoint
   double swe_deg_midp(double deg1, double deg2) {
     return _bindings.swe_deg_midp(deg1, deg2);
   }
@@ -1582,9 +1624,9 @@ class Sweph {
     });
   }
 
-  //////////////////////////////////////
-  /// Other functions that may be useful
-  //////////////////////////////////////
+  // ----------------------------------
+  // Other functions that may be useful
+  // ----------------------------------
 
   /// Normalize argument into interval [0..DEG360]
   Centisec swe_csnorm(Centisec deg) {
