@@ -232,7 +232,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.10.02+3"
+    version: "2.10.02+4"
   term_glyph:
     dependency: transitive
     description:
