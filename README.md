@@ -1,18 +1,19 @@
 # Sweph
 
-Cross-platform bindings of Swiss Ephemeris APIs for Flutter/Dart
-Everything you need to create Astrology and Astronomy applications with Dart and Flutter
+Cross-platform bindings of Swiss Ephemeris APIs for Flutter/Dart.
+Everything you need to create Astrology and Astronomy applications with Dart and Flutter.
 
 * 100% API coverage
 * Dart friendly parameters and return values
 * Intended to be supported on Android, iOS, Linux, MacOS, Windows (not tested on iOS/MacOS)
 * Version matched with source
 
-[Official programmers documentation for the Swiss Ephemeris by Astrodienst AG](https://www.astro.com/swisseph/swephprg.htm)
-[Official guide for the Swiss Ephemeris by Astrodienst AG](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
-[Sweph on Github](https://github.com/vm75/sweph.dart)
-[Sweph on pub.dev](https://pub.dev/packages/sweph)
-
+References:
+- [Official programmers documentation for the Swiss Ephemeris by Astrodienst AG](https://www.astro.com/swisseph/swephprg.htm)
+- [Official guide for the Swiss Ephemeris by Astrodienst AG](https://www.astro.com/ftp/swisseph/doc/swisseph.htm)
+- [Official site for source and ehemeris files](https://www.astro.com/ftp/swisseph/)
+- [Sweph for Flutter on Github](https://github.com/vm75/sweph.dart)
+- [Sweph on pub.dev](https://pub.dev/packages/sweph)
 
 ## Usage example
 ```dart
