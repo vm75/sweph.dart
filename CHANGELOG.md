@@ -1,3 +1,7 @@
+## 2.10.02+8
+
+* Updated readme with some more examples
+
 ## 2.10.02+7
 
 * Updated Changelog
