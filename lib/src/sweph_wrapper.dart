@@ -1305,8 +1305,8 @@ class Sweph {
       Pointer<Double> ascmc = arena<Double>(37);
       _bindings.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(13),
+        cusps.toList(13).map((e) => e.toDouble()).toList(),
+        ascmc.toList(37).map((e) => e.toDouble()).toList(),
       );
     });
   }
