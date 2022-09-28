@@ -1,4 +1,4 @@
-# sefstars.txt: Swiss Ephemeris fixed stars data file,
+# sefstars.txt: Swiss Ephemeris fixed stars data file, 
 # last modified on 26-oct-2018 by Dieter Koch.
 Aldebaran  ,alTau,ICRS,04,35,55.23907,+16,30,33.4885,63.45,-188.94,54.26,48.94,0.86, 16,  629
 Rohini  ,alTau,ICRS,04,35,55.23907,+16,30,33.4885,63.45,-188.94,54.26,48.94,0.86, 16,  629
@@ -11,17 +11,19 @@ Spica      ,alVir,ICRS,13,25,11.57937,-11,09,40.7501,-42.35,-30.67,1,13.06,0.97,
 Trappist-1 ,Trappist-1,ICRS,23,06,29.36,-05,02,29.2,922.1,-471.9,-54,82.58,18.798,0,0
 # Gal. Center (SgrA*) according to Simbad database,
 # speed of SgrA* according to Reid (2004), "The Proper Motion of Sagittarius
-# A*", p. 873: -3.151 +- 0.018 mas/yr, -5.547 +- 0.026 mas/yr. Component in
+# A*", p. 873: -3.151 +- 0.018 mas/yr, -5.547 +- 0.026 mas/yr. Component in 
 # RA must be multiplied with cos(decl).
 Galactic Center,SgrA*,ICRS,17,45,40.03599,-29,00,28.1699,-2.755718425, -5.547,  0.0,0.125,999.99,  0,    0
 Gal. Center,SgrA*,ICRS,17,45,40.03599,-29,00,28.1699,-2.755718425, -5.547,  0.0,0.125,999.99,  0,    0
 #Gal. Center,SgrA*,2000,17,45,40.0409,-29,00,28.118,-2.755718425, -5.547,  0.0,0.0000,999.99,  0,    0
-# Great Attractor, near Galaxy Cluster ACO 3627, at gal. coordinates
-# 325.3, -7.2, 4844 km s-1 according to Kraan-Korteweg et al. 1996,
+# Great Attractor, near Galaxy Cluster ACO 3627, at gal. coordinates 
+# 325.3, -7.2, 4844 km s-1 according to Kraan-Korteweg et al. 1996, 
 # Woudt 1998
 Great Attractor,GA,2000,16,15,02.836,-60,53,22.54,0.000,   0.00,  0.0,0.0000159,999.99,  0,    0
-# Virgo Cluster, according to NED (Nasa Extragalactic Database)
-Virgo Cluster,VC,2000,12,26,32.1,12,43,24,0.000,   0.00,  0.0,0.0000,999.99,  0,    0
+# Virgo Cluster, according to NED (Nasa Extragalactic Database) (old from 2008 or earlier)
+# Virgo Cluster,VC,2000,12,26,32.1,12,43,24,0.000,   0.00,  0.0,0.0000,999.99,  0,    0
+# Virgo Cluster, according to NED (Nasa Extragalactic Database) 17 June 2021
+Virgo Cluster,VC,2000,12,30,47.3,12,20,13,0.000,   0.00,  0.0,0.0000,999.99,  0,    0
 Andromeda Galaxy,M31,ICRS,00,42,44.330,+41,16,07.50,-35.99,-12.92,-301,0.00128205,3.44,  0,    0
 # Prasepe (Beehive Cluster): http://seds.lpl.arizona.edu/messier/m/m044.html (note, the apparent dimension is 95.0 arc min)
 Praesepe Cluster,M44,2000,08,40,6.000,19,59,0.00,0.000,   0.00,  0.0,5.65,3.7,  0,    0
@@ -47,7 +49,7 @@ Segin        ,epCas,ICRS,01,54,23.72567,+63,40,12.3628,32.09,-18.94,-8.3,7.92,3.
 # functioning of the function swe_fixstar()/swe_fixstar_ut().
 # They are not required for the newer function swe_fixstar2()/swe_fixstar2_ut().
 #
-# Fixed stars brighter than Magnitude 5
+# Fixed stars brighter than Magnitude 5 
 # This file is based on data provided by S. Moshier.
 # It was later increased and improved by Valentin Abramov and Dieter Koch
 # (see history further below).
@@ -68,11 +70,11 @@ Segin        ,epCas,ICRS,01,54,23.72567,+63,40,12.3628,32.09,-18.94,-8.3,7.92,3.
 # annual parallax in 0.001"
 # magnitude V
 # DM zone (Durchmusterung zone; declination 1900)
-# DM number
-# The last two parameters are not supported and are not required for
+# DM number 
+# The last two parameters are not supported and are not required for 
 # the file to be valid (since SE 2.07).
 #
-# To achieve higher speed for swe_fixstar(), you can copy the
+# To achieve higher speed for swe_fixstar(), you can copy the 
 # stars you prefer to the top of the list
 #
 # File editing History:
@@ -80,15 +82,15 @@ Segin        ,epCas,ICRS,01,54,23.72567,+63,40,12.3628,32.09,-18.94,-8.3,7.92,3.
 # 7 May 1999:
 # File was improved by Valentin Abramov, Tartu, Estonia in April 1999.
 # - The stars are ordered by constellation.
-# - Most names come from Arabic and have several transliterations,
-#   e.g. Algieba and Al Jabhah. In such cases, the record has been
+# - Most names come from Arabic and have several transliterations, 
+#   e.g. Algieba and Al Jabhah. In such cases, the record has been 
 #   duplicated and both spellings have been given.
-#
+# 
 # 11 Jan 2006, Dieter Koch:
 # File updated with data from the SIMBAD Astronomical Database.
 # http://simbad.u-strasbg.fr/simbad/sim-fid
-#
-# The Galactic Center was taken from
+# 
+# The Galactic Center was taken from 
 # The Astrophysical Journal, Volume 518, Issue 1, pp. L33-L35.
 #
 # 22 May 2016, DK:
@@ -324,7 +326,7 @@ Canopus      ,alCar,ICRS,06,23,57.10988,-52,41,44.3810,19.93,23.24,20.3,10.55,-0
 Agastya      ,alCar,ICRS,06,23,57.10988,-52,41,44.3810,19.93,23.24,20.3,10.55,-0.74,-52,  914
 Miaplacidus  ,beCar,ICRS,09,13,11.97746,-69,43,01.9473,-156.47,108.95,-5.1,28.82,1.69,-69, 1023
 Avior        ,epCar,ICRS,08,22,30.83526,-59,30,34.1431,-25.52,22.06,11.6,5.39,1.953,-59, 1032
-Foramen      ,etCar,ICRS,10,45,03.546,-59,41,03.95,-11,4.1,-25,0,6.21,0, 0
+Foramen      ,etCar,ICRS,10,45,03.546,-59,41,03.95,-11,4.1,-25,0,6.21,0, 0 
 Vathorz Posterior,thCar,ICRS,10,42,57.40197,-64,23,40.0208,-18.36,12.03,20,7.16,2.76,-63, 1599
 Scutulum     ,ioCar,ICRS,09,17,05.40686,-59,16,30.8353,-18.86,11.98,12,4.26,2.26,-58, 1465
 # IAU assings this name to rhPup
@@ -1152,11 +1154,11 @@ Gorgona Tertia ,rhPer,ICRS,03,05,10.59385,+38,50,24.9943,129.22,-105.7,30.81,10.
 Gorgona Quatra,omePer,ICRS,03,11,17.38161,+39,36,41.7014,-26.26,5.4,6.61,11.32,4.607, 39,  724
 #Capulus     ,NGC869,ICRS,2,19,6.0,57,9,0.0,-0.41,-1.03,-39.82,0.0,3.7,0, 0 # NGC 869, from Starlight / Sarah Ashton
 Capulus      ,NGC869,ICRS,02,19,00.0,+57,07,42,-0.41,-1.03,-39.82,0,3.7,0, 0 # NGC 869, from Simbad
-# M34 is also called Capulus according to
+# M34 is also called Capulus according to 
 # http://www.constellationsofwords.com/stars/Capulus.html (V. Robson?)
 # However Brady uses this name for NGC869 (above)
              ,M34,ICRS,02,42,05.0,+42,45,42,0.03,-7.43,-16.8,0,5.2,0, 0 # NGC 1039
-             ,16Per,ICRS,02,50,35.05979,+38,19,07.1080,195.77,-109.98,14,27.01,4.2,0, 0
+             ,16Per,ICRS,02,50,35.05979,+38,19,07.1080,195.77,-109.98,14,27.01,4.2,0, 0 
 # Pictor
              ,alPic,ICRS,06,48,11.45512,-61,56,29.0008,-66.07,242.97,15.3,33.78,3.3,-61,  720
              ,bePic,ICRS,05,47,17.08769,-51,03,59.4412,4.65,83.1,20,51.44,3.86,0,0
@@ -1356,9 +1358,9 @@ Galactic Center,SgrA*,ICRS,17,45,40.03599,-29,00,28.1699,-2.755718425, -5.547,  
 # M22 has V=5.1 according to Koch/Korth 2009, but 6.17 according to Simbad
 Facies     ,M22,ICRS,18,36,23.94,-23,54,17.1,4.72,-3.59,-148,0.3136,6.17,0, 0 # NGC 6656
 Spiculum     ,NGC6530,ICRS,18,04,31.00,-24,21,30,0.91,-3.22,-13.32,0.6272,4.6,0, 0 # NGC 6530
-             ,52Sgr,ICRS,19,36,42.43288,-24,53,01.0288,68.3,-21.51,-19,17.2,4.598,0, 0
-             ,59Sgr,ICRS,19,56,56.83165,-27,10,11.6409,10.46,-15.52,-16.2,3.92,4.528,0, 0
-             ,62Sgr,ICRS,20,02,39.48097,-27,42,35.4442,32.97,14,9.9,7.27,4.58,0, 0
+             ,52Sgr,ICRS,19,36,42.43288,-24,53,01.0288,68.3,-21.51,-19,17.2,4.598,0, 0 
+             ,59Sgr,ICRS,19,56,56.83165,-27,10,11.6409,10.46,-15.52,-16.2,3.92,4.528,0, 0 
+             ,62Sgr,ICRS,20,02,39.48097,-27,42,35.4442,32.97,14,9.9,7.27,4.58,0, 0 
 # Taurus
 Aldebaran    ,alTau,ICRS,04,35,55.23907,+16,30,33.4885,63.45,-188.94,54.26,48.94,0.86, 16,  629
 Elnath       ,beTau,ICRS,05,26,17.51312,+28,36,26.8262,22.76,-173.58,9.2,24.36,1.65, 28,  795
@@ -1413,8 +1415,8 @@ Atria        ,alTrA,ICRS,16,48,39.89508,-69,01,39.7626,17.99,-31.58,-3,8.35,1.92
              ,deTrA,ICRS,16,15,26.26979,-63,41,08.4492,2.73,-12.92,-4.9,5.37,3.839,-63, 3854
              ,epTrA,ICRS,15,36,43.22223,-66,19,01.3334,24.35,-54.47,-15.5,16.17,4.104,-65, 3102
              ,zeTrA,ICRS,16,28,28.1441,-70,05,03.845,200.222,110.64,8.3,82.53,4.91,-69, 2558
-# Great Attractor, near Galaxy Cluster ACO 3627, at gal. coordinates
-# 325.3, -7.2, 4844 km s-1 according to Kraan-Korteweg et al. 1996,
+# Great Attractor, near Galaxy Cluster ACO 3627, at gal. coordinates 
+# 325.3, -7.2, 4844 km s-1 according to Kraan-Korteweg et al. 1996, 
 # Woudt 1998
 Great Attractor,GA,2000,16,15,02.836,-60,53,22.54,0.000,   0.00,  0.0,0.0000159,999.99,  0,    0
 # Triangulum
@@ -1545,7 +1547,7 @@ Messier 49 ,M49,ICRS,12,29,46.798,8,00,01.48,0.0,0.0,949,0.000000,12.17,  0,    
              ,deVol,ICRS,07,16,49.82387,-67,57,25.7484,-4.43,8.38,22.7,4.42,3.99,-67,  730
 # epVol is actually a quadruple system, Simbad does not provide a magnitude
 # magnitude is given for the brightest member of the system, eps Vol A.
-# The latter does not have a parallax and radial velocity, but it might be close to epVol.
+# The latter does not have a parallax and radial velocity, but it might be close to epVol. 
              ,epVol,ICRS,08,07,55.79420,-68,37,01.4350,-29.14,29.26,9,5.8,4.33,0,0
              ,epVolA,ICRS,08,07,55.801,-68,37,01.44,-24.1,29.8,9,5.8,4.40,0,0
              ,zeVol,ICRS,07,41,49.26100,-72,36,21.9566,33.34,14.89,48.1,23.13,3.944,-72,  627
@@ -1554,13 +1556,13 @@ Messier 49 ,M49,ICRS,12,29,46.798,8,00,01.48,0.0,0.0,949,0.000000,12.17,  0,    
 Anser        ,alVul,ICRS,19,28,42.32996,+24,39,53.6525,-126.13,-107.44,-85.53,10.97,4.45, 24, 3759
              ,2Vul,ICRS,19,17,43.63655,+23,01,31.9524,2.04,-2.78,1,2.68,5.436,0,0
              ,12Vul,ICRS,19,51,04.10821,+22,36,36.1732,23.02,-15.88,-24.9,5.18,4.96,0,0
-# Galactic Center according to:
-# Liu/Zhu/Zhang, "Reconsidering the galactic coordinate system",
+# Galactic Center according to: 
+# Liu/Zhu/Zhang, "Reconsidering the galactic coordinate system", 
 # Astronomy & Astrophysics No. AA2010, Oct. 2010, p. 8
 GCLiu,GCLiu,ICRS,17,45,40.0400,-29,00,28.138,-2.755718425, -5.547,  0.0,0.125,999.99,  0,    0
 #
 # Galactic Pole acc. to Liu/Zhu/Zhang, op.cit.
-# It is defined relative to a plane that contains the galactic center and the Sun
+# It is defined relative to a plane that contains the galactic center and the Sun 
 # and approximates the galactic plane.
 Gal.Pole,GPol,ICRS,12,51,36.7151981,27,06,11.193172,0.0,0.0,0.0,0.0,0.0,0,0
 # Old Galactic Pole IAU 1958 relative to ICRS according to the same publication p. 7
