@@ -3,7 +3,7 @@
 # the plugin to fail to compile for some customers of the plugin.
 cmake_minimum_required(VERSION 3.10)
 
-project(sweph_library VERSION 2.10.02 LANGUAGES C)
+project(sweph_library VERSION 2.10.03 LANGUAGES C)
 
 add_library(sweph SHARED
   "sweph/src/swecl.c"

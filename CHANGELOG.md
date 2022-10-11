@@ -1,3 +1,11 @@
+## 2.10.03+1
+
+* Updated sweph to upstream version 2.10.03.
+
+## 2.10.02+9
+
+* Hopefully fixed compilation for ios/mac (untested).
+
 ## 2.10.02+8
 
 * Updated readme with some more examples
