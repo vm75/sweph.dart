@@ -85,7 +85,8 @@ class SwephTestData {
 }
 
 class _MyAppState extends State<MyApp> {
-  final sweph = Sweph.getInstance('assets${Platform.pathSeparator}ephe');
+  final sweph =
+      Sweph.getInstance(ephePaths: 'assets${Platform.pathSeparator}ephe');
   late Future<SwephTestData> swephTestData;
 
   @override

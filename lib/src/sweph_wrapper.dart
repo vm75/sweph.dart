@@ -228,12 +228,13 @@ class Sweph {
   /// and sets the ephe path. Subsequent calls return the instance first created
   /// This is used instead of factory since factor doesn't support returning
   /// a future
-  static Future<Sweph> getInstance(String? ephePaths) async {
-    _instance ??= _createInstance(ephePaths);
+  static Future<Sweph> getInstance({String? ephePaths, String? jplFile}) async {
+    _instance ??= _createInstance(ephePaths, jplFile);
     return _instance!;
   }
 
-  static Future<Sweph> _createInstance(String? ephePaths) async {
+  static Future<Sweph> _createInstance(
+      String? ephePaths, String? jplFile) async {
     Sweph instance = Sweph._();
 
     final appDataDir = await getApplicationSupportDirectory();
@@ -254,9 +255,14 @@ class Sweph {
     }
 
     ephePaths ??= Platform.isWindows ? '\\sweph\\ephe' : '/users/ephe';
-
     final folderSeparator = Platform.isWindows ? ";" : ":";
-    await instance.swe_set_ephe_path('$ephePaths$folderSeparator$libEphePath');
+    if ('$ephePaths$folderSeparator$libEphePath'.length < 256) {
+      ephePaths = '$ephePaths$folderSeparator$libEphePath';
+    }
+    await instance._swe_set_ephe_path(ephePaths);
+    if (jplFile != null) {
+      await instance._swe_set_jpl_file(jplFile);
+    }
     return instance;
   }
 
@@ -1207,19 +1213,17 @@ class Sweph {
   // --------------------------------------------
 
   /// Set directory path of ephemeris files
-  Future<void> swe_set_ephe_path(String folderPath) async {
+  Future<void> _swe_set_ephe_path(String folderPath) async {
     return using((Arena arena) {
       _bindings.swe_set_ephe_path(folderPath.toNativeArray(arena));
     });
   }
 
   /// set file name of JPL file
-  Future<void> swe_set_jpl_file(String filePath) async {
-    if (await File(filePath).exists()) {
-      return using((Arena arena) {
-        _bindings.swe_set_jpl_file(filePath.toNativeArray(arena));
-      });
-    }
+  Future<void> _swe_set_jpl_file(String filePath) async {
+    return using((Arena arena) {
+      _bindings.swe_set_jpl_file(filePath.toNativeArray(arena));
+    });
   }
 
   /// close Swiss Ephemeris

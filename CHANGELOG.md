@@ -1,3 +1,9 @@
+## 2.10.03+3
+
+* Added swe_set_jpl_file to init since ephe-path and jpl-file cannot be updated.
+* Made swe_set_ephe_path & swe_set_jpl_file private.
+* Breaking changes to instance creation since 2.10.03+1.
+
 ## 2.10.03+2
 
 * Fixed init to handle ephe-path correctly. Fixed array size in house-system calls. Updated example.
