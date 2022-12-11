@@ -514,6 +514,46 @@ class HeliacalFlags extends AbstractFlag<HeliacalFlags> {
   static const SE_HELFLAG_VISLIM_NOMOON = HeliacalFlags(1 << 13); // 8192
 }
 
+/// House systems
+enum Hsys {
+  B(66), // Alcabitus
+  Y(59), // APC houses
+  X(58), // Axial rotation system / Meridian system / Zariel
+  H(72), // Azimuthal or horizontal system
+  C(67), // Campanus
+  F(70), // Carter "Poli-Equatorial"
+  A(65), // Equal (cusp 1 is Ascendant)
+  E(69), // Equal (cusp 1 is Ascendant)
+  D(68), // Equal MC (cusp 10 is MC)
+  N(78), // Equal/1=Aries
+  G(71), // Gauquelin sector
+  //          Goelzer -> Krusinski
+  //          Horizontal system -> Azimuthal system
+  I(73), // Sunshine (Makransky, solution Treindl)
+  i(105), // Sunshine (Makransky, solution Makransky)
+  K(75), // Koch
+  U(85), // Krusinski-Pisa-Goelzer
+  //          Meridian system -> axial rotation
+  M(77), // Morinus
+  //          Neo-Porphyry -> Pullen SD
+  //          Pisa -> Krusinski
+  P(80), // Placidus
+  //          Poli-Equatorial -> Carter
+  T(84), // Polich/Page (topocentric system)
+  O(79), // Porphyrius
+  L(76), // Pullen SD (sinusoidal delta) – ex Neo-Porphyry
+  Q(81), // Pullen SR (sinusoidal ratio)
+  R(82), // Regiomontanus
+  S(83), // Sripati
+  //          Topocentric system -> Polich/Page
+  V(86), // Vehlow equal (Asc. in middle of house 1)
+  W(87); // Whole sign
+  //          Zariel -> Axial rotation system
+
+  const Hsys(this.value);
+  final int value;
+}
+
 enum AscmcIndex {
   SE_ASC,
   SE_MC,

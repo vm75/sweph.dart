@@ -1,3 +1,7 @@
+## 2.10.03+2
+
+* Fixed init to handle ephe-path correctly. Fixed array size in house-system calls. Updated example.
+
 ## 2.10.03+1
 
 * Updated sweph to upstream version 2.10.03.

@@ -4,11 +4,11 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import 'sweph_bindings_generated.dart' as sweph;
 import 'constants.dart';
 import 'native_utils.dart';
+import 'utils.dart';
 
 // ----------------------
 // Various return objects
@@ -202,8 +202,6 @@ typedef Centisec = int;
 class Sweph {
   static const String _libName = 'sweph';
 
-  static final Sweph _instance = Sweph._();
-
   /// The dynamic library in which the symbols for [SwephBindings] can be found.
   late final DynamicLibrary _dylib = () {
     if (Platform.isMacOS || Platform.isIOS) {
@@ -221,48 +219,45 @@ class Sweph {
   /// The bindings to the native functions in [_dylib].
   late final sweph.SwephBindings _bindings = sweph.SwephBindings(_dylib);
 
-  /// This future is resolved when the init is complete
-  /// Consumer should await on this before using methods needing stars/astroid info
-  late Future<void> ensureInit;
+  static Future<Sweph>? _instance;
 
   /// Private constructor
-  Sweph._() {
-    ensureInit = _initFiles();
+  Sweph._();
+
+  /// This method initializes an Sweph instance the first time it is called
+  /// and sets the ephe path. Subsequent calls return the instance first created
+  /// This is used instead of factory since factor doesn't support returning
+  /// a future
+  static Future<Sweph> getInstance(String? ephePaths) async {
+    _instance ??= _createInstance(ephePaths);
+    return _instance!;
   }
 
-  factory Sweph() {
-    return _instance;
-  }
+  static Future<Sweph> _createInstance(String? ephePaths) async {
+    Sweph instance = Sweph._();
 
-  Future<void> _initFiles() async {
-    final appDir = await getApplicationSupportDirectory();
+    final appDataDir = await getApplicationSupportDirectory();
+    final libEphePath = '${appDataDir.path}/sweph/${instance.swe_version()}';
+    const srcPath = 'packages/sweph/native/sweph/src';
 
-    String path = '${appDir.path}/sweph/${swe_version()}';
-
-    await Directory(path).create(recursive: true);
-
-    final files = {
+    final filesToExtract = {
       'ast_list.txt': 'seasnam.txt',
       'sefstars.txt': 'sefstars.txt',
       'seleapsec.txt': 'seleapsec.txt',
     };
 
-    for (final entry in files.entries) {
-      final src = 'packages/sweph/native/sweph/src/${entry.key}';
-      final dst = File('$path/${entry.value}');
-      if (await dst.exists()) {
-        continue;
-      }
-      try {
-        final data = await rootBundle.load(src);
-        await dst.writeAsBytes(
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-      } catch (e) {
-        /// ignore
+    for (final entry in filesToExtract.entries) {
+      final dst = '$libEphePath/${entry.value}';
+      if (!File(dst).existsSync()) {
+        await ResourceUtils.extractAssets('$srcPath/${entry.key}', dst);
       }
     }
 
-    await swe_set_ephe_path(path);
+    ephePaths ??= Platform.isWindows ? '\\sweph\\ephe' : '/users/ephe';
+
+    final folderSeparator = Platform.isWindows ? ";" : ":";
+    await instance.swe_set_ephe_path('$ephePaths$folderSeparator$libEphePath');
+    return instance;
   }
 
   static DateTime _toDateTime(
@@ -1213,11 +1208,9 @@ class Sweph {
 
   /// Set directory path of ephemeris files
   Future<void> swe_set_ephe_path(String folderPath) async {
-    if (await Directory(folderPath).exists()) {
-      return using((Arena arena) {
-        _bindings.swe_set_ephe_path(folderPath.toNativeArray(arena));
-      });
-    }
+    return using((Arena arena) {
+      _bindings.swe_set_ephe_path(folderPath.toNativeArray(arena));
+    });
   }
 
   /// set file name of JPL file
@@ -1290,110 +1283,115 @@ class Sweph {
   }
 
   /// Get name of a house method
-  String swe_house_name(int hsys) {
+  String swe_house_name(Hsys hsys) {
     return using((Arena arena) {
-      final result = _bindings.swe_house_name(hsys);
+      final result = _bindings.swe_house_name(hsys.value);
       return result.toDartString();
     });
   }
 
   /// Get house cusps, ascendant and MC
   HouseCuspData swe_houses(
-      double tjd_ut, double geolat, double geolon, int hsys) {
+      double tjd_ut, double geolat, double geolon, Hsys hsys) {
+    final cuspsSize = hsys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(13);
-      Pointer<Double> ascmc = arena<Double>(37);
-      _bindings.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+      Pointer<Double> cusps = arena<Double>(cuspsSize);
+      Pointer<Double> ascmc = arena<Double>(10);
+      _bindings.swe_houses(tjd_ut, geolat, geolon, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(13),
+        cusps.asTypedList(cuspsSize),
+        ascmc.asTypedList(10),
       );
     });
   }
 
   /// compute tropical or sidereal positions
   HouseCuspData swe_houses_ex(
-      double tjd_ut, SwephFlag flags, double geolat, double geolon, int hsys) {
+      double tjd_ut, SwephFlag flags, double geolat, double geolon, Hsys hsys) {
+    final cuspsSize = hsys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(13);
-      Pointer<Double> ascmc = arena<Double>(37);
+      Pointer<Double> cusps = arena<Double>(cuspsSize);
+      Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_ex(
-          tjd_ut, flags.value, geolat, geolon, hsys, cusps, ascmc);
+          tjd_ut, flags.value, geolat, geolon, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(37),
+        cusps.asTypedList(cuspsSize),
+        ascmc.asTypedList(10),
       );
     });
   }
 
   /// compute tropical or sidereal positions with speeds
   HouseCuspData swe_houses_ex2(
-      double tjd_ut, SwephFlag flags, double geolat, double geolon, int hsys) {
+      double tjd_ut, SwephFlag flags, double geolat, double geolon, Hsys hsys) {
+    final cuspsSize = hsys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(13);
-      Pointer<Double> ascmc = arena<Double>(37);
-      Pointer<Double> cuspsSpeed = arena<Double>(13);
-      Pointer<Double> ascmcSpeed = arena<Double>(37);
+      Pointer<Double> cusps = arena<Double>(cuspsSize);
+      Pointer<Double> ascmc = arena<Double>(10);
+      Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
+      Pointer<Double> ascmcSpeed = arena<Double>(10);
       Pointer<Char> error = arena<Char>(256);
       final result = _bindings.swe_houses_ex2(tjd_ut, flags.value, geolat,
-          geolon, hsys, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
+          geolon, hsys.value, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(37),
-        cuspsSpeed.asTypedList(13),
-        ascmcSpeed.asTypedList(37),
+        cusps.asTypedList(cuspsSize),
+        ascmc.asTypedList(10),
+        cuspsSpeed.asTypedList(cuspsSize),
+        ascmcSpeed.asTypedList(10),
       );
     });
   }
 
   /// compute tropical or sidereal positions when a sidereal time [armc] is given but no actual date is known
   HouseCuspData swe_houses_armc(
-      double armc, double geolat, double eps, int hsys) {
+      double armc, double geolat, double eps, Hsys hsys) {
+    final cuspsSize = hsys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(13);
-      Pointer<Double> ascmc = arena<Double>(37);
-      _bindings.swe_houses_armc(armc, geolat, eps, hsys, cusps, ascmc);
+      Pointer<Double> cusps = arena<Double>(cuspsSize);
+      Pointer<Double> ascmc = arena<Double>(10);
+      _bindings.swe_houses_armc(armc, geolat, eps, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(37),
+        cusps.asTypedList(cuspsSize),
+        ascmc.asTypedList(10),
       );
     });
   }
 
   /// compute tropical or sidereal positions with speeds when a sidereal time [armc] is given but no actual date is known
   HouseCuspData swe_houses_armc_ex2(
-      double armc, double geolat, double eps, int hsys) {
+      double armc, double geolat, double eps, Hsys hsys) {
+    final cuspsSize = hsys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(13);
-      Pointer<Double> ascmc = arena<Double>(37);
-      Pointer<Double> cuspsSpeed = arena<Double>(13);
-      Pointer<Double> ascmcSpeed = arena<Double>(37);
+      Pointer<Double> cusps = arena<Double>(cuspsSize);
+      Pointer<Double> ascmc = arena<Double>(10);
+      Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
+      Pointer<Double> ascmcSpeed = arena<Double>(10);
       Pointer<Char> error = arena<Char>(256);
-      final result = _bindings.swe_houses_armc_ex2(
-          armc, geolat, eps, hsys, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
+      final result = _bindings.swe_houses_armc_ex2(armc, geolat, eps,
+          hsys.value, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return HouseCuspData(
-        cusps.asTypedList(13),
-        ascmc.asTypedList(37),
-        cuspsSpeed.asTypedList(13),
-        ascmcSpeed.asTypedList(37),
+        cusps.asTypedList(cuspsSize),
+        ascmc.asTypedList(10),
+        cuspsSpeed.asTypedList(cuspsSize),
+        ascmcSpeed.asTypedList(10),
       );
     });
   }
 
   /// Get the house position of a celestial point
   HousePosition swe_house_pos(
-      double armc, double geolat, double eps, int hsys) {
+      double armc, double geolat, double eps, Hsys hsys) {
     return using((Arena arena) {
       Pointer<Double> position = arena<Double>(2);
       Pointer<Char> error = arena<Char>(256);
-      final pos =
-          _bindings.swe_house_pos(armc, geolat, eps, hsys, position, error);
+      final pos = _bindings.swe_house_pos(
+          armc, geolat, eps, hsys.value, position, error);
       if (pos < 0) {
         throw Exception(error.toDartString());
       }
