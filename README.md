@@ -86,7 +86,7 @@ If you find any innacuracy or bug in this library, or if you find an update that
 
 ## Known Issues and Caveats
 
-* Sweph.getInstance returns a future which internally set the ephemeris folder path & jpl file path. Due to a limitation native Sweph, these cannot be changed after init.
+* Sweph.getInstance returns a future which internally set the ephemeris folder path & jpl file path. Due to a limitation in native Sweph, these cannot be changed after init.
 * Due to how the underlying C library operates, you may find that the `error` field returned by some functions will contain random data even if there is no actual error. This can happen when existing memory buffers are recycled therefore the user must always check the returned flag values as per the Swiss Ephemeris documentation.
 
 ## Author
