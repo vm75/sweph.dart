@@ -21,7 +21,12 @@ import 'package:sweph/sweph.dart';
 
 Future<void> main() async {
   try {
-    final sweph = await Sweph.getInstance(ephePaths: '<local-path-of-ephe-files>', jplFile: 'jpl-file-path'); // params are optional
+    final sweph = Sweph();
+
+    await sweph.useDefaultEpheFiles(); // Extracts included ephe files
+    // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
+    // sweph.swe_set_ephe_path(<path-to-existing-folder>)
+    // please check example
 
     print('sweph.swe_version = ${sweph.swe_version()}');
     print('Moon longitude on 2022-06-29 02:52:00 UTC = ${sweph.swe_calc_ut(sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
@@ -86,7 +91,7 @@ If you find any innacuracy or bug in this library, or if you find an update that
 
 ## Known Issues and Caveats
 
-* Sweph.getInstance returns a future which internally set the ephemeris folder path & jpl file path. Due to a limitation in native Sweph, these cannot be changed after init.
+* The included ephe files are available async only
 * Due to how the underlying C library operates, you may find that the `error` field returned by some functions will contain random data even if there is no actual error. This can happen when existing memory buffers are recycled therefore the user must always check the returned flag values as per the Swiss Ephemeris documentation.
 
 ## Author

@@ -201,6 +201,8 @@ typedef Centisec = int;
 /// Wrapper class for Sweph native binding, providing easy input/output
 class Sweph {
   static const String _libName = 'sweph';
+  static final Sweph _instance = Sweph._();
+  static final folderSeparator = Platform.isWindows ? ";" : ":";
 
   /// The dynamic library in which the symbols for [SwephBindings] can be found.
   late final DynamicLibrary _dylib = () {
@@ -218,34 +220,35 @@ class Sweph {
 
   /// The bindings to the native functions in [_dylib].
   late final sweph.SwephBindings _bindings = sweph.SwephBindings(_dylib);
-
-  static Future<Sweph>? _instance;
+  late final Future<String> defaultEpheFilesPath = _initDefaultEpheFiles();
 
   /// Private constructor
   Sweph._();
 
-  /// This method initializes an Sweph instance the first time it is called
-  /// and sets the ephe path. Subsequent calls return the instance first created
-  /// This is used instead of factory since factor doesn't support returning
-  /// a future
-  static Future<Sweph> getInstance({String? ephePaths, String? jplFile}) async {
-    _instance ??= _createInstance(ephePaths, jplFile);
-    return _instance!;
+  // Returns the static instance
+  factory Sweph() {
+    return _instance;
   }
 
-  static Future<Sweph> _createInstance(
-      String? ephePaths, String? jplFile) async {
-    Sweph instance = Sweph._();
+  /// Extracts packaged default ephe files and sets them for use
+  /// returns the default folder
+  Future<String> useDefaultEpheFiles() async {
+    final libEphePath = await defaultEpheFilesPath;
+    swe_set_ephe_path(libEphePath);
+    return libEphePath;
+  }
 
-    final appDataDir = await getApplicationSupportDirectory();
-    final libEphePath = '${appDataDir.path}/sweph/${instance.swe_version()}';
-    const srcPath = 'packages/sweph/native/sweph/src';
+  Future<String> _initDefaultEpheFiles() async {
+    const srcPath = 'packages/$_libName/native/sweph/src'; // asset path
 
     final filesToExtract = {
       'ast_list.txt': 'seasnam.txt',
       'sefstars.txt': 'sefstars.txt',
       'seleapsec.txt': 'seleapsec.txt',
     };
+
+    final appDataDir = await getApplicationSupportDirectory();
+    final libEphePath = '${appDataDir.path}/$_libName/${swe_version()}';
 
     for (final entry in filesToExtract.entries) {
       final dst = '$libEphePath/${entry.value}';
@@ -254,16 +257,7 @@ class Sweph {
       }
     }
 
-    ephePaths ??= Platform.isWindows ? '\\sweph\\ephe' : '/users/ephe';
-    final folderSeparator = Platform.isWindows ? ";" : ":";
-    if ('$ephePaths$folderSeparator$libEphePath'.length < 256) {
-      ephePaths = '$ephePaths$folderSeparator$libEphePath';
-    }
-    await instance._swe_set_ephe_path(ephePaths);
-    if (jplFile != null) {
-      await instance._swe_set_jpl_file(jplFile);
-    }
-    return instance;
+    return libEphePath;
   }
 
   static DateTime _toDateTime(
@@ -1213,14 +1207,15 @@ class Sweph {
   // --------------------------------------------
 
   /// Set directory path of ephemeris files
-  Future<void> _swe_set_ephe_path(String folderPath) async {
+  void swe_set_ephe_path(String? ephePaths) {
+    ephePaths ??= Platform.isWindows ? '\\sweph\\ephe' : '/users/ephe';
     return using((Arena arena) {
-      _bindings.swe_set_ephe_path(folderPath.toNativeArray(arena));
+      _bindings.swe_set_ephe_path(ephePaths!.toNativeArray(arena));
     });
   }
 
   /// set file name of JPL file
-  Future<void> _swe_set_jpl_file(String filePath) async {
+  void swe_set_jpl_file(String filePath) {
     return using((Arena arena) {
       _bindings.swe_set_jpl_file(filePath.toNativeArray(arena));
     });

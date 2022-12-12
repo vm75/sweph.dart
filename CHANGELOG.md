@@ -1,3 +1,8 @@
+## 2.10.03+4
+
+* Reverting recent changes :( and making swe_set_ephe_path & swe_set_jpl_file public again.
+* Fixed init sequence so that Sweph can be used in sync as well as async mode.
+
 ## 2.10.03+3
 
 * Added swe_set_jpl_file to init since ephe-path and jpl-file cannot be updated.
