@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:sweph/sweph.dart';
 import 'dart:io';
 
@@ -100,12 +100,12 @@ class _MyAppState extends State<MyApp> {
         await sweph.useDefaultEpheFiles(); // Extracts included ephe files
 
     // Extracts the resource included in example app
+    final epheDir = '${(await getApplicationSupportDirectory()).path}/ephe';
     await ResourceUtils.extractAssets(
-        'assets/files/seas_18.se1', 'assets/ephe/seas_18.se1');
+        'assets/files/seas_18.se1', '$epheDir/seas_18.se1');
     // Use both folders: the default path where included ephe files are extracted and
     // the ones packaged with the app
-    sweph.swe_set_ephe_path(
-        '$defaultEphePath${Sweph.folderSeparator}assets${Platform.pathSeparator}ephe');
+    sweph.swe_set_ephe_path('$defaultEphePath${Sweph.folderSeparator}$epheDir');
     return SwephTestData(sweph);
   }
 

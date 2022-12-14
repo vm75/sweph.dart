@@ -117,7 +117,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -225,7 +225,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.10.03+4"
+    version: "2.10.03+5"
   term_glyph:
     dependency: transitive
     description:
