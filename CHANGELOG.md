@@ -1,3 +1,7 @@
+## 2.10.03+6
+
+* Tentative fix for iOS which is still failing.
+
 ## 2.10.03+5
 
 * Fixed example for mobile devices.
