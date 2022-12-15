@@ -99,13 +99,15 @@ class _MyAppState extends State<MyApp> {
     String defaultEphePath =
         await sweph.useDefaultEpheFiles(); // Extracts included ephe files
 
+    if (defaultEphePath.length >= 256) {
+      throw Exception("Default path too long");
+    }
+
     // Extracts the resource included in example app
-    final epheDir = '${(await getApplicationSupportDirectory()).path}/ephe';
     await ResourceUtils.extractAssets(
-        'assets/files/seas_18.se1', '$epheDir/seas_18.se1');
-    // Use both folders: the default path where included ephe files are extracted and
-    // the ones packaged with the app
-    sweph.swe_set_ephe_path('$defaultEphePath${Sweph.folderSeparator}$epheDir');
+        'assets/files/seas_18.se1', '$defaultEphePath/seas_18.se1');
+
+    sweph.swe_set_ephe_path(defaultEphePath);
     return SwephTestData(sweph);
   }
 
