@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sweph/sweph.dart';
-import 'dart:io';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -86,7 +86,7 @@ class SwephTestData {
 }
 
 class _MyAppState extends State<MyApp> {
-  final sweph = Sweph();
+  final Future<Sweph> swephFuture = Sweph.instance;
   late Future<SwephTestData> swephTestData;
 
   @override
@@ -96,18 +96,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<SwephTestData> getTestData() async {
-    String defaultEphePath =
-        await sweph.useDefaultEpheFiles(); // Extracts included ephe files
-
-    if (defaultEphePath.length >= 256) {
-      throw Exception("Default path too long");
-    }
-
-    // Extracts the resource included in example app
-    await ResourceUtils.extractAssets(
-        'assets/files/seas_18.se1', '$defaultEphePath/seas_18.se1');
-
-    sweph.swe_set_ephe_path(defaultEphePath);
+    final sweph = await swephFuture;
     return SwephTestData(sweph);
   }
 
@@ -125,9 +114,9 @@ class _MyAppState extends State<MyApp> {
 
   Widget _getContent(BuildContext context, SwephTestData? swephTestData) {
     List<Widget> children = [
-      Text(
-        'Swiss Ephemeris Exmaple (working dir = ${Directory.current})',
-        style: const TextStyle(fontSize: 30),
+      const Text(
+        'Swiss Ephemeris Exmaple',
+        style: TextStyle(fontSize: 30),
         textAlign: TextAlign.center,
       ),
       const SizedBox(height: 10)

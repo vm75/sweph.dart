@@ -75,6 +75,3 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
-  assets:
-    - assets/files/seas_18.se1
