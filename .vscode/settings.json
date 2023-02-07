@@ -1,17 +1,33 @@
 {
-    "[dart]": {
-        "editor.formatOnSave": true,
-        "editor.formatOnType": true,
-        "editor.rulers": [
-          80
-        ],
-        "editor.selectionHighlight": false,
-        "editor.suggest.snippetsPreventQuickSuggestions": false,
-        "editor.suggestSelection": "first",
-        "editor.tabCompletion": "onlySnippets",
-        "editor.wordBasedSuggestions": false,
-        "editor.defaultFormatter": "Dart-Code.dart-code"
-      },
-      "dart.lineLength": 80,
-      "cmake.sourceDirectory": "${workspaceFolder}/example/linux",
-  }
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      80
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+  },
+  "dart.lineLength": 80,
+  "files.exclude": {
+    "package-lock.json": true,
+    "out/**": true,
+    "build/**": true,
+    "dist/**": true,
+    "**.so": true,
+    "**.db": true,
+    "yarn.lock": true
+  },
+  "editor.formatOnSave": true, // The number of spaces a tab is equal to.
+  "editor.tabSize": 2, // Insert spaces when pressing Tab.
+  "editor.insertSpaces": true, // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
+  "editor.detectIndentation": true,
+  "C_Cpp.clang_format_fallbackStyle": "WebKit",
+  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+}

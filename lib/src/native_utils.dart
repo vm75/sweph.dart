@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 
 extension FfiHelperOnDoubleList on List<double> {
-  Pointer<Double> toNativeArray(Arena arena) {
+  Pointer<Double> toNativeString(Arena arena) {
     final array = arena<Double>(length);
     for (int i = 0; i < length; i++) {
       array[i] = elementAt(i);
@@ -21,14 +21,14 @@ extension FfiHelperOnDoublePointer on Pointer<Double> {
   }
 }
 
-extension FfiHelperOnCharPointer on Pointer<Char> {
+extension FfiHelperOnCharPointer on Pointer<Uint8> {
   String toDartString() {
-    return cast<Utf8>().toDartString();
+    return cast<Uint8>().toDartString();
   }
 }
 
 extension FfiHelperOnString on String {
-  Pointer<Char> toNativeArray(Allocator allocator, [int? size]) {
+  Pointer<Uint8> toNativeString(Allocator allocator, [int? size]) {
     size ??= length + 1;
     final Pointer<Uint8> result = allocator<Uint8>(size);
     final Uint8List nativeString = result.asTypedList(size);

@@ -1,6 +1,9 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-import 'const_utils.dart';
+import 'ffi_proxy.dart';
+import 'utils.dart';
+
+const String libName = 'sweph';
 
 /// Calendar type
 class CalendarType extends AbstractEnum<CalendarType> {
@@ -573,3 +576,191 @@ enum AscmcIndex {
   /// "polar ascendant" (M. Munkasey)
   SE_NASCMC,
 }
+
+// ----------------------
+// Various return objects
+// ----------------------
+
+/// Ecliptic or Equatorial coordinates
+class Coordinates {
+  final double longitude;
+  final double latitude;
+  final double distance;
+  Coordinates(this.longitude, this.latitude, this.distance);
+  Pointer<Double> toNativeString(Arena arena) {
+    final array = arena<Double>(3);
+    array[0] = longitude;
+    array[1] = latitude;
+    array[2] = distance;
+    return array;
+  }
+}
+
+/// Ecliptic or Equatorial coordinates with speed
+class CoordinatesWithSpeed {
+  final double longitude;
+  final double latitude;
+  final double distance;
+  final double speedInLongitude;
+  final double speedInLatitude;
+  final double speedInDistance;
+  CoordinatesWithSpeed(this.longitude, this.latitude, this.distance,
+      this.speedInLongitude, this.speedInLatitude, this.speedInDistance);
+  Pointer<Double> toNativeString(Arena arena) {
+    final array = arena<Double>(6);
+    array[0] = longitude;
+    array[1] = latitude;
+    array[2] = distance;
+    array[3] = speedInLongitude;
+    array[4] = speedInLatitude;
+    array[5] = speedInDistance;
+    return array;
+  }
+}
+
+/// Geographic coordinates
+class GeoPosition {
+  final double longitude;
+  final double latitude;
+  final double altitude;
+  GeoPosition(this.longitude, this.latitude, [this.altitude = 0]);
+
+  Pointer<Double> toNativeString(Arena arena) {
+    final array = arena<Double>(3);
+    array[0] = longitude;
+    array[1] = latitude;
+    array[2] = altitude;
+    return array;
+  }
+}
+
+/// Orbital distance of the body
+class OrbitalDistance {
+  final double maxDistance;
+  final double minDistance;
+  final double trueDistance;
+  OrbitalDistance(this.maxDistance, this.minDistance, this.trueDistance);
+}
+
+/// Components when degrees in centiseconds are split into sign/nakshatra, degrees, minutes, seconds of arc
+class DegreeSplitData {
+  final int degrees;
+  final int minutes;
+  final int seconds;
+  final double secondsOfArc;
+  final int sign;
+  DegreeSplitData(
+      this.degrees, this.minutes, this.seconds, this.secondsOfArc, this.sign);
+}
+
+/// House cusp abs asmc data with optional speed components
+class HouseCuspData {
+  final List<double> cusps;
+  final List<double> ascmc;
+  final List<double>? cuspsSpeed;
+  final List<double>? ascmcSpeed;
+  HouseCuspData(this.cusps, this.ascmc, [this.cuspsSpeed, this.ascmcSpeed]);
+}
+
+/// House coordinates
+class HousePosition {
+  final double longitude;
+  final double latitude;
+  final double position;
+  HousePosition(this.longitude, this.latitude, this.position);
+}
+
+/// Information about crossing of heavenly body
+class CrossingInfo {
+  final double longitude;
+  final double latitude;
+  final double timeOfCrossing;
+  CrossingInfo(this.longitude, this.latitude, this.timeOfCrossing);
+}
+
+/// Atmospheric conditions data
+///  data[0]: atmospheric pressure in mbar (hPa) ;
+///  data[1]: atmospheric temperature in degrees Celsius;
+///  data[2]: relative humidity in %;
+///  data[3]: if data[3]>=1, then it is Meteorological Range [km] ;
+///   if 1>data[3]>0, then it is the total atmospheric coefficient (ktot) ;
+///  data[3]=0, then the other atmospheric parameters determine the total atmospheric coefficient (ktot)
+class AtmosphericConditions {
+  final List<double> data;
+  AtmosphericConditions(this.data) {
+    assert(data.length >= 4);
+  }
+  Pointer<Double> toNativeString(Arena arena) {
+    return data.toNativeString(arena);
+  }
+}
+
+/// Observer data
+/// Details for data[] (array of six doubles):
+///  data[0]: age of observer in years (default = 36)
+///  data[1]: Snellen ratio of observers eyes (default = 1 = normal)
+/// The following parameters are only relevant if the flag SE_HELFLAG_OPTICAL_PARAMS is set:
+///  data[2]: 0 = monocular, 1 = binocular (actually a boolean)
+///  data[3]: telescope magnification: 0 = default to naked eye (binocular), 1 = naked eye
+///  data[4]: optical aperture (telescope diameter) in mm
+///  data[5]: optical transmission
+class ObserverConditions {
+  final List<double> data;
+  ObserverConditions(this.data) {
+    assert(data.length >= 6);
+  }
+  Pointer<Double> toNativeString(Arena arena) {
+    return data.toNativeString(arena);
+  }
+}
+
+/// Nodes and apsides data with the following:
+///  List of 6 double for ascending node
+///  List of 6 double for descending node
+///  List of 6 double for perihelion
+///  List of 6 double for aphelion
+class NodesAndAspides {
+  final List<double> nodesAscending;
+  final List<double> nodesDescending;
+  final List<double> perihelion;
+  final List<double> aphelion;
+  NodesAndAspides(this.nodesAscending, this.nodesDescending, this.perihelion,
+      this.aphelion);
+}
+
+/// Eclipse information with the following:
+///  List if eclipse times (refer to docs for details)
+///  List of attributes (refer to docs for details)
+///  Geographic position of eclipse
+class EclipseInfo {
+  final List<double>? times;
+  final List<double>? attributes;
+  final GeoPosition? geoPosition;
+  EclipseInfo({this.times, this.attributes, this.geoPosition});
+}
+
+/// Details of loaded Ephemeris file
+class FileData {
+  final String path;
+  final double startTime;
+  final double endTime;
+  final int jplEphemerisNumber;
+  FileData(this.path, this.startTime, this.endTime, this.jplEphemerisNumber);
+}
+
+/// Star name and coordinates
+class StarInfo {
+  String name;
+  CoordinatesWithSpeed coordinates;
+  StarInfo(this.name, this.coordinates);
+}
+
+/// Azimuth and altitude info
+class AzimuthAltitudeInfo {
+  final double azimuth;
+  final double trueAltitude;
+  final double apparentAltitude;
+  AzimuthAltitudeInfo(this.azimuth, this.trueAltitude, this.apparentAltitude);
+}
+
+typedef Centisec = int;

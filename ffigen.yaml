@@ -1,15 +1,18 @@
 # Run with `dart run ffigen --config ffigen.yaml`.
 name: SwephBindings
 description: |
-  Bindings for `native/sweph/src/swephexp.h`.
+  Bindings for Sweph.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
-output: 'lib/src/sweph_bindings_generated.dart'
+  Replace 'dart:ffi' with 'ffi_proxy.dart'
+output: 'lib/src/bindings.dart'
 headers:
   entry-points:
     - 'native/sweph/src/swephexp.h'
+    - 'native/utils/mem_io.h'
   include-directives:
     - 'native/sweph/src/swephexp.h'
+    - 'native/utils/mem_io.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types
@@ -24,3 +27,9 @@ functions:
     - swe_topo_arcus_visionis
     - swe_set_astro_models
     - swe_get_astro_models
+type-map:
+  'native-types':
+    'char':
+      'lib': 'ffi'
+      'c-type': 'Uint8'
+      'dart-type': 'int'
