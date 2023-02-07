@@ -1,3 +1,7 @@
+## 2.10.03+8
+
+* Fixed readme and SDK range
+
 ## 2.10.03+7
 
 * Added support for Web. Some more refactoring.
