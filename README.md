@@ -80,7 +80,7 @@ More information can be found in the [Swiss Ephemeris files documentation](https
 ## Using bundled Ephemeris files
 Sweph.init accepts a list of ephemeris files as assets. These could be any of the bundled ones or other app assets. It does not accept local file path!
 ### non-Web
-These are cached in <ApplicationSupportDirectory>/ephe_files folder. First load will be slow.
+These are cached in \<ApplicationSupportDirectory\>/ephe_files folder. First load will be slow.
 Async methods swe_set_ephe_path & swe_set_jpl_file could be called to set new ephe files.
 If file already present, it is not overwritten, unless  forceOverwrite is true.
 ### Web
