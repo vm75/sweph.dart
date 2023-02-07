@@ -1,3 +1,7 @@
+## 2.10.03+7
+
+* Added support for Web. Some more refactoring.
+
 ## 2.10.03+6
 
 * Tentative fix for iOS which is still failing.

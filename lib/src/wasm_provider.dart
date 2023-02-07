@@ -84,15 +84,15 @@ class SwephPlatformProvider
 
   final _WasmModule _module;
 
-  SwephPlatformProvider._(this._module, super.lib, super.allocator,
-      super.epheFilesPath, super.jplFilePath);
+  SwephPlatformProvider._(
+      this._module, super.lib, super.allocator, super.epheFilesPath);
 
   static Future<SwephPlatformProvider> _init() async {
     Memory.init();
     final module =
         await _WasmModule.initFromAsset('packages/sweph/assets/sweph.wasm');
     return SwephPlatformProvider._(module, DynamicLibrary.fromModule(module),
-        Memory.global!, "ephe_files", "");
+        Memory.global!, "ephe_files");
   }
 
   @override
@@ -107,12 +107,6 @@ class SwephPlatformProvider
 
     _module.free(destPathPtr);
   }
-
-  @override
-  Future<void> copyEpheFiles(String ephePath) async {}
-
-  @override
-  Future<void> copyJplFile(String filePath) async {}
 
   int _copyToWasm(Uint8List data) {
     final size = data.length;

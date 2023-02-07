@@ -20,29 +20,27 @@ References:
 import 'package:sweph/sweph.dart';
 
 Future<void> main() async {
-  try {
-    // Sweph comes bundled with some ephe file. Refer to Sweph.bundledEpheAssets
-    // These or any other bundled ephe files can be initialized during Sweph.init
-    // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
-    // For Web, this is the only way to provide ephe files, and they are loaded into memory
-    await Sweph.init(epheAssets: [
-      "packages/sweph/assets/ephe/sefstars.txt",
-    ]);
+  // Sweph comes bundled with some ephe file. Refer to Sweph.bundledEpheAssets
+  // These or any other bundled ephe files can be initialized during Sweph.init
+  // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
+  // For Web, this is the only way to provide ephe files, and they are loaded into memory
+  await Sweph.init(epheAssets: [
+    "packages/sweph/assets/ephe/sefstars.txt",
+  ]);
 
-    // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
-    // await Sweph.swe_set_ephe_path(<path-to-existing-folder>)
-    // This is not available for Web
+  // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
+  // await Sweph.swe_set_ephe_path(<path-to-existing-folder>)
+  // This is not available for Web
 
-    print('sweph.swe_version = ${Sweph.swe_version()}');
-    print('Moon longitude on 2022-06-29 02:52:00 UTC = ${Sweph.swe_calc_ut(Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
+  print('sweph.swe_version = ${Sweph.swe_version()}');
+  print('Moon longitude on 2022-06-29 02:52:00 UTC = ${Sweph.swe_calc_ut(Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
 
-    // Most methods use positional parameters, not named. So if some positional parameters take default values, please refer to original documentation
-    // If only some specific flags are allowed for a method, it is restricted via the enumerated flags
-    // For example, to set the sidereal mode to Lahiri with projection onto solar system plane and custom t0 in UT
-    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
-    // or, to set the sidereal mode to Lahiri with no flags and custom ayan_t0 in UT
-    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
-  }
+  // Most methods use positional parameters, not named. So if some positional parameters take default values, please refer to original documentation
+  // If only some specific flags are allowed for a method, it is restricted via the enumerated flags
+  // For example, to set the sidereal mode to Lahiri with projection onto solar system plane and custom t0 in UT
+  Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
+  // or, to set the sidereal mode to Lahiri with no flags and custom ayan_t0 in UT
+  Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
 }
 ```
 
@@ -67,28 +65,28 @@ Updates to this library will be released under new revisions, while updates to S
 
 ## Ephemeris files
 
-This library does not include any ephemeris files. The following text files are included:
-* sefstars.txt - Swiss Ephemeris fixed stars data file
-* seasnam.txt - actually ast_list.txt, a small list of asteroids
+The following ephemeris files are bundled with this plugin:
+  * seas_18.se1    - main ephemeris for asteroids (1800-2400 CE)
+  * semo_18.se1    - main ephemeris for moon (1800-2400 CE)
+  * sepl_18.se1    - main ephemeris for planets (1800-2400 CE)
+  * seasnam.txt    - list of asteroids
+  * sefstars.txt   - fixed stars data file
+  * seleapsec.txt  - dates of leap seconds to be taken into account
+  * seorbel.txt    - orbital elements of ficticious planets :)
 
-To use the Swiss Ephemeris files, download them from [https://www.astro.com/ftp/swisseph/ephe/](https://www.astro.com/ftp/swisseph/ephe/) and call `set_ephe_path()` to point the library to the folder containing the ephemeris files.
-Each main ephemeris file covers a range of 600 years starting from the century indicated in its name, for example the file `sepl_18.se1` is valid from year 1800 until year 2400. The following files are available:
-
-* sepl files - planets (AD)
-* seplm files - planets (BC)
-* semo files - moon (AD)
-* semom files - moon (BC)
-* seas files - main asteroids (AD)
-* seasm files - main asteroids (BC)
-
-For advanced usage, the following files can also be found:
-
-* astxxx folders - files for individual asteroids (600 years)
-* longfiles folder - files for individual asteroids (6000 years)
-* jplfiles folder - files for nasa's jpl ephemerides
-* sat folder - files for planetary moons
-
+These could also be download from [https://www.astro.com/ftp/swisseph/ephe/](https://www.astro.com/ftp/swisseph/ephe/).
 More information can be found in the [Swiss Ephemeris files documentation](https://www.astro.com/ftp/swisseph/doc/swisseph.htm#_Toc58931065).
+
+## Using bundled Ephemeris files
+Sweph.init accepts a list of ephemeris files as assets. These could be any of the bundled ones or other app assets. It does not accept local file path!
+### non-Web
+These are cached in <ApplicationSupportDirectory>/ephe_files folder. First load will be slow.
+Async methods swe_set_ephe_path & swe_set_jpl_file could be called to set new ephe files.
+If file already present, it is not overwritten, unless  forceOverwrite is true.
+### Web
+Sweph.init is the only way to provide ephe files, and they are loaded into memory. This is a limitation of the Web plugin.
+Calls to swe_set_ephe_path has no effect on Web. Only the loaded assets are used.
+If custom JPL files are needed, the need to be loaded as with the name "jpl_file.eph" during init and swe_set_jpl_file could be called.
 
 ## Contributing
 

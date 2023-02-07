@@ -13,8 +13,7 @@ class SwephPlatformProvider
     extends AbstractPlatformProvider<DynamicLibrary, Allocator> {
   static final Future<SwephPlatformProvider> _instance = _init();
 
-  SwephPlatformProvider._(
-      super.lib, super.allocator, super.epheFilesPath, super.jplFilePath);
+  SwephPlatformProvider._(super.lib, super.allocator, super.epheFilesPath);
 
   static Future<SwephPlatformProvider> get instance => _instance;
 
@@ -28,8 +27,8 @@ class SwephPlatformProvider
   }
 
   @override
-  Future<void> copyEpheFiles(String ephePath) async {
-    final srcDir = Directory(ephePath);
+  void copyEpheDir(String epheFilesDir, bool forceOverwrite) {
+    final srcDir = Directory(epheFilesDir);
     if (!srcDir.existsSync()) {
       return;
     }
@@ -38,25 +37,20 @@ class SwephPlatformProvider
       if (file is! File) {
         continue;
       }
-      final filename = basename(file.path);
-      final destFile = File("$epheFilesPath/$filename");
-      if (destFile.existsSync()) {
-        continue;
-      }
-
-      destFile.writeAsBytesSync(file.readAsBytesSync());
+      copyEpheFile(file.path, forceOverwrite);
     }
   }
 
   @override
-  Future<void> copyJplFile(String filePath) async {
+  void copyEpheFile(String filePath, bool forceOverwrite) {
     final file = File(filePath);
     if (!file.existsSync()) {
       return;
     }
 
-    final destFile = File(jplFilePath);
-    if (destFile.existsSync()) {
+    final filename = basename(filePath);
+    final destFile = File("$epheFilesPath/$filename");
+    if (destFile.existsSync() && !forceOverwrite) {
       return;
     }
 
@@ -67,8 +61,7 @@ class SwephPlatformProvider
     final appSupportDir = (await getApplicationSupportDirectory()).path;
     final epheDir = Directory("$appSupportDir/ephe_files");
     epheDir.createSync(recursive: true);
-    return SwephPlatformProvider._(await _initLib(), Arena(), epheDir.path,
-        "${epheDir.path}/jpl_file.eph");
+    return SwephPlatformProvider._(await _initLib(), Arena(), epheDir.path);
   }
 
   static Future<DynamicLibrary> _initLib() async {

@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
+
 import 'src/bindings.dart';
 import 'src/utils.dart';
 import 'src/ffi_proxy.dart';
@@ -11,6 +14,7 @@ export 'src/types.dart';
 class Sweph {
   static const bundledEpheAssets = [
     "packages/sweph/assets/ephe/seas_18.se1",
+    "packages/sweph/assets/ephe/semo_18.se1",
     "packages/sweph/assets/ephe/sepl_18.se1",
     "packages/sweph/assets/ephe/seasnam.txt",
     "packages/sweph/assets/ephe/sefstars.txt",
@@ -33,7 +37,10 @@ class Sweph {
     _allocator = _provider.allocator;
     _bindings = SwephBindings(_provider.lib);
     await _provider.saveEpheAssets(epheAssets);
-    swe_set_ephe_path(_provider.epheFilesPath);
+    return using((Arena arena) {
+      _bindings
+          .swe_set_ephe_path(_provider.epheFilesPath.toNativeString(arena));
+    }, _allocator);
   }
 
   static void registerWith(registrar) {
@@ -997,23 +1004,25 @@ class Sweph {
   // --------------------------------------------
 
   /// Set directory path of ephemeris files
-  static void swe_set_ephe_path(String? ephePaths) {
+  static void swe_set_ephe_path(String? epheFilesDir,
+      {bool forceOverwrite = false}) {
+    if (kIsWeb || epheFilesDir == null) {
+      return;
+    }
     return using((Arena arena) {
-      if (ephePaths != null) {
-        if (ephePaths != _provider.epheFilesPath) {
-          _provider.copyEpheFiles(ephePaths);
-        }
-        _bindings
-            .swe_set_ephe_path(_provider.epheFilesPath.toNativeString(arena));
+      if (epheFilesDir != _provider.epheFilesPath) {
+        _provider.copyEpheDir(epheFilesDir, forceOverwrite);
       }
     }, _allocator);
   }
 
   /// set file name of JPL file
-  static void swe_set_jpl_file(String filePath) {
+  static void swe_set_jpl_file(String filePath, {bool forceOverwrite = false}) {
     return using((Arena arena) {
-      _provider.copyJplFile(filePath);
-      _bindings.swe_set_jpl_file(_provider.jplFilePath.toNativeString(arena));
+      if (!kIsWeb) {
+        _provider.copyEpheFile(filePath, forceOverwrite);
+      }
+      _bindings.swe_set_jpl_file(basename(filePath).toNativeString(arena));
     }, _allocator);
   }
 

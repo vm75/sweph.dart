@@ -1,6 +1,6 @@
 name: sweph
 description: Cross-platform bindings of Swiss Ephemeris APIs for Flutter.
-version: 2.10.03+6
+version: 2.10.03+7
 homepage: https://github.com/vm75/sweph.dart
 repository: https://github.com/vm75/sweph.dart
 
