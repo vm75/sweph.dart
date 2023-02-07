@@ -4,6 +4,7 @@ description: |
   Bindings for Sweph.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
+  Replace 'dart:ffi' with 'ffi_proxy.dart'
 output: 'lib/src/bindings.dart'
 headers:
   entry-points:
@@ -26,3 +27,9 @@ functions:
     - swe_topo_arcus_visionis
     - swe_set_astro_models
     - swe_get_astro_models
+type-map:
+  'native-types':
+    'char':
+      'lib': 'ffi'
+      'c-type': 'Uint8'
+      'dart-type': 'int'

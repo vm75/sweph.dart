@@ -1,11 +1,11 @@
 # Sweph
 
-Cross-platform bindings of Swiss Ephemeris APIs for Flutter/Dart.
+Cross-platform bindings of Swiss Ephemeris APIs for Flutter.
 Everything you need to create Astrology and Astronomy applications with Dart and Flutter.
 
 * 100% API coverage
 * Dart friendly parameters and return values
-* Intended to be supported on Android, iOS, Linux, MacOS, Windows (not tested on iOS/MacOS)
+* Supported on all platforms
 * Version matched with source
 
 References:
@@ -21,22 +21,27 @@ import 'package:sweph/sweph.dart';
 
 Future<void> main() async {
   try {
-    final sweph = Sweph();
+    // Sweph comes bundled with some ephe file. Refer to Sweph.bundledEpheAssets
+    // These or any other bundled ephe files can be initialized during Sweph.init
+    // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
+    // For Web, this is the only way to provide ephe files, and they are loaded into memory
+    await Sweph.init(epheAssets: [
+      "packages/sweph/assets/ephe/sefstars.txt",
+    ]);
 
-    await sweph.useDefaultEpheFiles(); // Extracts included ephe files
     // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
-    // sweph.swe_set_ephe_path(<path-to-existing-folder>)
-    // please check example
+    // await Sweph.instance.swe_set_ephe_path(<path-to-existing-folder>)
+    // This is not available for Web
 
-    print('sweph.swe_version = ${sweph.swe_version()}');
-    print('Moon longitude on 2022-06-29 02:52:00 UTC = ${sweph.swe_calc_ut(sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
+    print('sweph.swe_version = ${Sweph.instance.swe_version()}');
+    print('Moon longitude on 2022-06-29 02:52:00 UTC = ${Sweph.instance.swe_calc_ut(Sweph.instance.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
 
     // Most methods use positional parameters, not named. So if some positional parameters take default values, please refer to original documentation
     // If only some specific flags are allowed for a method, it is restricted via the enumerated flags
     // For example, to set the sidereal mode to Lahiri with projection onto solar system plane and custom t0 in UT
-    sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
+    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
     // or, to set the sidereal mode to Lahiri with no flags and custom ayan_t0 in UT
-    sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
+    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
   }
 }
 ```

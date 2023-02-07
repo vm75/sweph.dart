@@ -19,16 +19,12 @@ class SwephPlatformProvider
   static Future<SwephPlatformProvider> get instance => _instance;
 
   @override
-  Future<void> saveEpheAssets() async {
-    for (final file in AbstractPlatformProvider.epheAssets) {
-      final destFile = File("$epheFilesPath/$file");
-      if (destFile.existsSync()) {
-        continue;
-      }
-      final assetPath = "${AbstractPlatformProvider.epheAssetsPath}/$file";
-      final data = await rootBundle.load(assetPath);
-      destFile.writeAsBytesSync(data.buffer.asUint8List());
+  Future<void> saveEpheFile(String destFile, Uint8List contents) async {
+    final destPath = File("$epheFilesPath/$destFile");
+    if (destPath.existsSync()) {
+      return;
     }
+    destPath.writeAsBytesSync(contents);
   }
 
   @override
@@ -68,8 +64,8 @@ class SwephPlatformProvider
   }
 
   static Future<SwephPlatformProvider> _init() async {
-    final appDocDir = (await getApplicationSupportDirectory()).path;
-    final epheDir = Directory("$appDocDir/ephe_files");
+    final appSupportDir = (await getApplicationSupportDirectory()).path;
+    final epheDir = Directory("$appSupportDir/ephe_files");
     epheDir.createSync(recursive: true);
     return SwephPlatformProvider._(await _initLib(), Arena(), epheDir.path,
         "${epheDir.path}/jpl_file.eph");

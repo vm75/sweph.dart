@@ -9,7 +9,7 @@ extern "C" {
 
 typedef struct File {
   char name[32];
-  const char* buffer;
+  char* buffer;
   size_t size;
   size_t cursor;
   struct File* next;
@@ -17,7 +17,7 @@ typedef struct File {
 
 File* files = NULL;
 
-int write_file(const char* path, const char* contents, size_t len, int forceOverwrite) {
+int write_file(const char* path, char* contents, size_t len, int forceOverwrite) {
   File* file = (File*)fOpen(path, "");
   if (file != NULL) {
     if (!forceOverwrite) {
@@ -33,8 +33,9 @@ int write_file(const char* path, const char* contents, size_t len, int forceOver
   }
 
   if (file->buffer != NULL) {
-    file->buffer = contents;
+    free(file->buffer);
   }
+  file->buffer = contents;
   file->size = len;
   file->cursor = 0;
   file->next = files;

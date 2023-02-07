@@ -1,13 +1,6 @@
+import 'package:flutter/services.dart';
+
 abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
-  static const epheAssetsPath = "packages/sweph/native/sweph/src/ephe_files";
-  static const epheAssets = [
-    "seas_18.se1",
-    "sepl_18.se1",
-    "seasnam.txt",
-    "sefstars.txt",
-    "seleapsec.txt",
-    "seorbel.txt"
-  ];
   final DynamicLibrary _lib;
   final Allocator _allocator;
   final String _epheFilesPath;
@@ -21,7 +14,16 @@ abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
   String get epheFilesPath => _epheFilesPath;
   String get jplFilePath => _jplFilePath;
 
-  Future<void> saveEpheAssets();
+  Future<void> saveEpheAssets({List<String>? epheAssets}) async {
+    for (final asset in epheAssets ?? []) {
+      final destFile = asset.replaceAll(RegExp(r'.*[/\\]'), '');
+      final contents = (await rootBundle.load(asset)).buffer.asUint8List();
+
+      saveEpheFile(destFile, contents);
+    }
+  }
+
+  Future<void> saveEpheFile(String destFile, Uint8List contents);
   Future<void> copyEpheFiles(String ephePath);
   Future<void> copyJplFile(String filePath);
 }

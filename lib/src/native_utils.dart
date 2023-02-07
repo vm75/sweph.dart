@@ -21,14 +21,14 @@ extension FfiHelperOnDoublePointer on Pointer<Double> {
   }
 }
 
-extension FfiHelperOnCharPointer on Pointer<Char> {
+extension FfiHelperOnCharPointer on Pointer<Uint8> {
   String toDartString() {
-    return cast<Char>().toDartString();
+    return cast<Uint8>().toDartString();
   }
 }
 
 extension FfiHelperOnString on String {
-  Pointer<Char> toNativeString(Allocator allocator, [int? size]) {
+  Pointer<Uint8> toNativeString(Allocator allocator, [int? size]) {
     size ??= length + 1;
     final Pointer<Uint8> result = allocator<Uint8>(size);
     final Uint8List nativeString = result.asTypedList(size);

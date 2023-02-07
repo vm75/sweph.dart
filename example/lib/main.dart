@@ -4,51 +4,64 @@ import 'package:sweph/sweph.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  final stopwatch = Stopwatch()..start();
+  // Only load the assets you need. By default will load none
+  // Bundled assets are available in Sweph.bundledEpheAssets
+  await Sweph.init(epheAssets: [
+    "packages/sweph/assets/ephe/sefstars.txt",
+  ]);
+
+  runApp(MyApp(
+    timeToLoad: stopwatch.elapsed,
+  ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Duration timeToLoad;
+  const MyApp({Key? key, required this.timeToLoad}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
 
-class SwephTestData {
-  final String swephVersion;
-  final String moonPosition;
-  final String starDistance;
-  final String asteroidName;
-  final String houseSystemAscmc;
-  final String chironPosition;
-  final Duration timeToLoad;
+class _MyAppState extends State<MyApp> {
+  late String swephVersion;
+  late String moonPosition;
+  late String starDistance;
+  late String asteroidName;
+  late String houseSystemAscmc;
+  late String chironPosition;
 
-  SwephTestData(Sweph sweph, this.timeToLoad)
-      : swephVersion = getVersion(sweph),
-        moonPosition = getMoonLongitude(sweph),
-        starDistance = getStarName(sweph),
-        asteroidName = getAstroidName(sweph),
-        houseSystemAscmc = getHouseSystemAscmc(sweph),
-        chironPosition = getChironPosition(sweph);
+  @override
+  void initState() {
+    super.initState();
 
-  static String getVersion(Sweph sweph) {
-    return sweph.swe_version();
+    swephVersion = getVersion();
+    moonPosition = getMoonLongitude();
+    starDistance = getStarName();
+    asteroidName = getAstroidName();
+    houseSystemAscmc = getHouseSystemAscmc();
+    chironPosition = getChironPosition();
   }
 
-  static String getMoonLongitude(Sweph sweph) {
-    final jd =
-        sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos =
-        sweph.swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
+  static String getVersion() {
+    return Sweph.instance.swe_version();
+  }
+
+  static String getMoonLongitude() {
+    final jd = Sweph.instance
+        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final pos = Sweph.instance
+        .swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
     return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
   }
 
-  static String getStarName(Sweph sweph) {
-    final jd =
-        sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+  static String getStarName() {
+    final jd = Sweph.instance
+        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     try {
-      return sweph
+      return Sweph.instance
           .swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
           .coordinates
           .distance
@@ -58,11 +71,11 @@ class SwephTestData {
     }
   }
 
-  static String getAstroidName(Sweph sweph) {
-    return sweph.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
+  static String getAstroidName() {
+    return Sweph.instance.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
   }
 
-  static String getHouseSystemAscmc(Sweph sweph) {
+  static String getHouseSystemAscmc() {
     const year = 1947;
     const month = 8;
     const day = 15;
@@ -70,40 +83,25 @@ class SwephTestData {
 
     const longitude = 81 + 50 / 60.0;
     const latitude = 25 + 57 / 60.0;
-    final julday =
-        sweph.swe_julday(year, month, day, hour, CalendarType.SE_GREG_CAL);
+    final julday = Sweph.instance
+        .swe_julday(year, month, day, hour, CalendarType.SE_GREG_CAL);
 
-    sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
+    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
         SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 0.0 /* ayan_t0 */);
-    final result = sweph.swe_houses(julday, latitude, longitude, Hsys.P);
+    final result =
+        Sweph.instance.swe_houses(julday, latitude, longitude, Hsys.P);
     return result.ascmc[0].toStringAsFixed(3);
   }
 
-  static String getChironPosition(Sweph sweph) {
+  static String getChironPosition() {
     final now = DateTime.now();
-    final jd = sweph.swe_julday(now.year, now.month, now.day,
+    final jd = Sweph.instance.swe_julday(now.year, now.month, now.day,
         (now.hour + now.minute / 60), CalendarType.SE_GREG_CAL);
-    sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos =
-        sweph.swe_calc_ut(jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
+    Sweph.instance
+        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final pos = Sweph.instance
+        .swe_calc_ut(jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
     return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  final Future<Sweph> swephFuture = Sweph.instance;
-  late Future<SwephTestData> swephTestData;
-
-  @override
-  void initState() {
-    super.initState();
-    swephTestData = getTestData();
-  }
-
-  Future<SwephTestData> getTestData() async {
-    final stopwatch = Stopwatch()..start();
-    final sweph = await swephFuture;
-    return SwephTestData(sweph, stopwatch.elapsed);
   }
 
   void _addText(List<Widget> children, String text) {
@@ -118,7 +116,7 @@ class _MyAppState extends State<MyApp> {
     ));
   }
 
-  Widget _getContent(BuildContext context, SwephTestData? swephTestData) {
+  Widget _getContent(BuildContext context) {
     List<Widget> children = [
       const Text(
         'Swiss Ephemeris Exmaple',
@@ -128,22 +126,16 @@ class _MyAppState extends State<MyApp> {
       const SizedBox(height: 10)
     ];
 
-    if (swephTestData == null) {
-      _addText(children, 'loading...');
-    } else {
-      _addText(children,
-          'Time taken to load Sweph: ${swephTestData.timeToLoad.inMilliseconds} ms');
-      _addText(children, 'Sweph Version: ${swephTestData.swephVersion}');
-      _addText(children,
-          'Moon position on 2022-06-29 02:52:00 UTC: ${swephTestData.moonPosition}');
-      _addText(children,
-          'Distance of star Rohini: ${swephTestData.starDistance} AU');
-      _addText(children, 'Name of Asteroid 16: ${swephTestData.asteroidName}');
-      _addText(children,
-          'House System ASCMC[0] for custom time: ${swephTestData.houseSystemAscmc}');
-      _addText(
-          children, 'Chriron position now: ${swephTestData.chironPosition}');
-    }
+    _addText(children,
+        'Time taken to load Sweph: ${widget.timeToLoad.inMilliseconds} ms');
+    _addText(children, 'Sweph Version: $swephVersion');
+    _addText(
+        children, 'Moon position on 2022-06-29 02:52:00 UTC: $moonPosition');
+    _addText(children, 'Distance of star Rohini: $starDistance AU');
+    _addText(children, 'Name of Asteroid 16: $asteroidName');
+    _addText(
+        children, 'House System ASCMC[0] for custom time: $houseSystemAscmc');
+    _addText(children, 'Chriron position now: $chironPosition');
 
     return Column(children: children);
   }
@@ -158,15 +150,7 @@ class _MyAppState extends State<MyApp> {
         body: SingleChildScrollView(
           child: Center(
             child: Container(
-              padding: const EdgeInsets.all(10),
-              child: FutureBuilder<SwephTestData>(
-                future: swephTestData,
-                builder:
-                    (BuildContext context, AsyncSnapshot<SwephTestData> value) {
-                  return _getContent(context, value.data);
-                },
-              ),
-            ),
+                padding: const EdgeInsets.all(10), child: _getContent(context)),
           ),
         ),
       ),

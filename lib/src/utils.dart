@@ -121,15 +121,15 @@ R using<R>(R Function(Arena) computation, Allocator wrappedAllocator) {
   }
 }
 
-/// Extension method for converting a`Pointer<Char>` to a [String].
-extension Utf8Pointer on Pointer<Char> {
+/// Extension method for converting a`Pointer<Uint8>` to a [String].
+extension Utf8Pointer on Pointer<Uint8> {
   /// The number of UTF-8 code units in this zero-terminated UTF-8 string.
   ///
   /// The UTF-8 code units of the strings are the non-zero code units up to the
   /// first zero code unit.
   int get length {
     _ensureNotNullptr('length');
-    final codeUnits = cast<Char>();
+    final codeUnits = cast<Uint8>();
     return _length(codeUnits);
   }
 
@@ -161,10 +161,10 @@ extension Utf8Pointer on Pointer<Char> {
   }
 }
 
-/// Extension method for converting a [String] to a `Pointer<Char>`.
+/// Extension method for converting a [String] to a `Pointer<Uint8>`.
 extension StringUtf8Pointer on String {
-  /// Creates a zero-terminated [Char] code-unit array from this String.
-  Pointer<Char> toNativeString(Allocator allocator, [int? size]) {
+  /// Creates a zero-terminated [Uint8] code-unit array from this String.
+  Pointer<Uint8> toNativeString(Allocator allocator, [int? size]) {
     final units = utf8.encode(this);
     size ??= units.length + 1;
     final Pointer<Uint8> result = allocator<Uint8>(size);

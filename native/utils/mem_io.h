@@ -39,21 +39,10 @@ extern HANDLE dllhandle; // set by swedllst::DllMain,
 #define EXP32
 #endif
 
-#define ext_def(x) extern EXP32 x CALL_CONV
 /* ext_def(x) evaluates to x on Unix */
+#define ext_def(x) extern EXP32 x CALL_CONV
 
-ext_def(int) write_file(const char* path, const char* contents, size_t len, int forceOverwrite);
-
-// Replacement for file-io commands, so that there is no dependency on wasi_snapshot_preview1
-FILE* fOpen(const char* filename, const char* mode);
-int fClose(FILE* stream);
-int fSeek(FILE* stream, long int offset, int origin);
-long fTell(FILE* stream);
-size_t fRead(void* ptr, size_t size, size_t count, FILE* stream);
-size_t fWrite(const void* ptr, size_t size, size_t count, FILE* stream);
-void fRewind(FILE* stream);
-char* fGets(char* str, int n, FILE* stream);
-int printF(const char* format, ...);
+ext_def(int) write_file(const char* path, char* contents, size_t len, int forceOverwrite);
 
 #ifdef __cplusplus
 }

@@ -9,7 +9,6 @@ import 'package:web_ffi/web_ffi_meta.dart';
 
 import 'abstract_platform_provider.dart';
 
-typedef Char = Uint8;
 typedef UnsignedLong = Uint64;
 typedef Int = Int64;
 typedef Size = Uint64;
@@ -97,21 +96,16 @@ class SwephPlatformProvider
   }
 
   @override
-  Future<void> saveEpheAssets() async {
-    for (final file in AbstractPlatformProvider.epheAssets) {
-      final destPath = "$epheFilesPath/$file";
-      final assetPath = "${AbstractPlatformProvider.epheAssetsPath}/$file";
+  Future<void> saveEpheFile(String destFile, Uint8List contents) async {
+    final destPath = "$epheFilesPath/$destFile";
 
-      final data = (await rootBundle.load(assetPath)).buffer.asUint8List();
+    final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
+    final dataPtr = _copyToWasm(contents);
 
-      final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
-      final dataPtr = _copyToWasm(data);
+    final writeFile = _module.getMethod('write_file')!;
+    writeFile.call(destPathPtr, dataPtr, contents.length, 0);
 
-      final writeFile = _module.getMethod('write_file')!;
-      writeFile.call(destPathPtr, dataPtr, data.length, 0);
-
-      _module.free(destPathPtr);
-    }
+    _module.free(destPathPtr);
   }
 
   @override
