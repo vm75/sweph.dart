@@ -96,8 +96,6 @@ class SwephPlatformProvider
         Memory.global!, "ephe_files", "");
   }
 
-  final Map<String, int> _cacheFiles = {};
-
   @override
   Future<void> saveEpheAssets() async {
     for (final file in AbstractPlatformProvider.epheAssets) {
@@ -109,10 +107,8 @@ class SwephPlatformProvider
       final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
       final dataPtr = _copyToWasm(data);
 
-      final saveToCache = _module.getMethod('save_to_cache')!;
-
-      saveToCache.call(destPathPtr, dataPtr, data.length, 0);
-      _cacheFiles[file] = dataPtr;
+      final writeFile = _module.getMethod('write_file')!;
+      writeFile.call(destPathPtr, dataPtr, data.length, 0);
 
       _module.free(destPathPtr);
     }

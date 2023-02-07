@@ -1,0 +1,10 @@
+BasedOnStyle: WebKit
+ColumnLimit: 200
+UseTab: Never
+IndentWidth: 2
+TabWidth: 2
+AccessModifierOffset: -2
+SortIncludes: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false

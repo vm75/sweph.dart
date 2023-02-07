@@ -58,9 +58,9 @@ assets/sweph.wasm: $(SOURCES_CC)
 	docker run --rm -v "$(CURDIR)/native/sweph/src:/src" -v "$(CURDIR)/native/utils:/src/utils"  -v "$(CURDIR)/assets:/dist" $(USER_SPEC) \
 		emscripten/emsdk \
 			emcc -o /dist/sweph.wasm $(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
-				swecl.c swedate.c swehel.c swehouse.c swejpl.c swemmoon.c swemplan.c sweph.c swephlib.c utils/cache_utils.c \
+				swecl.c swedate.c swehel.c swehouse.c swejpl.c swemmoon.c swemplan.c sweph.c swephlib.c utils/mem_io.c \
 				-DNDEBUG \
-				-D fopen=fOpen -D fclose=fClose -D fread=fRead -D fwrite=fWrite -D rewind=fRewind -D fseek=fSeek -D ftell=fTell -D printf=printF \
+				-D fopen=fOpen -D fclose=fClose -D fread=fRead -D fwrite=fWrite -D rewind=fRewind -D fseek=fSeek -D ftell=fTell -D fgets=fGets -D printf=printF \
 				-s 'EXPORT_NAME="sweph"' \
 				-s 'ENVIRONMENT="web"' \
 				-s $(COMPILED_EXPORTS)

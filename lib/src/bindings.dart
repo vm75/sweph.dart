@@ -2721,22 +2721,7 @@ class SwephBindings {
   late final _swe_cs2degstr = _swe_cs2degstrPtr
       .asFunction<ffi.Pointer<ffi.Char> Function(int, ffi.Pointer<ffi.Char>)>();
 
-  /// ext_def(x) evaluates to x on Unix
-  int file_exists(
-    ffi.Pointer<ffi.Char> path,
-  ) {
-    return _file_exists(
-      path,
-    );
-  }
-
-  late final _file_existsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'file_exists');
-  late final _file_exists =
-      _file_existsPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
-
-  int save_to_cache(
+  int write_file(
     ffi.Pointer<ffi.Char> path,
     ffi.Pointer<ffi.Char> contents,
     int len,
@@ -2753,7 +2738,7 @@ class SwephBindings {
   late final _save_to_cachePtr = _lookup<
       ffi.NativeFunction<
           ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Size, ffi.Int)>>('save_to_cache');
+              ffi.Size, ffi.Int)>>('write_file');
   late final _save_to_cache = _save_to_cachePtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, int)>();
 }

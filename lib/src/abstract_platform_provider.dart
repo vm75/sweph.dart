@@ -2,6 +2,7 @@ abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
   static const epheAssetsPath = "packages/sweph/native/sweph/src/ephe_files";
   static const epheAssets = [
     "seas_18.se1",
+    "sepl_18.se1",
     "seasnam.txt",
     "sefstars.txt",
     "seleapsec.txt",

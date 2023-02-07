@@ -22,8 +22,9 @@ class SwephTestData {
   final String asteroidName;
   final String houseSystemAscmc;
   final String chironPosition;
+  final Duration timeToLoad;
 
-  SwephTestData(Sweph sweph)
+  SwephTestData(Sweph sweph, this.timeToLoad)
       : swephVersion = getVersion(sweph),
         moonPosition = getMoonLongitude(sweph),
         starDistance = getStarName(sweph),
@@ -100,8 +101,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<SwephTestData> getTestData() async {
+    final stopwatch = Stopwatch()..start();
     final sweph = await swephFuture;
-    return SwephTestData(sweph);
+    return SwephTestData(sweph, stopwatch.elapsed);
   }
 
   void _addText(List<Widget> children, String text) {
@@ -129,6 +131,8 @@ class _MyAppState extends State<MyApp> {
     if (swephTestData == null) {
       _addText(children, 'loading...');
     } else {
+      _addText(children,
+          'Time taken to load Sweph: ${swephTestData.timeToLoad.inMilliseconds} ms');
       _addText(children, 'Sweph Version: ${swephTestData.swephVersion}');
       _addText(children,
           'Moon position on 2022-06-29 02:52:00 UTC: ${swephTestData.moonPosition}');
