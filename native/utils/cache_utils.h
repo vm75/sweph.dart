@@ -41,7 +41,18 @@ extern HANDLE dllhandle;        // set by swedllst::DllMain,
 #define ext_def(x)	extern EXP32 x CALL_CONV
 			/* ext_def(x) evaluates to x on Unix */
 
+ext_def(int) file_exists(const char *path);
+
 ext_def(int) save_to_cache(const char *path, const char* contents, size_t len, int forceOverwrite);
+
+FILE * fOpen ( const char * filename, const char * mode );
+int fClose ( FILE * stream );
+int fSeek ( FILE * stream, long int offset, int origin );
+long fTell ( FILE * stream);
+size_t fRead (void * ptr, size_t size, size_t count, FILE * stream );
+size_t fWrite ( const void * ptr, size_t size, size_t count, FILE * stream );
+void fRewind(FILE* stream);
+int printF ( const char * format, ... );
 
 #ifdef __cplusplus
 }

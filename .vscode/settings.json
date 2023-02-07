@@ -13,7 +13,6 @@
     "editor.defaultFormatter": "Dart-Code.dart-code"
   },
   "dart.lineLength": 80,
-  "cmake.sourceDirectory": "${workspaceFolder}/example/linux",
   "files.exclude": {
     "package-lock.json": true,
     "out/**": true,

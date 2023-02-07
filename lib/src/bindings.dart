@@ -2722,6 +2722,20 @@ class SwephBindings {
       .asFunction<ffi.Pointer<ffi.Char> Function(int, ffi.Pointer<ffi.Char>)>();
 
   /// ext_def(x) evaluates to x on Unix
+  int file_exists(
+    ffi.Pointer<ffi.Char> path,
+  ) {
+    return _file_exists(
+      path,
+    );
+  }
+
+  late final _file_existsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
+          'file_exists');
+  late final _file_exists =
+      _file_existsPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+
   int save_to_cache(
     ffi.Pointer<ffi.Char> path,
     ffi.Pointer<ffi.Char> contents,
@@ -3178,7 +3192,7 @@ const String SE_ASTNAMFILE = 'seasnam.txt';
 
 const String SE_FICTFILE = 'seorbel.txt';
 
-const String SE_EPHE_PATH = '.:/users/ephe2/:/users/ephe/';
+const String SE_EPHE_PATH = '\\sweph\\ephe\\';
 
 const int SE_SPLIT_DEG_ROUND_SEC = 1;
 

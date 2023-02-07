@@ -587,7 +587,7 @@ class Coordinates {
   final double latitude;
   final double distance;
   Coordinates(this.longitude, this.latitude, this.distance);
-  Pointer<Double> toNativeArray(Arena arena) {
+  Pointer<Double> toNativeString(Arena arena) {
     final array = arena<Double>(3);
     array[0] = longitude;
     array[1] = latitude;
@@ -606,7 +606,7 @@ class CoordinatesWithSpeed {
   final double speedInDistance;
   CoordinatesWithSpeed(this.longitude, this.latitude, this.distance,
       this.speedInLongitude, this.speedInLatitude, this.speedInDistance);
-  Pointer<Double> toNativeArray(Arena arena) {
+  Pointer<Double> toNativeString(Arena arena) {
     final array = arena<Double>(6);
     array[0] = longitude;
     array[1] = latitude;
@@ -625,7 +625,7 @@ class GeoPosition {
   final double altitude;
   GeoPosition(this.longitude, this.latitude, [this.altitude = 0]);
 
-  Pointer<Double> toNativeArray(Arena arena) {
+  Pointer<Double> toNativeString(Arena arena) {
     final array = arena<Double>(3);
     array[0] = longitude;
     array[1] = latitude;
@@ -690,8 +690,8 @@ class AtmosphericConditions {
   AtmosphericConditions(this.data) {
     assert(data.length >= 4);
   }
-  Pointer<Double> toNativeArray(Arena arena) {
-    return data.toNativeArray(arena);
+  Pointer<Double> toNativeString(Arena arena) {
+    return data.toNativeString(arena);
   }
 }
 
@@ -709,8 +709,8 @@ class ObserverConditions {
   ObserverConditions(this.data) {
     assert(data.length >= 6);
   }
-  Pointer<Double> toNativeArray(Arena arena) {
-    return data.toNativeArray(arena);
+  Pointer<Double> toNativeString(Arena arena) {
+    return data.toNativeString(arena);
   }
 }
 

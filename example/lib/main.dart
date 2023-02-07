@@ -46,11 +46,15 @@ class SwephTestData {
   static String getStarName(Sweph sweph) {
     final jd =
         sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    return sweph
-        .swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
-        .coordinates
-        .distance
-        .toStringAsFixed(3);
+    try {
+      return sweph
+          .swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
+          .coordinates
+          .distance
+          .toStringAsFixed(3);
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   static String getAstroidName(Sweph sweph) {

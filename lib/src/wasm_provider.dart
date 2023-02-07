@@ -1,10 +1,13 @@
 import 'dart:typed_data';
+
 import 'package:flutter/services.dart';
 import 'package:js/js_util.dart';
 import 'package:wasm_interop/wasm_interop.dart' as interop;
 import 'package:web_ffi/web_ffi.dart';
 import 'package:web_ffi/web_ffi_modules.dart';
 import 'package:web_ffi/web_ffi_meta.dart';
+
+import 'abstract_platform_provider.dart';
 
 typedef Char = Uint8;
 typedef UnsignedLong = Uint64;
@@ -26,7 +29,8 @@ class _WasmModule extends Module {
   }
 
   static Future<_WasmModule> initFromBuffer(ByteBuffer buffer) async {
-    final wasmInstance = await interop.Instance.fromBufferAsync(buffer);
+    final wasmInstance =
+        await interop.Instance.fromBytesAsync(buffer.asUint8List());
     return _WasmModule._(wasmInstance);
   }
 
@@ -67,23 +71,65 @@ class _WasmModule extends Module {
     final resp = func?.call(size) as int;
     return resp;
   }
+
+  Function? getMethod(String methodName) {
+    return _instance.functions[methodName];
+  }
 }
 
-class SwephDynamicLib {
-  static final Future<DynamicLibrary> _lib = _initLib();
-  static final Allocator _allocator = _memory();
+class SwephPlatformProvider
+    extends AbstractPlatformProvider<DynamicLibrary, Allocator> {
+  static final Future<SwephPlatformProvider> _instance = _init();
 
-  static get lib => _lib;
-  static get allocator => _allocator;
+  static Future<SwephPlatformProvider> get instance => _instance;
 
-  static _memory() {
+  final _WasmModule _module;
+
+  SwephPlatformProvider._(this._module, super.lib, super.allocator,
+      super.epheFilesPath, super.jplFilePath);
+
+  static Future<SwephPlatformProvider> _init() async {
     Memory.init();
-    return Memory.global!;
-  }
-
-  static Future<DynamicLibrary> _initLib() async {
     final module =
         await _WasmModule.initFromAsset('packages/sweph/assets/sweph.wasm');
-    return DynamicLibrary.fromModule(module);
+    return SwephPlatformProvider._(module, DynamicLibrary.fromModule(module),
+        Memory.global!, "ephe_files", "");
+  }
+
+  final Map<String, int> _cacheFiles = {};
+
+  @override
+  Future<void> saveEpheAssets() async {
+    for (final file in AbstractPlatformProvider.epheAssets) {
+      final destPath = "$epheFilesPath/$file";
+      final assetPath = "${AbstractPlatformProvider.epheAssetsPath}/$file";
+
+      final data = (await rootBundle.load(assetPath)).buffer.asUint8List();
+
+      final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
+      final dataPtr = _copyToWasm(data);
+
+      final saveToCache = _module.getMethod('save_to_cache')!;
+
+      saveToCache.call(destPathPtr, dataPtr, data.length, 0);
+      _cacheFiles[file] = dataPtr;
+
+      _module.free(destPathPtr);
+    }
+  }
+
+  @override
+  Future<void> copyEpheFiles(String ephePath) async {}
+
+  @override
+  Future<void> copyJplFile(String filePath) async {}
+
+  int _copyToWasm(Uint8List data) {
+    final size = data.length;
+    final dataPtr = _module.malloc(size + 1);
+    final memoryView = _module.heap.asUint8List();
+    memoryView.setAll(dataPtr, data);
+    memoryView[dataPtr + size] = 0;
+    return dataPtr;
   }
 }

@@ -1,7 +1,6 @@
 // ignore_for_file: hash_and_equals, constant_identifier_names
 
 import 'dart:convert';
-// import 'dart:io';
 import 'dart:typed_data';
 
 import 'ffi_proxy.dart';
@@ -74,7 +73,7 @@ abstract class AbstractFlag<T> extends AbstractVal<T, int> {
 }
 
 extension FfiHelperOnDoubleList on List<double> {
-  Pointer<Double> toNativeArray(Arena arena) {
+  Pointer<Double> toNativeString(Arena arena) {
     final array = arena<Double>(length);
     for (int i = 0; i < length; i++) {
       array[i] = elementAt(i);
@@ -88,28 +87,6 @@ extension FfiHelperOnDoublePointer on Pointer<Double> {
     final list = <double>[];
     list.addAll(asTypedList(length));
     return list;
-  }
-}
-
-extension FfiHelperOnCharPointer on Pointer<Char> {
-  String toDartString() {
-    return cast<Utf8>().toDartString();
-  }
-}
-
-extension FfiHelperOnString on String {
-  Pointer<Char> toNativeArray(Allocator allocator, [int? size]) {
-    size ??= length + 1;
-    final Pointer<Uint8> result = allocator<Uint8>(size);
-    final Uint8List nativeString = result.asTypedList(size);
-    final units = utf8.encode(this);
-    nativeString.setAll(0, units);
-    nativeString[units.length] = 0;
-    return result.cast();
-  }
-
-  int firstChar() {
-    return (length > 0) ? codeUnitAt(0) : 0;
   }
 }
 
@@ -144,36 +121,19 @@ R using<R>(R Function(Arena) computation, Allocator wrappedAllocator) {
   }
 }
 
-/// The contents of a native zero-terminated array of UTF-8 code units.
-///
-/// The Utf8 type itself has no functionality, it's only intended to be used
-/// through a `Pointer<Utf8>` representing the entire array. This pointer is
-/// the equivalent of a char pointer (`const char*`) in C code.
-class Utf8 extends Opaque {}
-
-/// Extension method for converting a`Pointer<Utf8>` to a [String].
-extension Utf8Pointer on Pointer<Utf8> {
+/// Extension method for converting a`Pointer<Char>` to a [String].
+extension Utf8Pointer on Pointer<Char> {
   /// The number of UTF-8 code units in this zero-terminated UTF-8 string.
   ///
   /// The UTF-8 code units of the strings are the non-zero code units up to the
   /// first zero code unit.
   int get length {
     _ensureNotNullptr('length');
-    final codeUnits = cast<Uint8>();
+    final codeUnits = cast<Char>();
     return _length(codeUnits);
   }
 
   /// Converts this UTF-8 encoded string to a Dart string.
-  ///
-  /// Decodes the UTF-8 code units of this zero-terminated byte array as
-  /// Unicode code points and creates a Dart string containing those code
-  /// points.
-  ///
-  /// If [length] is provided, zero-termination is ignored and the result can
-  /// contain NUL characters.
-  ///
-  /// If [length] is not provided, the returned string is the string up til
-  /// but not including  the first NUL character.
   String toDartString({int? length}) {
     _ensureNotNullptr('toDartString');
     final codeUnits = cast<Uint8>();
@@ -201,26 +161,21 @@ extension Utf8Pointer on Pointer<Utf8> {
   }
 }
 
-/// Extension method for converting a [String] to a `Pointer<Utf8>`.
+/// Extension method for converting a [String] to a `Pointer<Char>`.
 extension StringUtf8Pointer on String {
-  /// Creates a zero-terminated [Utf8] code-unit array from this String.
-  ///
-  /// If this [String] contains NUL characters, converting it back to a string
-  /// using [Utf8Pointer.toDartString] will truncate the result if a length is
-  /// not passed.
-  ///
-  /// Unpaired surrogate code points in this [String] will be encoded as
-  /// replacement characters (U+FFFD, encoded as the bytes 0xEF 0xBF 0xBD) in
-  /// the UTF-8 encoded result. See [Utf8Encoder] for details on encoding.
-  ///
-  /// Returns an [allocator]-allocated pointer to the result.
-  Pointer<Utf8> toNativeUtf8({required Allocator allocator}) {
+  /// Creates a zero-terminated [Char] code-unit array from this String.
+  Pointer<Char> toNativeString(Allocator allocator, [int? size]) {
     final units = utf8.encode(this);
-    final Pointer<Uint8> result = allocator<Uint8>(units.length + 1);
-    final Uint8List nativeString = result.asTypedList(units.length + 1);
+    size ??= units.length + 1;
+    final Pointer<Uint8> result = allocator<Uint8>(size);
+    final Uint8List nativeString = result.asTypedList(size);
     nativeString.setAll(0, units);
     nativeString[units.length] = 0;
     return result.cast();
+  }
+
+  int firstChar() {
+    return (length > 0) ? codeUnitAt(0) : 0;
   }
 }
 
