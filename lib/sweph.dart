@@ -32,7 +32,7 @@ class Sweph {
     _provider = await SwephPlatformProvider.instance;
     _allocator = _provider.allocator;
     _bindings = SwephBindings(_provider.lib);
-    await _provider.saveEpheAssets();
+    await _provider.saveEpheAssets(epheAssets);
     swe_set_ephe_path(_provider.epheFilesPath);
   }
 

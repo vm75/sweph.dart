@@ -14,7 +14,7 @@ abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
   String get epheFilesPath => _epheFilesPath;
   String get jplFilePath => _jplFilePath;
 
-  Future<void> saveEpheAssets({List<String>? epheAssets}) async {
+  Future<void> saveEpheAssets(List<String>? epheAssets) async {
     for (final asset in epheAssets ?? []) {
       final destFile = asset.replaceAll(RegExp(r'.*[/\\]'), '');
       final contents = (await rootBundle.load(asset)).buffer.asUint8List();

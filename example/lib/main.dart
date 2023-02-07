@@ -8,7 +8,9 @@ void main() async {
   // Only load the assets you need. By default will load none
   // Bundled assets are available in Sweph.bundledEpheAssets
   await Sweph.init(epheAssets: [
-    "packages/sweph/assets/ephe/sefstars.txt",
+    "packages/sweph/assets/ephe/seas_18.se1", // For house calc
+    "packages/sweph/assets/ephe/sefstars.txt", // For star name
+    "packages/sweph/assets/ephe/seasnam.txt", // For asteriods
   ]);
 
   runApp(MyApp(
