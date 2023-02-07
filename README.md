@@ -5,7 +5,7 @@ Everything you need to create Astrology and Astronomy applications with Dart and
 
 * 100% API coverage
 * Dart friendly parameters and return values
-* Supported on all platforms
+* Supported on all platforms. Uses ffi for non-Web platforms and wasm for Web
 * Version matched with source
 
 References:
@@ -30,18 +30,18 @@ Future<void> main() async {
     ]);
 
     // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
-    // await Sweph.instance.swe_set_ephe_path(<path-to-existing-folder>)
+    // await Sweph.swe_set_ephe_path(<path-to-existing-folder>)
     // This is not available for Web
 
-    print('sweph.swe_version = ${Sweph.instance.swe_version()}');
-    print('Moon longitude on 2022-06-29 02:52:00 UTC = ${Sweph.instance.swe_calc_ut(Sweph.instance.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
+    print('sweph.swe_version = ${Sweph.swe_version()}');
+    print('Moon longitude on 2022-06-29 02:52:00 UTC = ${Sweph.swe_calc_ut(Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL), HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH).longitude}');
 
     // Most methods use positional parameters, not named. So if some positional parameters take default values, please refer to original documentation
     // If only some specific flags are allowed for a method, it is restricted via the enumerated flags
     // For example, to set the sidereal mode to Lahiri with projection onto solar system plane and custom t0 in UT
-    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
+    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_SSY_PLANE, 123.45 /* t0 */);
     // or, to set the sidereal mode to Lahiri with no flags and custom ayan_t0 in UT
-    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
+    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI, SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 987.65 /* ayan_t0 */);
   }
 }
 ```

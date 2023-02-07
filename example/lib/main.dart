@@ -46,23 +46,22 @@ class _MyAppState extends State<MyApp> {
   }
 
   static String getVersion() {
-    return Sweph.instance.swe_version();
+    return Sweph.swe_version();
   }
 
   static String getMoonLongitude() {
-    final jd = Sweph.instance
-        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos = Sweph.instance
-        .swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
+    final jd =
+        Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final pos =
+        Sweph.swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
     return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
   }
 
   static String getStarName() {
-    final jd = Sweph.instance
-        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final jd =
+        Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     try {
-      return Sweph.instance
-          .swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
+      return Sweph.swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
           .coordinates
           .distance
           .toStringAsFixed(3);
@@ -72,7 +71,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   static String getAstroidName() {
-    return Sweph.instance.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
+    return Sweph.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
   }
 
   static String getHouseSystemAscmc() {
@@ -83,24 +82,22 @@ class _MyAppState extends State<MyApp> {
 
     const longitude = 81 + 50 / 60.0;
     const latitude = 25 + 57 / 60.0;
-    final julday = Sweph.instance
-        .swe_julday(year, month, day, hour, CalendarType.SE_GREG_CAL);
+    final julday =
+        Sweph.swe_julday(year, month, day, hour, CalendarType.SE_GREG_CAL);
 
-    Sweph.instance.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
+    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
         SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 0.0 /* ayan_t0 */);
-    final result =
-        Sweph.instance.swe_houses(julday, latitude, longitude, Hsys.P);
+    final result = Sweph.swe_houses(julday, latitude, longitude, Hsys.P);
     return result.ascmc[0].toStringAsFixed(3);
   }
 
   static String getChironPosition() {
     final now = DateTime.now();
-    final jd = Sweph.instance.swe_julday(now.year, now.month, now.day,
+    final jd = Sweph.swe_julday(now.year, now.month, now.day,
         (now.hour + now.minute / 60), CalendarType.SE_GREG_CAL);
-    Sweph.instance
-        .swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos = Sweph.instance
-        .swe_calc_ut(jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
+    Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final pos =
+        Sweph.swe_calc_ut(jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
     return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
   }
 
