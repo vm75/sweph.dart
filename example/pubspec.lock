@@ -214,7 +214,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.10.03+8"
+    version: "2.10.03+9"
   term_glyph:
     dependency: transitive
     description:
@@ -231,6 +231,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  wasm_ffi:
+    dependency: transitive
+    description:
+      name: wasm_ffi
+      sha256: "1c955699f22ac7e58b7c8399a4580cbf097bdf1ef7bd97dbb7a921742b9c01e7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3"
   wasm_interop:
     dependency: transitive
     description:
@@ -239,14 +247,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  web_ffi:
-    dependency: transitive
-    description:
-      name: web_ffi
-      sha256: "48ef8037f7bc051d11b88d0f2903e02bec21092c51833d37c3361c36e3edc4f7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.2"
   win32:
     dependency: transitive
     description:
