@@ -24,7 +24,7 @@ test_flutter:
 publish: publish_flutter
 
 publish_flutter:
-	flutter analyze && pub publish
+	flutter analyze && flutter pub publish
 
 bump_version:
 	dart scripts/bump_version.dart
