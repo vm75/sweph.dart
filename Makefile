@@ -21,9 +21,13 @@ test_flutter:
 	cd example
 	flutter run
 
-publishall: publish_flutter
+publish: publish_flutter
 
 publish_flutter:
+	flutter analyze && pub publish
+
+bump_version:
+	dart scripts/bump_version.dart
 
 # Wasm
 COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"

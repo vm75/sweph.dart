@@ -1,3 +1,7 @@
+## 2.10.03+10
+
+- fixed RiseSetTransitFlag. added bump_version script
+
 ## 2.10.03+9
 
 - Replaced web_ffi with wasm_ffi

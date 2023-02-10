@@ -380,39 +380,41 @@ class RiseSetTransitFlag extends AbstractFlag<RiseSetTransitFlag> {
     return RiseSetTransitFlag(value);
   }
 
-  static const SE_CALC_RISE = 1;
-  static const SE_CALC_SET = 2;
-  static const SE_CALC_MTRANSIT = 4;
-  static const SE_CALC_ITRANSIT = 8;
+  static const SE_CALC_RISE = RiseSetTransitFlag(1);
+  static const SE_CALC_SET = RiseSetTransitFlag(2);
+  static const SE_CALC_MTRANSIT = RiseSetTransitFlag(4);
+  static const SE_CALC_ITRANSIT = RiseSetTransitFlag(8);
 
   /// to be or'ed to SE_CALC_RISE/SET, if rise or set of disc center is required
-  static const SE_BIT_DISC_CENTER = 256;
+  static const SE_BIT_DISC_CENTER = RiseSetTransitFlag(256);
 
   /// to be or'ed to SE_CALC_RISE/SET, if rise or set of lower limb of disc is requried
-  static const SE_BIT_DISC_BOTTOM = 8192;
+  static const SE_BIT_DISC_BOTTOM = RiseSetTransitFlag(8192);
 
   /// use geocentric rather than topocentric position of object and ignore its ecliptic latitude
-  static const SE_BIT_GEOCTR_NO_ECL_LAT = 128;
+  static const SE_BIT_GEOCTR_NO_ECL_LAT = RiseSetTransitFlag(128);
 
   /// to be or'ed to SE_CALC_RISE/SET, if refraction is to be ignored
-  static const SE_BIT_NO_REFRACTION = 512;
+  static const SE_BIT_NO_REFRACTION = RiseSetTransitFlag(512);
 
   /// to be or'ed to SE_CALC_RISE/SET
-  static const SE_BIT_CIVIL_TWILIGHT = 1024;
+  static const SE_BIT_CIVIL_TWILIGHT = RiseSetTransitFlag(1024);
 
   /// to be or'ed to SE_CALC_RISE/SET
-  static const SE_BIT_NAUTIC_TWILIGHT = 2048;
+  static const SE_BIT_NAUTIC_TWILIGHT = RiseSetTransitFlag(2048);
 
   /// to be or'ed to SE_CALC_RISE/SET
-  static const SE_BIT_ASTRO_TWILIGHT = 4096;
+  static const SE_BIT_ASTRO_TWILIGHT = RiseSetTransitFlag(4096);
 
   /// or'ed to SE_CALC_RISE/SET: neglect the effect of distance on disc size
-  static const SE_BIT_FIXED_DISC_SIZE = 16384;
+  static const SE_BIT_FIXED_DISC_SIZE = RiseSetTransitFlag(16384);
 
   /// This is only an Astrodienst in-house test flag. It forces the usage of the old, slow calculation of risings and settings.
-  static const SE_BIT_FORCE_SLOW_METHOD = 32768;
-  static const SE_BIT_HINDU_RISING =
-      SE_BIT_DISC_CENTER | SE_BIT_NO_REFRACTION | SE_BIT_GEOCTR_NO_ECL_LAT;
+  static const SE_BIT_FORCE_SLOW_METHOD = RiseSetTransitFlag(32768);
+  static const SE_BIT_HINDU_RISING = RiseSetTransitFlag(
+      128 /* SE_BIT_GEOCTR_NO_ECL_LAT */ |
+          256 /* SE_BIT_DISC_CENTER */ |
+          512 /* SE_BIT_NO_REFRACTION */);
 }
 
 /// Modes for Azimuth/Altitude methods
