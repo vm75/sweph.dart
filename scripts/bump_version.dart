@@ -11,27 +11,31 @@ const filesToUpdate = [
 ];
 
 class Version {
-  final String _swephVersion;
+  final int _major;
+  final int _minor;
+  final int _patch;
   final int _pluginVersion;
 
-  Version(this._swephVersion, this._pluginVersion);
+  Version(this._major, this._minor, this._patch, this._pluginVersion);
 
   @override
   String toString() {
-    return '$_swephVersion+$_pluginVersion';
+    return '$_major.$_minor.$_patch+$_pluginVersion';
   }
 
   static Version fromString(String versionStr) {
     final parts = versionStr.split('+');
+    final List<int> versions =
+        parts[0].split('.').map((str) => int.parse(str)).toList();
     if (parts.length == 1) {
-      return Version(parts[0], 1);
+      return Version(versions[0], versions[1], versions[2], 1);
     }
-    return Version(parts[0], int.parse(parts[1]));
+    return Version(versions[0], versions[1], versions[2], int.parse(parts[1]));
   }
 
   static Version getNextVersion(Version currentVersion, Version nativeVersion) {
-    return Version(
-        nativeVersion._swephVersion, currentVersion._pluginVersion + 1);
+    return Version(nativeVersion._major, nativeVersion._minor,
+        nativeVersion._patch, currentVersion._pluginVersion + 1);
   }
 }
 

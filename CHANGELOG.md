@@ -1,4 +1,4 @@
-## 2.10.03+11
+## 2.10.3+11
 
 - fixed type for swe_set_sid_mode
 

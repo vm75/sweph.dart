@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'sweph'
-  s.version          = '2.10.03+11'
+  s.version          = '2.10.3+11'
   s.summary          = 'Cross-platform bindings of Swiss Ephemeris APIs for Flutter.'
   s.description      = <<-DESC
 Cross-platform bindings of Swiss Ephemeris APIs for Flutter.
