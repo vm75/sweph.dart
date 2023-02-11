@@ -286,8 +286,8 @@ class Sweph {
   /// set sidereal mode
   static void swe_set_sid_mode(SiderealMode mode,
       [SiderealModeFlag flags = SiderealModeFlag.SE_SIDBIT_NONE,
-      t0 = 0,
-      ayan_t0 = 0]) {
+      double t0 = 0,
+      double ayan_t0 = 0]) {
     _bindings.swe_set_sid_mode((mode.value | flags.value), t0, ayan_t0);
   }
 

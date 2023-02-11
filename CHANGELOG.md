@@ -1,3 +1,7 @@
+## 2.10.03+11
+
+- fixed type for swe_set_sid_mode
+
 ## 2.10.03+10
 
 - fixed RiseSetTransitFlag. added bump_version script
