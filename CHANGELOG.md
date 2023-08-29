@@ -1,6 +1,10 @@
+## 2.10.3+13
+
+- Fixing build error due to some missed int -> int32 changes
+
 ## 2.10.3+12
 
-- fixing int type to in32 for web compatibility
+- fixing int type to int32 for web compatibility
 
 ## 2.10.3+11
 

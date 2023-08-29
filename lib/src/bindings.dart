@@ -219,7 +219,7 @@ class SwephBindings {
 
   late final _swe_calcPtr = _lookup<
       ffi.NativeFunction<
-          int32 Function(ffi.Double, ffi.Int, int32, ffi.Pointer<ffi.Double>,
+          int32 Function(ffi.Double, ffi.Int32, int32, ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Uint8>)>>('swe_calc');
   late final _swe_calc = _swe_calcPtr.asFunction<
       int Function(
@@ -690,7 +690,7 @@ class SwephBindings {
   late final _swe_get_planet_namePtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-              ffi.Int, ffi.Pointer<ffi.Uint8>)>>('swe_get_planet_name');
+              ffi.Int32, ffi.Pointer<ffi.Uint8>)>>('swe_get_planet_name');
   late final _swe_get_planet_name = _swe_get_planet_namePtr.asFunction<
       ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Uint8>)>();
 
@@ -824,7 +824,7 @@ class SwephBindings {
     int ifno,
     ffi.Pointer<ffi.Double> tfstart,
     ffi.Pointer<ffi.Double> tfend,
-    ffi.Pointer<ffi.Int> denum,
+    ffi.Pointer<ffi.Int32> denum,
   ) {
     return _swe_get_current_file_data(
       ifno,
@@ -837,14 +837,14 @@ class SwephBindings {
   late final _swe_get_current_file_dataPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
-              ffi.Pointer<ffi.Int>)>>('swe_get_current_file_data');
+              ffi.Pointer<ffi.Int32>)>>('swe_get_current_file_data');
   late final _swe_get_current_file_data =
       _swe_get_current_file_dataPtr.asFunction<
           ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Double>,
-              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Int>)>();
+              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Int32>)>();
 
   /// exports from swedate.c
   int swe_date_conversion(
@@ -867,8 +867,8 @@ class SwephBindings {
 
   late final _swe_date_conversionPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Int, ffi.Int, ffi.Int, ffi.Double, ffi.Uint8,
-              ffi.Pointer<ffi.Double>)>>('swe_date_conversion');
+          ffi.Int32 Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Double,
+              ffi.Uint8, ffi.Pointer<ffi.Double>)>>('swe_date_conversion');
   late final _swe_date_conversion = _swe_date_conversionPtr.asFunction<
       int Function(int, int, int, double, int, ffi.Pointer<ffi.Double>)>();
 
@@ -890,17 +890,17 @@ class SwephBindings {
 
   late final _swe_juldayPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Double Function(
-              ffi.Int, ffi.Int, ffi.Int, ffi.Double, ffi.Int)>>('swe_julday');
+          ffi.Double Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Double,
+              ffi.Int32)>>('swe_julday');
   late final _swe_julday =
       _swe_juldayPtr.asFunction<double Function(int, int, int, double, int)>();
 
   void swe_revjul(
     double jd,
     int gregflag,
-    ffi.Pointer<ffi.Int> jyear,
-    ffi.Pointer<ffi.Int> jmon,
-    ffi.Pointer<ffi.Int> jday,
+    ffi.Pointer<ffi.Int32> jyear,
+    ffi.Pointer<ffi.Int32> jmon,
+    ffi.Pointer<ffi.Int32> jday,
     ffi.Pointer<ffi.Double> jut,
   ) {
     return _swe_revjul(
@@ -917,14 +917,14 @@ class SwephBindings {
       ffi.NativeFunction<
           ffi.Void Function(
               ffi.Double,
-              ffi.Int,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ffi.Double>)>>('swe_revjul');
   late final _swe_revjul = _swe_revjulPtr.asFunction<
-      void Function(double, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Double>)>();
+      void Function(double, int, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int32>,
+          ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Double>)>();
 
   int swe_utc_to_jd(
     int iyear,
@@ -1139,7 +1139,7 @@ class SwephBindings {
 
   late final _swe_housesPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Double, ffi.Double, ffi.Double, ffi.Int,
+          ffi.Int32 Function(ffi.Double, ffi.Double, ffi.Double, ffi.Int32,
               ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>>('swe_houses');
   late final _swe_houses = _swe_housesPtr.asFunction<
       int Function(double, double, double, int, ffi.Pointer<ffi.Double>,
@@ -1167,12 +1167,12 @@ class SwephBindings {
 
   late final _swe_houses_exPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
+          ffi.Int32 Function(
               ffi.Double,
               int32,
               ffi.Double,
               ffi.Double,
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>)>>('swe_houses_ex');
   late final _swe_houses_ex = _swe_houses_exPtr.asFunction<
@@ -1207,12 +1207,12 @@ class SwephBindings {
 
   late final _swe_houses_ex2Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
+          ffi.Int32 Function(
               ffi.Double,
               int32,
               ffi.Double,
               ffi.Double,
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
@@ -1251,11 +1251,11 @@ class SwephBindings {
 
   late final _swe_houses_armcPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
+          ffi.Int32 Function(
               ffi.Double,
               ffi.Double,
               ffi.Double,
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>)>>('swe_houses_armc');
   late final _swe_houses_armc = _swe_houses_armcPtr.asFunction<
@@ -1288,11 +1288,11 @@ class SwephBindings {
 
   late final _swe_houses_armc_ex2Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
+          ffi.Int32 Function(
               ffi.Double,
               ffi.Double,
               ffi.Double,
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
@@ -1334,7 +1334,7 @@ class SwephBindings {
               ffi.Double,
               ffi.Double,
               ffi.Double,
-              ffi.Int,
+              ffi.Int32,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Uint8>)>>('swe_house_pos');
   late final _swe_house_pos = _swe_house_posPtr.asFunction<
@@ -1350,7 +1350,7 @@ class SwephBindings {
   }
 
   late final _swe_house_namePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Int)>>(
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Int32)>>(
           'swe_house_name');
   late final _swe_house_name =
       _swe_house_namePtr.asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
@@ -2662,7 +2662,7 @@ class SwephBindings {
   }
 
   late final _swe_day_of_weekPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Double)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Double)>>(
           'swe_day_of_week');
   late final _swe_day_of_week =
       _swe_day_of_weekPtr.asFunction<int Function(double)>();
@@ -2683,7 +2683,7 @@ class SwephBindings {
 
   late final _swe_cs2timestrPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(centisec, ffi.Int, AS_BOOL,
+          ffi.Pointer<ffi.Uint8> Function(centisec, ffi.Int32, AS_BOOL,
               ffi.Pointer<ffi.Uint8>)>>('swe_cs2timestr');
   late final _swe_cs2timestr = _swe_cs2timestrPtr.asFunction<
       ffi.Pointer<ffi.Uint8> Function(int, int, int, ffi.Pointer<ffi.Uint8>)>();
@@ -2742,8 +2742,8 @@ class SwephBindings {
 
   late final _write_filePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>,
-              ffi.Size, ffi.Int)>>('write_file');
+          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>,
+              ffi.Size, ffi.Int32)>>('write_file');
   late final _write_file = _write_filePtr.asFunction<
       int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int, int)>();
 }
@@ -2751,7 +2751,7 @@ class SwephBindings {
 typedef int32 = ffi.Int32;
 
 /// unsigned integer with at least 32 bit precision
-typedef AS_BOOL = ffi.Int;
+typedef AS_BOOL = ffi.Int32;
 typedef centisec = int32;
 
 const double SE_AUNIT_TO_KM = 149597870.7;

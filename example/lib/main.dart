@@ -45,6 +45,12 @@ class _MyAppState extends State<MyApp> {
     asteroidName = getAstroidName();
     houseSystemAscmc = getHouseSystemAscmc();
     chironPosition = getChironPosition();
+    Sweph.swe_split_deg(
+        100,
+        SplitDegFlags.SE_SPLIT_DEG_ZODIACAL |
+            SplitDegFlags.SE_SPLIT_DEG_ROUND_SEC |
+            SplitDegFlags.SE_SPLIT_DEG_KEEP_SIGN |
+            SplitDegFlags.SE_SPLIT_DEG_KEEP_DEG);
   }
 
   static String getVersion() {
