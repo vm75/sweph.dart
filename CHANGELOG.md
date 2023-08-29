@@ -1,3 +1,7 @@
+## 2.10.3+12
+
+- fixing int type to in32 for web compatibility
+
 ## 2.10.3+11
 
 - fixed type for swe_set_sid_mode
