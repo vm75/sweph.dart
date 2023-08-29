@@ -871,9 +871,9 @@ class Sweph {
   /// Year, month, day, hour from Julian day number
   static DateTime swe_revjul(double julianDay, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int> year = arena<Int>();
-      Pointer<Int> month = arena<Int>();
-      Pointer<Int> day = arena<Int>();
+      Pointer<Int32> year = arena<Int32>();
+      Pointer<Int32> month = arena<Int32>();
+      Pointer<Int32> day = arena<Int32>();
       Pointer<Double> hours = arena<Double>();
       _bindings.swe_revjul(julianDay, calType.value, year, month, day, hours);
       return _toDateTime2(year.value, month.value, day.value, hours.value);
@@ -884,11 +884,11 @@ class Sweph {
   static DateTime swe_utc_time_zone(int year, int month, int day, int hour,
       int minute, double seconds, double timezone) {
     return using((Arena arena) {
-      Pointer<Int> yearOut = arena<Int>();
-      Pointer<Int> monthOut = arena<Int>();
-      Pointer<Int> dayOut = arena<Int>();
-      Pointer<Int> hourOut = arena<Int>();
-      Pointer<Int> minuteOut = arena<Int>();
+      Pointer<Int32> yearOut = arena<Int32>();
+      Pointer<Int32> monthOut = arena<Int32>();
+      Pointer<Int32> dayOut = arena<Int32>();
+      Pointer<Int32> hourOut = arena<Int32>();
+      Pointer<Int32> minuteOut = arena<Int32>();
       Pointer<Double> secondsOut = arena<Double>();
       _bindings.swe_utc_time_zone(year, month, day, hour, minute, seconds,
           timezone, yearOut, monthOut, dayOut, hourOut, minuteOut, secondsOut);
@@ -915,11 +915,11 @@ class Sweph {
   /// TT (ET1) to UTC
   static DateTime swe_jdet_to_utc(double tjd_et, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int> year = arena<Int>();
-      Pointer<Int> mon = arena<Int>();
-      Pointer<Int> day = arena<Int>();
-      Pointer<Int> hour = arena<Int>();
-      Pointer<Int> min = arena<Int>();
+      Pointer<Int32> year = arena<Int32>();
+      Pointer<Int32> mon = arena<Int32>();
+      Pointer<Int32> day = arena<Int32>();
+      Pointer<Int32> hour = arena<Int32>();
+      Pointer<Int32> min = arena<Int32>();
       Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdet_to_utc(
           tjd_et, calType.value, year, mon, day, hour, min, sec);
@@ -931,11 +931,11 @@ class Sweph {
   /// UTC to TT (ET1)
   static DateTime swe_jdut1_to_utc(double tjd_ut, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int> year = arena<Int>();
-      Pointer<Int> mon = arena<Int>();
-      Pointer<Int> day = arena<Int>();
-      Pointer<Int> hour = arena<Int>();
-      Pointer<Int> min = arena<Int>();
+      Pointer<Int32> year = arena<Int32>();
+      Pointer<Int32> mon = arena<Int32>();
+      Pointer<Int32> day = arena<Int32>();
+      Pointer<Int32> hour = arena<Int32>();
+      Pointer<Int32> min = arena<Int32>();
       Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdut1_to_utc(
           tjd_ut, calType.value, year, mon, day, hour, min, sec);
@@ -1056,7 +1056,7 @@ class Sweph {
     return using((Arena arena) {
       Pointer<Double> tfstart = arena<Double>();
       Pointer<Double> tfend = arena<Double>();
-      Pointer<Int> denum = arena<Int>();
+      Pointer<Int32> denum = arena<Int32>();
 
       final path =
           _bindings.swe_get_current_file_data(ifno, tfstart, tfend, denum);
@@ -1416,11 +1416,11 @@ class Sweph {
   /// split degrees in centiseconds to sign/nakshatra, degrees, minutes, seconds of arc
   static DegreeSplitData swe_split_deg(double deg, SplitDegFlags roundflag) {
     return using((Arena arena) {
-      Pointer<Int> splitDeg = arena<Int>();
-      Pointer<Int> splitMin = arena<Int>();
-      Pointer<Int> splitSec = arena<Int>();
+      Pointer<Int32> splitDeg = arena<Int32>();
+      Pointer<Int32> splitMin = arena<Int32>();
+      Pointer<Int32> splitSec = arena<Int32>();
       Pointer<Double> splitSecOfArc = arena<Double>();
-      Pointer<Int> splitSgn = arena<Int>();
+      Pointer<Int32> splitSgn = arena<Int32>();
       _bindings.swe_split_deg(deg, roundflag.value, splitDeg, splitMin,
           splitSec, splitSecOfArc, splitSgn);
       return DegreeSplitData(splitDeg.value, splitMin.value, splitSec.value,

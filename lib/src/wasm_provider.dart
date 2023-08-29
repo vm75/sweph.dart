@@ -10,7 +10,7 @@ import 'package:wasm_ffi/wasm_ffi_meta.dart';
 import 'abstract_platform_provider.dart';
 
 typedef UnsignedLong = Uint64;
-typedef Int = Int64;
+typedef Int = Int32;
 typedef Size = Uint64;
 
 /// Documentation is in `emscripten_module_stub.dart`!

@@ -2748,7 +2748,7 @@ class SwephBindings {
       int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int, int)>();
 }
 
-typedef int32 = ffi.Int;
+typedef int32 = ffi.Int32;
 
 /// unsigned integer with at least 32 bit precision
 typedef AS_BOOL = ffi.Int;
