@@ -1,10 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:wasm_ffi/wasm_ffi.dart';
-
 import 'abstract_platform_provider.dart';
-
-typedef UnsignedLong = Uint64;
-typedef Size = Uint64;
 
 class SwephPlatformProvider
     extends AbstractPlatformProvider<DynamicLibrary, Allocator> {
@@ -20,7 +16,7 @@ class SwephPlatformProvider
     DynamicLibrary lib = await DynamicLibrary.open(WasmType.standalone,
         wasmBinary: bytes.buffer.asUint8List());
 
-    return SwephPlatformProvider._(lib, lib.boundMemory, "ephe_files");
+    return SwephPlatformProvider._(lib, lib.memory, "ephe_files");
   }
 
   @override

@@ -2,11 +2,12 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
-
+import 'package:wasm_ffi/ffi_proxy.dart';
+import 'src/abstract_platform_provider.dart';
 import 'src/bindings.dart';
-import 'src/utils.dart';
-import 'src/ffi_proxy.dart';
 import 'src/types.dart';
+import 'src/utils.dart';
+import 'src/wasm_provider.dart' if (dart.library.ffi) 'src/ffi_provider.dart';
 
 export 'src/types.dart';
 

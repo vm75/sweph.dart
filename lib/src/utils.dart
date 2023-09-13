@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'ffi_proxy.dart';
+import 'package:wasm_ffi/ffi_proxy.dart';
 
 N valueOf<T, N extends num>(dynamic val) {
   if (val is N) {
