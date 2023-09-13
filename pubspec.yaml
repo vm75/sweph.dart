@@ -20,8 +20,8 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.12
   plugin_platform_interface: ^2.0.2
-  wasm_ffi: ^0.9.3
-  wasm_interop: ^2.0.1
+  wasm_ffi:
+    path: ./wasm_ffi
 
 dev_dependencies:
   flutter_test:

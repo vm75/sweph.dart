@@ -1,0 +1,3 @@
+[submodule "wasm_ffi"]
+	path = wasm_ffi
+	url = git@github.com:vm75/wasm_ffi.git
