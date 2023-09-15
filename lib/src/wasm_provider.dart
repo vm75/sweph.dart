@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:wasm_ffi/wasm_ffi.dart';
+import 'package:wasm_ffi/wasm_ffi_core.dart';
 import 'abstract_platform_provider.dart';
 
 class SwephPlatformProvider
