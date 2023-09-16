@@ -588,13 +588,20 @@ class Coordinates {
   final double longitude;
   final double latitude;
   final double distance;
+
   Coordinates(this.longitude, this.latitude, this.distance);
-  Pointer<Double> toNativeString(Arena arena) {
+
+  Pointer<Double> toNativeArray(Arena arena) {
     final array = arena<Double>(3);
     array[0] = longitude;
     array[1] = latitude;
     array[2] = distance;
     return array;
+  }
+
+  @override
+  String toString() {
+    return 'Coordinates{longitude: $longitude, latitude: $latitude, distance: $distance}';
   }
 }
 
@@ -606,9 +613,11 @@ class CoordinatesWithSpeed {
   final double speedInLongitude;
   final double speedInLatitude;
   final double speedInDistance;
+
   CoordinatesWithSpeed(this.longitude, this.latitude, this.distance,
       this.speedInLongitude, this.speedInLatitude, this.speedInDistance);
-  Pointer<Double> toNativeString(Arena arena) {
+
+  Pointer<Double> toNativeArray(Arena arena) {
     final array = arena<Double>(6);
     array[0] = longitude;
     array[1] = latitude;
@@ -618,6 +627,11 @@ class CoordinatesWithSpeed {
     array[5] = speedInDistance;
     return array;
   }
+
+  @override
+  String toString() {
+    return 'CoordinatesWithSpeed{longitude: $longitude, latitude: $latitude, distance: $distance, speedInLongitude: $speedInLongitude, speedInLatitude: $speedInLatitude, speedInDistance: $speedInDistance}';
+  }
 }
 
 /// Geographic coordinates
@@ -625,9 +639,10 @@ class GeoPosition {
   final double longitude;
   final double latitude;
   final double altitude;
+
   GeoPosition(this.longitude, this.latitude, [this.altitude = 0]);
 
-  Pointer<Double> toNativeString(Arena arena) {
+  Pointer<Double> toNativeArray(Arena arena) {
     final array = arena<Double>(3);
     array[0] = longitude;
     array[1] = latitude;
@@ -641,7 +656,13 @@ class OrbitalDistance {
   final double maxDistance;
   final double minDistance;
   final double trueDistance;
+
   OrbitalDistance(this.maxDistance, this.minDistance, this.trueDistance);
+
+  @override
+  String toString() {
+    return 'OrbitalDistance{maxDistance: $maxDistance, minDistance: $minDistance, trueDistance: $trueDistance}';
+  }
 }
 
 /// Components when degrees in centiseconds are split into sign/nakshatra, degrees, minutes, seconds of arc
@@ -651,8 +672,14 @@ class DegreeSplitData {
   final int seconds;
   final double secondsOfArc;
   final int sign;
+
   DegreeSplitData(
       this.degrees, this.minutes, this.seconds, this.secondsOfArc, this.sign);
+
+  @override
+  String toString() {
+    return 'DegreeSplitData{degrees: $degrees, minutes: $minutes, seconds: $seconds, secondsOfArc: $secondsOfArc, sign: $sign}';
+  }
 }
 
 /// House cusp abs asmc data with optional speed components
@@ -661,7 +688,13 @@ class HouseCuspData {
   final List<double> ascmc;
   final List<double>? cuspsSpeed;
   final List<double>? ascmcSpeed;
+
   HouseCuspData(this.cusps, this.ascmc, [this.cuspsSpeed, this.ascmcSpeed]);
+
+  @override
+  String toString() {
+    return 'HouseCuspData{cusps: $cusps, ascmc: $ascmc, cuspsSpeed: $cuspsSpeed, ascmcSpeed: $ascmcSpeed}';
+  }
 }
 
 /// House coordinates
@@ -669,7 +702,13 @@ class HousePosition {
   final double longitude;
   final double latitude;
   final double position;
+
   HousePosition(this.longitude, this.latitude, this.position);
+
+  @override
+  String toString() {
+    return 'HousePosition{longitude: $longitude, latitude: $latitude, position: $position}';
+  }
 }
 
 /// Information about crossing of heavenly body
@@ -677,7 +716,13 @@ class CrossingInfo {
   final double longitude;
   final double latitude;
   final double timeOfCrossing;
+
   CrossingInfo(this.longitude, this.latitude, this.timeOfCrossing);
+
+  @override
+  String toString() {
+    return 'CrossingInfo{longitude: $longitude, latitude: $latitude, timeOfCrossing: $timeOfCrossing}';
+  }
 }
 
 /// Atmospheric conditions data
@@ -689,11 +734,18 @@ class CrossingInfo {
 ///  data[3]=0, then the other atmospheric parameters determine the total atmospheric coefficient (ktot)
 class AtmosphericConditions {
   final List<double> data;
+
   AtmosphericConditions(this.data) {
     assert(data.length >= 4);
   }
-  Pointer<Double> toNativeString(Arena arena) {
+
+  Pointer<Double> toNativeArray(Arena arena) {
     return data.toNativeString(arena);
+  }
+
+  @override
+  String toString() {
+    return 'AtmosphericConditions{data: $data}';
   }
 }
 
@@ -708,11 +760,18 @@ class AtmosphericConditions {
 ///  data[5]: optical transmission
 class ObserverConditions {
   final List<double> data;
+
   ObserverConditions(this.data) {
     assert(data.length >= 6);
   }
-  Pointer<Double> toNativeString(Arena arena) {
+
+  Pointer<Double> toNativeArray(Arena arena) {
     return data.toNativeString(arena);
+  }
+
+  @override
+  String toString() {
+    return 'ObserverConditions{data: $data}';
   }
 }
 
@@ -726,8 +785,14 @@ class NodesAndAspides {
   final List<double> nodesDescending;
   final List<double> perihelion;
   final List<double> aphelion;
+
   NodesAndAspides(this.nodesAscending, this.nodesDescending, this.perihelion,
       this.aphelion);
+
+  @override
+  String toString() {
+    return 'NodesAndAspides{nodesAscending: $nodesAscending, nodesDescending: $nodesDescending, perihelion: $perihelion, aphelion: $aphelion}';
+  }
 }
 
 /// Eclipse information with the following:
@@ -738,7 +803,13 @@ class EclipseInfo {
   final List<double>? times;
   final List<double>? attributes;
   final GeoPosition? geoPosition;
+
   EclipseInfo({this.times, this.attributes, this.geoPosition});
+
+  @override
+  String toString() {
+    return 'EclipseInfo{times: $times, attributes: $attributes, geoPosition: $geoPosition}';
+  }
 }
 
 /// Details of loaded Ephemeris file
@@ -747,14 +818,26 @@ class FileData {
   final double startTime;
   final double endTime;
   final int jplEphemerisNumber;
+
   FileData(this.path, this.startTime, this.endTime, this.jplEphemerisNumber);
+
+  @override
+  String toString() {
+    return 'FileData{path: $path, startTime: $startTime, endTime: $endTime, jplEphemerisNumber: $jplEphemerisNumber}';
+  }
 }
 
 /// Star name and coordinates
 class StarInfo {
   String name;
   CoordinatesWithSpeed coordinates;
+
   StarInfo(this.name, this.coordinates);
+
+  @override
+  String toString() {
+    return 'StarInfo{name: $name, coordinates: $coordinates}';
+  }
 }
 
 /// Azimuth and altitude info
@@ -762,7 +845,13 @@ class AzimuthAltitudeInfo {
   final double azimuth;
   final double trueAltitude;
   final double apparentAltitude;
+
   AzimuthAltitudeInfo(this.azimuth, this.trueAltitude, this.apparentAltitude);
+
+  @override
+  String toString() {
+    return 'AzimuthAltitudeInfo{azimuth: $azimuth, trueAltitude: $trueAltitude, apparentAltitude: $apparentAltitude}';
+  }
 }
 
 typedef Centisec = int;

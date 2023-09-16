@@ -90,12 +90,23 @@ class Sweph {
       Pointer<Double> coords = arena<Double>(6);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc_ut(
-          julianDay, planet.value, flags.value, coords, error);
+        julianDay,
+        planet.value,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return CoordinatesWithSpeed(
-          coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+        coords[0],
+        coords[1],
+        coords[2],
+        coords[3],
+        coords[4],
+        coords[5],
+      );
     }, _allocator);
   }
 
@@ -106,12 +117,23 @@ class Sweph {
       Pointer<Double> coords = arena<Double>(6);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc(
-          julianDay, planet.value, flags.value, coords, error);
+        julianDay,
+        planet.value,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return CoordinatesWithSpeed(
-          coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+        coords[0],
+        coords[1],
+        coords[2],
+        coords[3],
+        coords[4],
+        coords[5],
+      );
     }, _allocator);
   }
 
@@ -122,12 +144,24 @@ class Sweph {
       Pointer<Double> coords = arena<Double>(6);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc_pctr(
-          julianDay, target.value, center.value, flags.value, coords, error);
+        julianDay,
+        target.value,
+        center.value,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return CoordinatesWithSpeed(
-          coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+        coords[0],
+        coords[1],
+        coords[2],
+        coords[3],
+        coords[4],
+        coords[5],
+      );
     }, _allocator);
   }
 
@@ -140,14 +174,27 @@ class Sweph {
       Pointer<Double> perihelion = arena<Double>(6);
       Pointer<Double> aphelion = arena<Double>(6);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_nod_aps_ut(tjd_ut, target.value, flags.value,
-          method.value, nodesAsc, nodesDesc, perihelion, aphelion, error);
+      final result = _bindings.swe_nod_aps_ut(
+        tjd_ut,
+        target.value,
+        flags.value,
+        method.value,
+        nodesAsc,
+        nodesDesc,
+        perihelion,
+        aphelion,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
 
-      return NodesAndAspides(nodesAsc.toList(6), nodesDesc.toList(6),
-          perihelion.toList(6), aphelion.toList(6));
+      return NodesAndAspides(
+        nodesAsc.toList(6),
+        nodesDesc.toList(6),
+        perihelion.toList(6),
+        aphelion.toList(6),
+      );
     }, _allocator);
   }
 
@@ -160,13 +207,26 @@ class Sweph {
       Pointer<Double> perihelion = arena<Double>(6);
       Pointer<Double> aphelion = arena<Double>(6);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_nod_aps(tjd_et, target.value, flags.value,
-          method.value, nodesAsc, nodesDesc, perihelion, aphelion, error);
+      final result = _bindings.swe_nod_aps(
+        tjd_et,
+        target.value,
+        flags.value,
+        method.value,
+        nodesAsc,
+        nodesDesc,
+        perihelion,
+        aphelion,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
-      return NodesAndAspides(nodesAsc.toList(6), nodesDesc.toList(6),
-          perihelion.toList(6), aphelion.toList(6));
+      return NodesAndAspides(
+        nodesAsc.toList(6),
+        nodesDesc.toList(6),
+        perihelion.toList(6),
+        aphelion.toList(6),
+      );
     }, _allocator);
   }
 
@@ -180,15 +240,27 @@ class Sweph {
       Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> coords = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar2_ut(cstar, tjd_ut, flags.value, coords, error);
+      final result = _bindings.swe_fixstar2_ut(
+        cstar,
+        tjd_ut,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return StarInfo(
-          cstar.toDartString(),
-          CoordinatesWithSpeed(coords[0], coords[1], coords[2], coords[3],
-              coords[4], coords[5]));
+        cstar.toDartString(),
+        CoordinatesWithSpeed(
+          coords[0],
+          coords[1],
+          coords[2],
+          coords[3],
+          coords[4],
+          coords[5],
+        ),
+      );
     }, _allocator);
   }
 
@@ -198,15 +270,27 @@ class Sweph {
       Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> coords = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar2(cstar, julianDay, flags.value, coords, error);
+      final result = _bindings.swe_fixstar2(
+        cstar,
+        julianDay,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return StarInfo(
-          cstar.toDartString(),
-          CoordinatesWithSpeed(coords[0], coords[1], coords[2], coords[3],
-              coords[4], coords[5]));
+        cstar.toDartString(),
+        CoordinatesWithSpeed(
+          coords[0],
+          coords[1],
+          coords[2],
+          coords[3],
+          coords[4],
+          coords[5],
+        ),
+      );
     }, _allocator);
   }
 
@@ -216,15 +300,27 @@ class Sweph {
       Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> coords = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar_ut(cstar, tjd_ut, flags.value, coords, error);
+      final result = _bindings.swe_fixstar_ut(
+        cstar,
+        tjd_ut,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return StarInfo(
-          cstar.toDartString(),
-          CoordinatesWithSpeed(coords[0], coords[1], coords[2], coords[3],
-              coords[4], coords[5]));
+        cstar.toDartString(),
+        CoordinatesWithSpeed(
+          coords[0],
+          coords[1],
+          coords[2],
+          coords[3],
+          coords[4],
+          coords[5],
+        ),
+      );
     }, _allocator);
   }
 
@@ -234,15 +330,27 @@ class Sweph {
       Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> coords = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar(cstar, julianDay, flags.value, coords, error);
+      final result = _bindings.swe_fixstar(
+        cstar,
+        julianDay,
+        flags.value,
+        coords,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return StarInfo(
-          cstar.toDartString(),
-          CoordinatesWithSpeed(coords[0], coords[1], coords[2], coords[3],
-              coords[4], coords[5]));
+        cstar.toDartString(),
+        CoordinatesWithSpeed(
+          coords[0],
+          coords[1],
+          coords[2],
+          coords[3],
+          coords[4],
+          coords[5],
+        ),
+      );
     }, _allocator);
   }
 
@@ -348,8 +456,15 @@ class Sweph {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Double> attr = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_sol_eclipse_when_loc(tjd_start, flags.value,
-          geopos.toNativeString(arena), times, attr, backward.value, error);
+      final result = _bindings.swe_sol_eclipse_when_loc(
+        tjd_start,
+        flags.value,
+        geopos.toNativeArray(arena),
+        times,
+        attr,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -368,7 +483,13 @@ class Sweph {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_when_glob(
-          tjd_start, flags.value, eclType.value, times, backward.value, error);
+        tjd_start,
+        flags.value,
+        eclType.value,
+        times,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -385,8 +506,13 @@ class Sweph {
     return using((Arena arena) {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_sol_eclipse_how(julianDay, flags.value,
-          geopos.toNativeString(arena), attributes, error);
+      final result = _bindings.swe_sol_eclipse_how(
+        julianDay,
+        flags.value,
+        geopos.toNativeArray(arena),
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -403,7 +529,12 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_where(
-          julianDay, flags.value, geopos, attributes, error);
+        julianDay,
+        flags.value,
+        geopos,
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -423,13 +554,14 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_where(
-          julianDay,
-          target.value,
-          starname.toNativeString(arena),
-          flags.value,
-          geopos,
-          attributes,
-          error);
+        julianDay,
+        target.value,
+        starname.toNativeString(arena),
+        flags.value,
+        geopos,
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -454,15 +586,16 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_loc(
-          tjd_start,
-          target.value,
-          starname.toNativeString(arena),
-          flags.value,
-          geopos.toNativeString(arena),
-          times,
-          attributes,
-          backward.value,
-          error);
+        tjd_start,
+        target.value,
+        starname.toNativeString(arena),
+        flags.value,
+        geopos.toNativeArray(arena),
+        times,
+        attributes,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -485,14 +618,15 @@ class Sweph {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_glob(
-          tjd_start,
-          target.value,
-          starname.toNativeString(arena),
-          flags.value,
-          eclType.value,
-          times,
-          backward.value,
-          error);
+        tjd_start,
+        target.value,
+        starname.toNativeString(arena),
+        flags.value,
+        eclType.value,
+        times,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -510,13 +644,14 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_when_loc(
-          tjd_start,
-          flags.value,
-          geopos.toNativeString(arena),
-          times,
-          attributes,
-          backward.value,
-          error);
+        tjd_start,
+        flags.value,
+        geopos.toNativeArray(arena),
+        times,
+        attributes,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -534,7 +669,13 @@ class Sweph {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_when(
-          tjd_start, flags.value, eclType.value, times, backward.value, error);
+        tjd_start,
+        flags.value,
+        eclType.value,
+        times,
+        backward.value,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -551,7 +692,12 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_how(
-          tjd_ut, flags.value, geopos.toNativeString(arena), attributes, error);
+        tjd_ut,
+        flags.value,
+        geopos.toNativeArray(arena),
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -575,16 +721,17 @@ class Sweph {
       Pointer<Double> times = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans(
-          tjd_ut,
-          target.value,
-          starname.toNativeString(arena),
-          epheflag.value,
-          rsmi.value,
-          geopos.toNativeString(arena),
-          atpress,
-          attemp,
-          times,
-          error);
+        tjd_ut,
+        target.value,
+        starname.toNativeString(arena),
+        epheflag.value,
+        rsmi.value,
+        geopos.toNativeArray(arena),
+        atpress,
+        attemp,
+        times,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -606,17 +753,18 @@ class Sweph {
       Pointer<Double> times = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans_true_hor(
-          tjd_ut,
-          target.value,
-          starname.toNativeString(arena),
-          epheflag.value,
-          rsmi.value,
-          geopos.toNativeString(arena),
-          atpress,
-          attemp,
-          horhgt,
-          times,
-          error);
+        tjd_ut,
+        target.value,
+        starname.toNativeString(arena),
+        epheflag.value,
+        rsmi.value,
+        geopos.toNativeArray(arena),
+        atpress,
+        attemp,
+        horhgt,
+        times,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -638,15 +786,16 @@ class Sweph {
       Pointer<Double> values = arena<Double>(50);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_heliacal_ut(
-          tjdstart_ut,
-          geopos.toNativeString(arena),
-          atm.toNativeString(arena),
-          obs.toNativeString(arena),
-          name.toNativeString(arena),
-          TypeEvent.value,
-          helflag.value,
-          values,
-          error);
+        tjdstart_ut,
+        geopos.toNativeArray(arena),
+        atm.toNativeArray(arena),
+        obs.toNativeArray(arena),
+        name.toNativeString(arena),
+        TypeEvent.value,
+        helflag.value,
+        values,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -667,15 +816,16 @@ class Sweph {
       Pointer<Double> values = arena<Double>(50);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_heliacal_pheno_ut(
-          tjdstart_ut,
-          geopos.toNativeString(arena),
-          atm.toNativeString(arena),
-          obs.toNativeString(arena),
-          name.toNativeString(arena),
-          TypeEvent.value,
-          helflag.value,
-          values,
-          error);
+        tjdstart_ut,
+        geopos.toNativeArray(arena),
+        atm.toNativeArray(arena),
+        obs.toNativeArray(arena),
+        name.toNativeString(arena),
+        TypeEvent.value,
+        helflag.value,
+        values,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -695,14 +845,15 @@ class Sweph {
       Pointer<Double> values = arena<Double>(8);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_vis_limit_mag(
-          tjdstart_ut,
-          geopos.toNativeString(arena),
-          atm.toNativeString(arena),
-          obs.toNativeString(arena),
-          name.toNativeString(arena),
-          helflag.value,
-          values,
-          error);
+        tjdstart_ut,
+        geopos.toNativeArray(arena),
+        atm.toNativeArray(arena),
+        obs.toNativeArray(arena),
+        name.toNativeString(arena),
+        helflag.value,
+        values,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -717,7 +868,12 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_pheno_ut(
-          julianDay, target.value, flags.value, attributes, error);
+        julianDay,
+        target.value,
+        flags.value,
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -745,8 +901,15 @@ class Sweph {
       GeoPosition geopos, double atpress, double attemp, Coordinates coord) {
     return using((Arena arena) {
       Pointer<Double> azAlt = arena<Double>(3);
-      _bindings.swe_azalt(tjd_ut, calc_flag.value, geopos.toNativeString(arena),
-          atpress, attemp, coord.toNativeString(arena), azAlt);
+      _bindings.swe_azalt(
+        tjd_ut,
+        calc_flag.value,
+        geopos.toNativeArray(arena),
+        atpress,
+        attemp,
+        coord.toNativeArray(arena),
+        azAlt,
+      );
       return AzimuthAltitudeInfo(azAlt[0], azAlt[1], azAlt[2]);
     }, _allocator);
   }
@@ -760,7 +923,12 @@ class Sweph {
       azAlt[0] = azimuth;
       azAlt[1] = trueAltitude;
       _bindings.swe_azalt_rev(
-          tjd_ut, calc_flag.value, geopos.toNativeString(arena), azAlt, coord);
+        tjd_ut,
+        calc_flag.value,
+        geopos.toNativeArray(arena),
+        azAlt,
+        coord,
+      );
       return Coordinates(coord[0], coord[1], 0);
     }, _allocator);
   }
@@ -781,8 +949,15 @@ class Sweph {
       RefractionMode refracMode) {
     return using((Arena arena) {
       Pointer<Double> values = arena<Double>(4);
-      _bindings.swe_refrac_extended(altOfObject, AltOfObserver, atmPressure,
-          atmTemp, lapseRate, refracMode.value, values);
+      _bindings.swe_refrac_extended(
+        altOfObject,
+        AltOfObserver,
+        atmPressure,
+        atmTemp,
+        lapseRate,
+        refracMode.value,
+        values,
+      );
       return values.toList(20);
     }, _allocator);
   }
@@ -798,7 +973,12 @@ class Sweph {
       Pointer<Double> dret = arena<Double>(50);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_orbital_elements(
-          tjd_et, target.value, flags.value, dret, error);
+        tjd_et,
+        target.value,
+        flags.value,
+        dret,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -816,7 +996,14 @@ class Sweph {
       Pointer<Double> dtrue = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_orbit_max_min_true_distance(
-          tjd_et, target.value, flags.value, dmax, dmin, dtrue, error);
+        tjd_et,
+        target.value,
+        flags.value,
+        dmax,
+        dmin,
+        dtrue,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -849,12 +1036,13 @@ class Sweph {
     return using((Arena arena) {
       Pointer<Double> julianDay = arena<Double>();
       final result = _bindings.swe_date_conversion(
-          year,
-          month,
-          day,
-          hours,
-          (calType == CalendarType.SE_GREG_CAL ? 'g' : 'j').firstChar(),
-          julianDay);
+        year,
+        month,
+        day,
+        hours,
+        (calType == CalendarType.SE_GREG_CAL ? 'g' : 'j').firstChar(),
+        julianDay,
+      );
       if (result < 0) {
         throw Exception("swe_date_conversion failed");
       }
@@ -890,10 +1078,29 @@ class Sweph {
       Pointer<Int32> hourOut = arena<Int32>();
       Pointer<Int32> minuteOut = arena<Int32>();
       Pointer<Double> secondsOut = arena<Double>();
-      _bindings.swe_utc_time_zone(year, month, day, hour, minute, seconds,
-          timezone, yearOut, monthOut, dayOut, hourOut, minuteOut, secondsOut);
-      return _toDateTime(yearOut.value, monthOut.value, dayOut.value,
-          hourOut.value, minuteOut.value, secondsOut.value);
+      _bindings.swe_utc_time_zone(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        seconds,
+        timezone,
+        yearOut,
+        monthOut,
+        dayOut,
+        hourOut,
+        minuteOut,
+        secondsOut,
+      );
+      return _toDateTime(
+        yearOut.value,
+        monthOut.value,
+        dayOut.value,
+        hourOut.value,
+        minuteOut.value,
+        secondsOut.value,
+      );
     }, _allocator);
   }
 
@@ -904,7 +1111,16 @@ class Sweph {
       Pointer<Double> julianDay = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_utc_to_jd(
-          year, month, day, hour, min, sec, calType.value, julianDay, error);
+        year,
+        month,
+        day,
+        hour,
+        min,
+        sec,
+        calType.value,
+        julianDay,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -922,9 +1138,23 @@ class Sweph {
       Pointer<Int32> min = arena<Int32>();
       Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdet_to_utc(
-          tjd_et, calType.value, year, mon, day, hour, min, sec);
+        tjd_et,
+        calType.value,
+        year,
+        mon,
+        day,
+        hour,
+        min,
+        sec,
+      );
       return _toDateTime(
-          year.value, mon.value, day.value, hour.value, min.value, sec.value);
+        year.value,
+        mon.value,
+        day.value,
+        hour.value,
+        min.value,
+        sec.value,
+      );
     }, _allocator);
   }
 
@@ -938,9 +1168,23 @@ class Sweph {
       Pointer<Int32> min = arena<Int32>();
       Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdut1_to_utc(
-          tjd_ut, calType.value, year, mon, day, hour, min, sec);
+        tjd_ut,
+        calType.value,
+        year,
+        mon,
+        day,
+        hour,
+        min,
+        sec,
+      );
       return _toDateTime(
-          year.value, mon.value, day.value, hour.value, min.value, sec.value);
+        year.value,
+        mon.value,
+        day.value,
+        hour.value,
+        min.value,
+        sec.value,
+      );
     }, _allocator);
   }
 
@@ -1103,8 +1347,8 @@ class Sweph {
       Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses(tjd_ut, geolat, geolon, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(cuspsSize),
-        ascmc.asTypedList(10),
+        cusps.toList(cuspsSize),
+        ascmc.toList(10),
       );
     }, _allocator);
   }
@@ -1119,8 +1363,8 @@ class Sweph {
       _bindings.swe_houses_ex(
           tjd_ut, flags.value, geolat, geolon, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(cuspsSize),
-        ascmc.asTypedList(10),
+        cusps.toList(cuspsSize),
+        ascmc.toList(10),
       );
     }, _allocator);
   }
@@ -1135,16 +1379,26 @@ class Sweph {
       Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
       Pointer<Double> ascmcSpeed = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_houses_ex2(tjd_ut, flags.value, geolat,
-          geolon, hsys.value, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
+      final result = _bindings.swe_houses_ex2(
+        tjd_ut,
+        flags.value,
+        geolat,
+        geolon,
+        hsys.value,
+        cusps,
+        ascmc,
+        cuspsSpeed,
+        ascmcSpeed,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return HouseCuspData(
-        cusps.asTypedList(cuspsSize),
-        ascmc.asTypedList(10),
-        cuspsSpeed.asTypedList(cuspsSize),
-        ascmcSpeed.asTypedList(10),
+        cusps.toList(cuspsSize),
+        ascmc.toList(10),
+        cuspsSpeed.toList(cuspsSize),
+        ascmcSpeed.toList(10),
       );
     }, _allocator);
   }
@@ -1158,8 +1412,8 @@ class Sweph {
       Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_armc(armc, geolat, eps, hsys.value, cusps, ascmc);
       return HouseCuspData(
-        cusps.asTypedList(cuspsSize),
-        ascmc.asTypedList(10),
+        cusps.toList(cuspsSize),
+        ascmc.toList(10),
       );
     }, _allocator);
   }
@@ -1174,16 +1428,25 @@ class Sweph {
       Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
       Pointer<Double> ascmcSpeed = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
-      final result = _bindings.swe_houses_armc_ex2(armc, geolat, eps,
-          hsys.value, cusps, ascmc, cuspsSpeed, ascmcSpeed, error);
+      final result = _bindings.swe_houses_armc_ex2(
+        armc,
+        geolat,
+        eps,
+        hsys.value,
+        cusps,
+        ascmc,
+        cuspsSpeed,
+        ascmcSpeed,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
       return HouseCuspData(
-        cusps.asTypedList(cuspsSize),
-        ascmc.asTypedList(10),
-        cuspsSpeed.asTypedList(cuspsSize),
-        ascmcSpeed.asTypedList(10),
+        cusps.toList(cuspsSize),
+        ascmc.toList(10),
+        cuspsSpeed.toList(cuspsSize),
+        ascmcSpeed.toList(10),
       );
     }, _allocator);
   }
@@ -1195,7 +1458,13 @@ class Sweph {
       Pointer<Double> position = arena<Double>(2);
       Pointer<Uint8> error = arena<Uint8>(256);
       final pos = _bindings.swe_house_pos(
-          armc, geolat, eps, hsys.value, position, error);
+        armc,
+        geolat,
+        eps,
+        hsys.value,
+        position,
+        error,
+      );
       if (pos < 0) {
         throw Exception(error.toDartString());
       }
@@ -1217,16 +1486,17 @@ class Sweph {
       Pointer<Double> gsect = arena<Double>(2);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_gauquelin_sector(
-          t_ut,
-          target,
-          starname.toNativeString(arena),
-          flags.value,
-          imeth,
-          geopos.toNativeString(arena),
-          atpress,
-          attemp,
-          gsect,
-          error);
+        t_ut,
+        target,
+        starname.toNativeString(arena),
+        flags.value,
+        imeth,
+        geopos.toNativeArray(arena),
+        atpress,
+        attemp,
+        gsect,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1318,7 +1588,12 @@ class Sweph {
       Pointer<Double> xlon = arena<Double>();
       Pointer<Double> xlat = arena<Double>();
       final julianDay = _bindings.swe_mooncross_node_ut(
-          tjd_ut, flags.value, xlon, xlat, error);
+        tjd_ut,
+        flags.value,
+        xlon,
+        xlat,
+        error,
+      );
       if (julianDay < tjd_ut) {
         throw Exception(error.toDartString());
       }
@@ -1337,7 +1612,14 @@ class Sweph {
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> julianDay = arena<Double>();
       final result = _bindings.swe_helio_cross(
-          target.value, x2cross, tjd_et, flags.value, dir, julianDay, error);
+        target.value,
+        x2cross,
+        tjd_et,
+        flags.value,
+        dir,
+        julianDay,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1352,7 +1634,14 @@ class Sweph {
       Pointer<Uint8> error = arena<Uint8>(256);
       Pointer<Double> julianDay = arena<Double>();
       final result = _bindings.swe_helio_cross_ut(
-          target.value, x2cross, tjd_ut, flags.value, dir, julianDay, error);
+        target.value,
+        x2cross,
+        tjd_ut,
+        flags.value,
+        dir,
+        julianDay,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1368,7 +1657,7 @@ class Sweph {
   static Coordinates swe_cotrans(Coordinates coordinates, double eps) {
     return using((Arena arena) {
       Pointer<Double> xpn = arena<Double>(3);
-      _bindings.swe_cotrans(coordinates.toNativeString(arena), xpn, eps);
+      _bindings.swe_cotrans(coordinates.toNativeArray(arena), xpn, eps);
       return Coordinates(xpn[0], xpn[1], xpn[2]);
     }, _allocator);
   }
@@ -1421,10 +1710,22 @@ class Sweph {
       Pointer<Int32> splitSec = arena<Int32>();
       Pointer<Double> splitSecOfArc = arena<Double>();
       Pointer<Int32> splitSgn = arena<Int32>();
-      _bindings.swe_split_deg(deg, roundflag.value, splitDeg, splitMin,
-          splitSec, splitSecOfArc, splitSgn);
-      return DegreeSplitData(splitDeg.value, splitMin.value, splitSec.value,
-          splitSecOfArc.value, splitSgn.value);
+      _bindings.swe_split_deg(
+        deg,
+        roundflag.value,
+        splitDeg,
+        splitMin,
+        splitSec,
+        splitSecOfArc,
+        splitSgn,
+      );
+      return DegreeSplitData(
+        splitDeg.value,
+        splitMin.value,
+        splitSec.value,
+        splitSecOfArc.value,
+        splitSgn.value,
+      );
     }, _allocator);
   }
 
