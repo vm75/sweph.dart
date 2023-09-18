@@ -32,8 +32,10 @@ class _MyAppState extends State<MyApp> {
   late String moonPosition;
   late String starDistance;
   late String asteroidName;
-  late String houseSystemAscmc;
-  late String chironPosition;
+  late HouseCuspData houseSystemAscmc;
+  late CoordinatesWithSpeed chironPosition;
+  late DegreeSplitData degreeSplitData;
+  late HouseCuspData houseCuspData;
 
   @override
   void initState() {
@@ -45,12 +47,20 @@ class _MyAppState extends State<MyApp> {
     asteroidName = getAstroidName();
     houseSystemAscmc = getHouseSystemAscmc();
     chironPosition = getChironPosition();
-    Sweph.swe_split_deg(
-        100,
-        SplitDegFlags.SE_SPLIT_DEG_ZODIACAL |
-            SplitDegFlags.SE_SPLIT_DEG_ROUND_SEC |
-            SplitDegFlags.SE_SPLIT_DEG_KEEP_SIGN |
-            SplitDegFlags.SE_SPLIT_DEG_KEEP_DEG);
+    degreeSplitData = Sweph.swe_split_deg(
+      100,
+      SplitDegFlags.SE_SPLIT_DEG_ZODIACAL |
+          SplitDegFlags.SE_SPLIT_DEG_ROUND_SEC |
+          SplitDegFlags.SE_SPLIT_DEG_KEEP_SIGN |
+          SplitDegFlags.SE_SPLIT_DEG_KEEP_DEG,
+    );
+    houseCuspData = Sweph.swe_houses_ex2(
+      Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL),
+      SwephFlag.SEFLG_TROPICAL,
+      30,
+      60,
+      Hsys.B,
+    );
   }
 
   static String getVersion() {
@@ -82,7 +92,7 @@ class _MyAppState extends State<MyApp> {
     return Sweph.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
   }
 
-  static String getHouseSystemAscmc() {
+  static HouseCuspData getHouseSystemAscmc() {
     const year = 1947;
     const month = 8;
     const day = 15;
@@ -95,18 +105,16 @@ class _MyAppState extends State<MyApp> {
 
     Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
         SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 0.0 /* ayan_t0 */);
-    final result = Sweph.swe_houses(julday, latitude, longitude, Hsys.P);
-    return result.ascmc[0].toStringAsFixed(3);
+    return Sweph.swe_houses(julday, latitude, longitude, Hsys.P);
   }
 
-  static String getChironPosition() {
+  static CoordinatesWithSpeed getChironPosition() {
     final now = DateTime.now();
     final jd = Sweph.swe_julday(now.year, now.month, now.day,
         (now.hour + now.minute / 60), CalendarType.SE_GREG_CAL);
     Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos =
-        Sweph.swe_calc_ut(jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
-    return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
+    return Sweph.swe_calc_ut(
+        jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
   }
 
   void _addText(List<Widget> children, String text) {
@@ -138,9 +146,11 @@ class _MyAppState extends State<MyApp> {
         children, 'Moon position on 2022-06-29 02:52:00 UTC: $moonPosition');
     _addText(children, 'Distance of star Rohini: $starDistance AU');
     _addText(children, 'Name of Asteroid 16: $asteroidName');
-    _addText(
-        children, 'House System ASCMC[0] for custom time: $houseSystemAscmc');
-    _addText(children, 'Chriron position now: $chironPosition');
+    _addText(children, 'Position of Chiron: $chironPosition');
+    _addText(children,
+        'House System ASCMC[0] for custom time: ${houseSystemAscmc.ascmc[0]}');
+    _addText(children, 'Degree Split Data: $degreeSplitData');
+    _addText(children, 'House Cusp Data: ${houseCuspData.cusps.sublist(0, 6)}');
 
     return Column(children: children);
   }
