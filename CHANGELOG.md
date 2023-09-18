@@ -1,3 +1,7 @@
+## 2.10.3+15
+
+- updating MacOS and iOS build files
+
 ## 2.10.3+14
 
 - Update version after fixing #10
