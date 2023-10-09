@@ -28,46 +28,47 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late String swephVersion;
-  late String moonPosition;
-  late String starDistance;
-  late String asteroidName;
-  late HouseCuspData houseSystemAscmc;
-  late CoordinatesWithSpeed chironPosition;
-  late DegreeSplitData degreeSplitData;
-  late HouseCuspData houseCuspData;
+  String swephVersion = Sweph.swe_version();
+  String moonPosition = getMoonPosition();
+  String starDistance = getStarName();
+  String asteroidName = getAstroidName();
+  HouseCuspData houseSystemAscmc = getHouseSystemAscmc();
+  CoordinatesWithSpeed chironPosition = getChironPosition();
+  DegreeSplitData degreeSplitData = Sweph.swe_split_deg(
+    100,
+    SplitDegFlags.SE_SPLIT_DEG_ZODIACAL |
+        SplitDegFlags.SE_SPLIT_DEG_ROUND_SEC |
+        SplitDegFlags.SE_SPLIT_DEG_KEEP_SIGN |
+        SplitDegFlags.SE_SPLIT_DEG_KEEP_DEG,
+  );
+  HouseCuspData houseCuspData = Sweph.swe_houses_ex2(
+    Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL),
+    SwephFlag.SEFLG_TROPICAL,
+    30,
+    60,
+    Hsys.B,
+  );
+  List<double> utcJds = Sweph.swe_utc_to_jd(
+    2000,
+    1,
+    1,
+    12,
+    0,
+    0,
+    CalendarType.SE_GREG_CAL,
+  );
+
+  AltitudeRefracInfo altInfo =
+      Sweph.swe_refrac(80, 1013.25, 15, RefractionMode.SE_APP_TO_TRUE);
+  AltitudeRefracInfo altInfoEx = Sweph.swe_refrac_extended(
+      100, 200, 1013.25, 15, 0.0065, RefractionMode.SE_APP_TO_TRUE);
 
   @override
   void initState() {
     super.initState();
-
-    swephVersion = getVersion();
-    moonPosition = getMoonLongitude();
-    starDistance = getStarName();
-    asteroidName = getAstroidName();
-    houseSystemAscmc = getHouseSystemAscmc();
-    chironPosition = getChironPosition();
-    degreeSplitData = Sweph.swe_split_deg(
-      100,
-      SplitDegFlags.SE_SPLIT_DEG_ZODIACAL |
-          SplitDegFlags.SE_SPLIT_DEG_ROUND_SEC |
-          SplitDegFlags.SE_SPLIT_DEG_KEEP_SIGN |
-          SplitDegFlags.SE_SPLIT_DEG_KEEP_DEG,
-    );
-    houseCuspData = Sweph.swe_houses_ex2(
-      Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL),
-      SwephFlag.SEFLG_TROPICAL,
-      30,
-      60,
-      Hsys.B,
-    );
   }
 
-  static String getVersion() {
-    return Sweph.swe_version();
-  }
-
-  static String getMoonLongitude() {
+  static String getMoonPosition() {
     final jd =
         Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     final pos =
@@ -151,6 +152,10 @@ class _MyAppState extends State<MyApp> {
         'House System ASCMC[0] for custom time: ${houseSystemAscmc.ascmc[0]}');
     _addText(children, 'Degree Split Data: $degreeSplitData');
     _addText(children, 'House Cusp Data: ${houseCuspData.cusps.sublist(0, 6)}');
+    _addText(children,
+        'TT: ${utcJds[0]} UT1: ${utcJds[1]} UTC: ${Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL)}}');
+    _addText(children, 'AltInfo: $altInfo');
+    _addText(children, 'AltInfoEx: $altInfoEx');
 
     return Column(children: children);
   }

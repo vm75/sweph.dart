@@ -310,6 +310,7 @@ class EclipseFlag extends AbstractFlag<EclipseFlag> {
     return EclipseFlag(value);
   }
 
+  static const SE_ECL_NOT_VILIBLE = EclipseFlag(0);
   static const SE_ECL_CENTRAL = EclipseFlag(1);
   static const SE_ECL_NONCENTRAL = EclipseFlag(2);
   static const SE_ECL_TOTAL = EclipseFlag(4);
@@ -579,6 +580,40 @@ enum AscmcIndex {
   SE_NASCMC,
 }
 
+/// Visibility types
+enum Visibility {
+  BelowHorizon,
+  PhotopicVision,
+  ScotopicVision,
+  NearLimitVision;
+
+  static Visibility fromInt(int value) {
+    switch (value) {
+      case -2:
+        return Visibility.BelowHorizon;
+      case 0:
+        return Visibility.PhotopicVision;
+      case 1:
+        return Visibility.ScotopicVision;
+      case 2:
+        return Visibility.NearLimitVision;
+      default:
+        throw ArgumentError('Invalid value: $value');
+    }
+  }
+}
+
+/// Flags for swe_gauquelin_sector
+enum GauquelinMethod {
+  WithLat(0),
+  WithoutLat(1),
+  FromRiseSet(2),
+  FromRiseSetWithRefraction(3);
+
+  const GauquelinMethod(this.value);
+  final int value;
+}
+
 // ----------------------
 // Various return objects
 // ----------------------
@@ -776,10 +811,10 @@ class ObserverConditions {
 }
 
 /// Nodes and apsides data with the following:
-///  List of 6 double for ascending node
-///  List of 6 double for descending node
-///  List of 6 double for perihelion
-///  List of 6 double for aphelion
+///  List of 6 positional values for ascending node
+///  List of 6 positional values for descending node
+///  List of 6 positional values for perihelion
+///  List of 6 positional values for aphelion
 class NodesAndAspides {
   final List<double> nodesAscending;
   final List<double> nodesDescending;
@@ -803,12 +838,14 @@ class EclipseInfo {
   final List<double>? times;
   final List<double>? attributes;
   final GeoPosition? geoPosition;
+  final EclipseFlag? eclipseType;
 
-  EclipseInfo({this.times, this.attributes, this.geoPosition});
+  EclipseInfo(
+      {this.times, this.attributes, this.geoPosition, this.eclipseType});
 
   @override
   String toString() {
-    return 'EclipseInfo{times: $times, attributes: $attributes, geoPosition: $geoPosition}';
+    return 'EclipseInfo{times: $times, attributes: $attributes, geoPosition: $geoPosition, eclipseType: $eclipseType}';
   }
 }
 
@@ -852,6 +889,42 @@ class AzimuthAltitudeInfo {
   String toString() {
     return 'AzimuthAltitudeInfo{azimuth: $azimuth, trueAltitude: $trueAltitude, apparentAltitude: $apparentAltitude}';
   }
+}
+
+/// Altitude refraction info
+class AltitudeRefracInfo {
+  final double trueAlt;
+  final double apparentAlt;
+  final double? refraction;
+  final double? dipOfTheHorizon;
+
+  AltitudeRefracInfo(
+    this.trueAlt,
+    this.apparentAlt, [
+    this.refraction,
+    this.dipOfTheHorizon,
+  ]);
+
+  @override
+  String toString() {
+    return 'AltitudeRefracInfo{trueAltitude: $trueAlt, apparentAltitude: $apparentAlt, refraction: $refraction, dipOfTheHorizon: $dipOfTheHorizon}';
+  }
+}
+
+/// Visibility info with the following in data:
+///   0: limiting visual magnitude (if data[0] > magnitude of object, then the object is visible);
+///   1: altitude of object;
+///   2: azimuth of object;
+///   3: altitude of sun;
+///   4: azimuth of sun;
+///   5: altitude of moon;
+///   6: azimuth of moon;
+///   7: magnitude of object.
+class VisibilityInfo {
+  final Visibility visibility;
+  final List<double> data;
+
+  VisibilityInfo(this.visibility, this.data);
 }
 
 typedef Centisec = int;

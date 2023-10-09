@@ -1,3 +1,7 @@
+## 2.10.3+16
+
+- Fixing return values for some calls. Also adding doc comments.
+
 ## 2.10.3+15
 
 - updating MacOS and iOS build files
