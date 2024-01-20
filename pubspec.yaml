@@ -1,6 +1,6 @@
 name: sweph
 description: Cross-platform bindings of Swiss Ephemeris APIs for Flutter.
-version: 2.10.3+16
+version: 2.10.3+17
 homepage: https://github.com/vm75/sweph.dart
 repository: https://github.com/vm75/sweph.dart
 
@@ -26,8 +26,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-  ffigen: ^7.2.4
+  flutter_lints: ^3.0.1
+  ffigen: ^11.0.0
 
 # The following section is specific to Flutter packages.
 flutter:

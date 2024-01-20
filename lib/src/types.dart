@@ -28,6 +28,7 @@ class HeavenlyBody extends AbstractConst<HeavenlyBody, int> {
   }
 
   static const SE_ECL_NUT = EclipseFlag(-1);
+  static const SE_FIXSTAR = HeavenlyBody(-10);
 
   static const SE_SUN = HeavenlyBody(0);
   static const SE_MOON = HeavenlyBody(1);

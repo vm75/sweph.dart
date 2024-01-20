@@ -1,3 +1,7 @@
+## 2.10.3+17
+
+- Breaking Change! Fixed swe_rise_trans and swe_rise_trans_true_hor exception and return. Modified target parameter for 6 commands. These commands now take a single parameter which could be either HeavenlyBody or Star name as string
+
 ## 2.10.3+16
 
 - Fixing return values for some calls. Also adding doc comments.

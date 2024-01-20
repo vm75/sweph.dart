@@ -696,9 +696,7 @@ class Sweph {
   /// the umbra (and penumbra) will be implemented.
   ///
   /// [julianDay] Julian day number (in UT)
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] name of occulted star. Must be NULL or "", if a planetary
-  /// occultation is to be calculated. For use of this field, see [swe_fixstar]
+  /// [target] HeavenlyBody or star name for which the occultation is to be calculated.
   /// [flags] ephemeris flag. If you want to have only one conjunction of the
   /// moon with the body tested, add the following flag: backward |= SE_ECL_ONE_TRY.
   /// If this flag is not set, the function will search for an occultation until
@@ -706,15 +704,26 @@ class Sweph {
   /// search successlessly until it reaches the end of the ephemeris.
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_occult_where(
-      double julianDay, HeavenlyBody target, String starname, SwephFlag flags) {
+  static EclipseInfo swe_lun_occult_where<Target>(
+      double julianDay, Target target, SwephFlag flags) {
     return using((Arena arena) {
       Pointer<Double> geoPos = arena<Double>(2);
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
+
+      String starname = "";
+      int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+      if (target is String) {
+        starname = target;
+      } else if (target is HeavenlyBody) {
+        targetCode = target.value;
+      } else {
+        throw Exception("Target must be String or HeavenlyBody");
+      }
+
       final result = _bindings.swe_lun_occult_where(
         julianDay,
-        target.value,
+        targetCode,
         starname.toNativeString(arena),
         flags.value,
         geoPos,
@@ -736,28 +745,31 @@ class Sweph {
   /// (can also be used for solar eclipses)
   ///
   /// [startJulianDay] start date for search, Jul. day UT
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] name of occulted star. Must be NULL or "", if a planetary
-  /// occultation is to be calculated. For use of this field, see [swe_fixstar]
+  /// [target] HeavenlyBody or star name for which the occultation is to be calculated.
   /// [flags] ephemeris flag.
   /// [geoPos] Geographic position of observer
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_occult_when_loc(
-      double startJulianDay,
-      HeavenlyBody target,
-      String starname,
-      SwephFlag flags,
-      GeoPosition geoPos,
-      bool backward) {
+  static EclipseInfo swe_lun_occult_when_loc<Target>(double startJulianDay,
+      Target target, SwephFlag flags, GeoPosition geoPos, bool backward) {
+    String starname = "";
+    int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+    if (target is String) {
+      starname = target;
+    } else if (target is HeavenlyBody) {
+      targetCode = target.value;
+    } else {
+      throw Exception("Target must be String or HeavenlyBody");
+    }
+
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_loc(
         startJulianDay,
-        target.value,
+        targetCode,
         starname.toNativeString(arena),
         flags.value,
         geoPos.toNativeArray(arena),
@@ -780,27 +792,29 @@ class Sweph {
   /// Find the next occultation globally
   ///
   /// [startJulianDay] start date for search, Jul. day UT
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] name of occulted star. Must be NULL or "", if a planetary
-  /// occultation is to be calculated. For use of this field, see [swe_fixstar]
+  /// [target] HeavenlyBody or star name for which the occultation is to be calculated.
   /// [flags] ephemeris flag.
   /// [eclType] Type of eclipse
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_occult_when_glob(
-      double startJulianDay,
-      HeavenlyBody target,
-      String starname,
-      SwephFlag flags,
-      EclipseFlag eclType,
-      bool backward) {
+  static EclipseInfo swe_lun_occult_when_glob<Target>(double startJulianDay,
+      Target target, SwephFlag flags, EclipseFlag eclType, bool backward) {
+    String starname = "";
+    int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+    if (target is String) {
+      starname = target;
+    } else if (target is HeavenlyBody) {
+      targetCode = target.value;
+    } else {
+      throw Exception("Target must be String or HeavenlyBody");
+    }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>(10);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_glob(
         startJulianDay,
-        target.value,
+        targetCode,
         starname.toNativeString(arena),
         flags.value,
         eclType.value,
@@ -915,34 +929,38 @@ class Sweph {
   /// Compute risings, settings and meridian transits of a body
   ///
   /// [julianDay] Julian day number (in UT)
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] name of occulted star. Must be NULL or "", if a planetary
-  /// occultation is to be calculated. For use of this field, see [swe_fixstar]
+  /// [target] HeavenlyBody or star name for which the position is to be calculated
   /// [epheFlag] Ephemeris flags that indicate what kind of computation is wanted
   /// [rsmi] Rise/Set/Transit Flag
   /// [geoPos] Geographic position of observer
   /// [atPress] Atmospheric pressure at observer's location in millibars (hPa)
   /// [atTemp] Atmospheric temperature at observer's location in degrees C
   ///
-  /// returns:
-  ///   0 if a rising, setting or transit event was found;
-  ///  -1 if an error occurred (usually an ephemeris problem);
-  ///  -2 if a rising or setting event was not found because the object is circumpolar.
-  static double swe_rise_trans(
+  /// returns [double] for the time of the rising, setting or transit event or
+  /// null if an event was not found because the object is circumpolar.
+  static double? swe_rise_trans<Target>(
       double julianDay,
-      HeavenlyBody target,
-      String starname,
+      Target target,
       SwephFlag epheFlag,
       RiseSetTransitFlag rsmi,
       GeoPosition geoPos,
       double atPress,
       double atTemp) {
+    String starname = "";
+    int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+    if (target is String) {
+      starname = target;
+    } else if (target is HeavenlyBody) {
+      targetCode = target.value;
+    } else {
+      throw Exception("Target must be String or HeavenlyBody");
+    }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans(
         julianDay,
-        target.value,
+        targetCode,
         starname.toNativeString(arena),
         epheFlag.value,
         rsmi.value,
@@ -952,10 +970,10 @@ class Sweph {
         times,
         error,
       );
-      if (result < 0) {
+      if (result == -1) {
         throw Exception(error.toDartString());
       }
-      return times.value;
+      return result == -2 ? null : times.value;
     }, _allocator);
   }
 
@@ -963,9 +981,7 @@ class Sweph {
   /// horizon that has an altitude != 0
   ///
   /// [julianDay] Julian day number (in UT)
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] name of occulted star. Must be NULL or "", if a planetary
-  /// occultation is to be calculated. For use of this field, see [swe_fixstar]
+  /// [target] HeavenlyBody or star name for which the position is to be calculated
   /// [epheFlag] Ephemeris flags that indicate what kind of computation is wanted
   /// [rsmi] Rise/Set/Transit Flag
   /// [geoPos] Geographic position of observer
@@ -973,26 +989,32 @@ class Sweph {
   /// [atTemp] Atmospheric temperature at observer's location in degrees C
   /// [horHeight] Height of horizon in meters
   ///
-  /// returns:
-  ///   0 if a rising, setting or transit event was found;
-  ///  -1 if an error occurred (usually an ephemeris problem);
-  ///  -2 if a rising or setting event was not found because the object is circumpolar.
-  static double swe_rise_trans_true_hor(
+  /// returns [double] for the time of the rising, setting or transit event or
+  /// null if an event was not found because the object is circumpolar.
+  static double? swe_rise_trans_true_hor<Target>(
       double julianDay,
-      HeavenlyBody target,
-      String starname,
+      Target target,
       SwephFlag epheFlag,
       RiseSetTransitFlag rsmi,
       GeoPosition geoPos,
       double atPress,
       double atTemp,
       double horHeight) {
+    String starname = "";
+    int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+    if (target is String) {
+      starname = target;
+    } else if (target is HeavenlyBody) {
+      targetCode = target.value;
+    } else {
+      throw Exception("Target must be String or HeavenlyBody");
+    }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>();
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans_true_hor(
         julianDay,
-        target.value,
+        targetCode,
         starname.toNativeString(arena),
         epheFlag.value,
         rsmi.value,
@@ -1003,10 +1025,10 @@ class Sweph {
         times,
         error,
       );
-      if (result < 0) {
+      if (result == -1) {
         throw Exception(error.toDartString());
       }
-      return times.value;
+      return result == -2 ? null : times.value;
     }, _allocator);
   }
 
@@ -2042,8 +2064,7 @@ class Sweph {
   /// Get the Gauquelin sector position for a body
   ///
   /// [julianDay] Julian day number (in UT)
-  /// [target] HeavenlyBody for which the position is to be calculated
-  /// [starname] Name of star
+  /// [target] HeavenlyBody or star name for which the position is to be calculated
   /// [flags] Ephemeris flags that indicate what kind of computation is wanted
   /// [method] Method of computation
   /// [geoPos] Geographical position of observer
@@ -2051,21 +2072,29 @@ class Sweph {
   /// [atTemp] Atmospheric temperature at observer's location in degrees Celsius
   ///
   /// Returns Gauquelin sector position
-  static double swe_gauquelin_sector(
+  static double swe_gauquelin_sector<Target>(
       double julianDay,
-      int target,
-      String starname,
+      Target target,
       SwephFlag flags,
       GauquelinMethod method,
       GeoPosition geoPos,
       double atPress,
       double atTemp) {
+    String starname = "";
+    int targetCode = HeavenlyBody.SE_FIXSTAR.value;
+    if (target is String) {
+      starname = target;
+    } else if (target is HeavenlyBody) {
+      targetCode = target.value;
+    } else {
+      throw Exception("Target must be String or HeavenlyBody");
+    }
     return using((Arena arena) {
       Pointer<Double> gsect = arena<Double>(2);
       Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_gauquelin_sector(
         julianDay,
-        target,
+        targetCode,
         starname.toNativeString(arena),
         flags.value,
         method.value,
