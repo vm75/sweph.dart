@@ -37,11 +37,11 @@ abstract class AbstractVal<T, N extends num> {
 }
 
 abstract class AbstractEnum<T> extends AbstractVal<T, int> {
-  const AbstractEnum(int value) : super(value);
+  const AbstractEnum(super.value);
 }
 
 abstract class AbstractConst<T, N extends num> extends AbstractVal<T, N> {
-  const AbstractConst(N value) : super(value);
+  const AbstractConst(super.value);
 
   T operator +(dynamic other) {
     return create((value + _valueOf(other)) as N);
@@ -61,7 +61,7 @@ abstract class AbstractConst<T, N extends num> extends AbstractVal<T, N> {
 }
 
 abstract class AbstractFlag<T> extends AbstractVal<T, int> {
-  const AbstractFlag(int value) : super(value);
+  const AbstractFlag(super.value);
 
   T operator |(dynamic other) {
     return create(value | _valueOf(other));

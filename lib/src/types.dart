@@ -7,7 +7,7 @@ const String libName = 'sweph';
 
 /// Calendar type
 class CalendarType extends AbstractEnum<CalendarType> {
-  const CalendarType(int value) : super(value);
+  const CalendarType(super.value);
 
   @override
   CalendarType create(int value) {
@@ -20,7 +20,7 @@ class CalendarType extends AbstractEnum<CalendarType> {
 
 /// numbers for planets and various heavenly bodies
 class HeavenlyBody extends AbstractConst<HeavenlyBody, int> {
-  const HeavenlyBody(int value) : super(value);
+  const HeavenlyBody(super.value);
 
   @override
   HeavenlyBody create(int value) {
@@ -101,7 +101,7 @@ class HeavenlyBody extends AbstractConst<HeavenlyBody, int> {
 /// If not only coordinates, but also speed values are required, use
 /// flag = SEFLG_SPEED.
 class SwephFlag extends AbstractFlag<SwephFlag> {
-  const SwephFlag(int value) : super(value);
+  const SwephFlag(super.value);
 
   @override
   SwephFlag create(int value) {
@@ -191,7 +191,7 @@ class SwephFlag extends AbstractFlag<SwephFlag> {
 
 /// Additional flags to be used with SiderealMode
 class SiderealModeFlag extends AbstractFlag<SiderealModeFlag> {
-  const SiderealModeFlag(int value) : super(value);
+  const SiderealModeFlag(super.value);
 
   @override
   SiderealModeFlag create(int value) {
@@ -222,7 +222,7 @@ class SiderealModeFlag extends AbstractFlag<SiderealModeFlag> {
 
 /// Sidereal modes (ayanamsas)
 class SiderealMode extends AbstractFlag<SiderealMode> {
-  const SiderealMode(int value) : super(value);
+  const SiderealMode(super.value);
 
   @override
   SiderealMode create(int value) {
@@ -282,7 +282,7 @@ class SiderealMode extends AbstractFlag<SiderealMode> {
 }
 
 class NodApsFlag extends AbstractFlag<NodApsFlag> {
-  const NodApsFlag(int value) : super(value);
+  const NodApsFlag(super.value);
 
   @override
   NodApsFlag create(int value) {
@@ -304,7 +304,7 @@ class NodApsFlag extends AbstractFlag<NodApsFlag> {
 
 /// defines for eclipse computations
 class EclipseFlag extends AbstractFlag<EclipseFlag> {
-  const EclipseFlag(int value) : super(value);
+  const EclipseFlag(super.value);
 
   @override
   EclipseFlag create(int value) {
@@ -375,7 +375,7 @@ class EclipseFlag extends AbstractFlag<EclipseFlag> {
 
 /// Flags for Rise-Set methods
 class RiseSetTransitFlag extends AbstractFlag<RiseSetTransitFlag> {
-  const RiseSetTransitFlag(int value) : super(value);
+  const RiseSetTransitFlag(super.value);
 
   @override
   RiseSetTransitFlag create(int value) {
@@ -421,7 +421,7 @@ class RiseSetTransitFlag extends AbstractFlag<RiseSetTransitFlag> {
 
 /// Modes for Azimuth/Altitude methods
 class AzAltMode extends AbstractEnum<AzAltMode> {
-  const AzAltMode(int value) : super(value);
+  const AzAltMode(super.value);
 
   @override
   AzAltMode create(int value) {
@@ -434,7 +434,7 @@ class AzAltMode extends AbstractEnum<AzAltMode> {
 
 /// Modes for Reverse Azimuth/Altitude methods
 class AzAltRevMode extends AbstractEnum<AzAltRevMode> {
-  const AzAltRevMode(int value) : super(value);
+  const AzAltRevMode(super.value);
 
   @override
   AzAltRevMode create(int value) {
@@ -447,7 +447,7 @@ class AzAltRevMode extends AbstractEnum<AzAltRevMode> {
 
 /// Modes for Refraction methods
 class RefractionMode extends AbstractEnum<RefractionMode> {
-  const RefractionMode(int value) : super(value);
+  const RefractionMode(super.value);
 
   @override
   RefractionMode create(int value) {
@@ -460,7 +460,7 @@ class RefractionMode extends AbstractEnum<RefractionMode> {
 
 /// Flags for splitting centiseconds to degress
 class SplitDegFlags extends AbstractFlag<SplitDegFlags> {
-  const SplitDegFlags(int value) : super(value);
+  const SplitDegFlags(super.value);
 
   @override
   SplitDegFlags create(int value) {
@@ -482,7 +482,7 @@ class SplitDegFlags extends AbstractFlag<SplitDegFlags> {
 
 /// Event Types for heliacal functions
 class HeliacalEventType extends AbstractEnum<HeliacalEventType> {
-  const HeliacalEventType(int value) : super(value);
+  const HeliacalEventType(super.value);
 
   @override
   HeliacalEventType create(int value) {
@@ -505,7 +505,7 @@ class HeliacalEventType extends AbstractEnum<HeliacalEventType> {
 }
 
 class HeliacalFlags extends AbstractFlag<HeliacalFlags> {
-  const HeliacalFlags(int value) : super(value);
+  const HeliacalFlags(super.value);
 
   @override
   HeliacalFlags create(int value) {
