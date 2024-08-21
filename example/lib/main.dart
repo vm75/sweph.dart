@@ -20,7 +20,7 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   final Duration timeToLoad;
-  const MyApp({Key? key, required this.timeToLoad}) : super(key: key);
+  const MyApp({super.key, required this.timeToLoad});
 
   @override
   // ignore: library_private_types_in_public_api
