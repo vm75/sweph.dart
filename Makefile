@@ -25,7 +25,7 @@ publish_flutter:
 	flutter analyze && flutter pub publish
 
 bump_version:
-	dart scripts/bump_version.dart
+	dart tool/bump_version.dart
 
 # Wasm
 COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"

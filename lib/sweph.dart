@@ -1,27 +1,27 @@
 // ignore_for_file: non_constant_identifier_names
+import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 
+import 'package:wasm_ffi/ffi_bridge.dart';
+import 'package:wasm_ffi/ffi_utils_bridge.dart';
+import 'src/abstract_platform_provider.dart';
 import 'src/bindings.dart';
-import 'src/utils.dart';
-import 'src/ffi_proxy.dart';
 import 'src/types.dart';
+import 'src/utils.dart';
+import 'src/wasm_provider.dart' if (dart.library.ffi) 'src/ffi_provider.dart';
 
 export 'src/types.dart';
+export 'src/wasm_provider.dart' if (dart.library.ffi) 'src/ffi_provider.dart';
+
+const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
+
+mixin AssetLoader {
+  Future<Uint8List> load(String assetPath);
+}
 
 /// Wrapper class for Sweph native binding, providing easy input/output
 class Sweph {
-  static const bundledEpheAssets = [
-    "packages/sweph/assets/ephe/seas_18.se1",
-    "packages/sweph/assets/ephe/semo_18.se1",
-    "packages/sweph/assets/ephe/sepl_18.se1",
-    "packages/sweph/assets/ephe/seasnam.txt",
-    "packages/sweph/assets/ephe/sefstars.txt",
-    "packages/sweph/assets/ephe/seleapsec.txt",
-    "packages/sweph/assets/ephe/seorbel.txt"
-  ];
-
   /// Platform-specific helpers
   static late AbstractPlatformProvider _provider;
 
@@ -34,15 +34,31 @@ class Sweph {
   /// Initialize Sweph library and native bindings
   ///
   /// Should be called before any use of Sweph
-  static init({List<String>? epheAssets}) async {
-    _provider = await SwephPlatformProvider.instance;
+  ///
+  /// [modulePath] Path where the platform lib or wasm file is stored
+  ///   For Flutter, use 'assets/packages/sweph/assets/sweph.wasm' for web and 'sweph' for other platforms
+  /// [epheAssets] List of bundled ephemeris files to be loaded into sweph.
+  ///   An [assetLoader] is needed to load these files.
+  ///   For Flutter, use http get for web and rootBundle for other platforms
+  /// [assetLoader] The asset loader to use for loading the epheAssets.
+  /// [epheFilesPath] The path where the ephemeris files are to be stored.
+  ///   On web, it is store in the wasm memory.
+  static init(
+    String modulePath, {
+    List<String> epheAssets = const [],
+    AssetLoader? assetLoader,
+    String epheFilesPath = 'ephe_files',
+  }) async {
+    _provider = await SwephPlatformProvider.init(modulePath, epheFilesPath);
     _allocator = _provider.allocator;
     _bindings = SwephBindings(_provider.lib);
-    await _provider.saveEpheAssets(epheAssets);
-    return using((Arena arena) {
-      _bindings
-          .swe_set_ephe_path(_provider.epheFilesPath.toNativeString(arena));
-    }, _allocator);
+    if (epheAssets.isNotEmpty && assetLoader != null) {
+      await _provider.saveEpheAssets(epheAssets, assetLoader);
+      return using((Arena arena) {
+        _bindings
+            .swe_set_ephe_path(_provider.epheFilesPath.toNativeString(arena));
+      }, _allocator);
+    }
   }
 
   static void registerWith(registrar) {
@@ -711,14 +727,14 @@ class Sweph {
       Pointer<Double> attributes = arena<Double>(20);
       Pointer<Uint8> error = arena<Uint8>(256);
 
-      String starname = "";
+      String starname = '';
       int targetCode = HeavenlyBody.SE_FIXSTAR.value;
       if (target is String) {
         starname = target;
       } else if (target is HeavenlyBody) {
         targetCode = target.value;
       } else {
-        throw Exception("Target must be String or HeavenlyBody");
+        throw Exception('Target must be String or HeavenlyBody');
       }
 
       final result = _bindings.swe_lun_occult_where(
@@ -753,14 +769,14 @@ class Sweph {
   /// Returns [EclipseInfo]
   static EclipseInfo swe_lun_occult_when_loc<Target>(double startJulianDay,
       Target target, SwephFlag flags, GeoPosition geoPos, bool backward) {
-    String starname = "";
+    String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
       starname = target;
     } else if (target is HeavenlyBody) {
       targetCode = target.value;
     } else {
-      throw Exception("Target must be String or HeavenlyBody");
+      throw Exception('Target must be String or HeavenlyBody');
     }
 
     return using((Arena arena) {
@@ -800,14 +816,14 @@ class Sweph {
   /// Returns [EclipseInfo]
   static EclipseInfo swe_lun_occult_when_glob<Target>(double startJulianDay,
       Target target, SwephFlag flags, EclipseFlag eclType, bool backward) {
-    String starname = "";
+    String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
       starname = target;
     } else if (target is HeavenlyBody) {
       targetCode = target.value;
     } else {
-      throw Exception("Target must be String or HeavenlyBody");
+      throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>(10);
@@ -946,14 +962,14 @@ class Sweph {
       GeoPosition geoPos,
       double atPress,
       double atTemp) {
-    String starname = "";
+    String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
       starname = target;
     } else if (target is HeavenlyBody) {
       targetCode = target.value;
     } else {
-      throw Exception("Target must be String or HeavenlyBody");
+      throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>();
@@ -1000,14 +1016,14 @@ class Sweph {
       double atPress,
       double atTemp,
       double horHeight) {
-    String starname = "";
+    String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
       starname = target;
     } else if (target is HeavenlyBody) {
       targetCode = target.value;
     } else {
-      throw Exception("Target must be String or HeavenlyBody");
+      throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
       Pointer<Double> times = arena<Double>();
@@ -1490,7 +1506,7 @@ class Sweph {
         julianDay,
       );
       if (result < 0) {
-        throw Exception("swe_date_conversion failed");
+        throw Exception('swe_date_conversion failed');
       }
       return julianDay.value;
     }, _allocator);
@@ -2084,14 +2100,14 @@ class Sweph {
       GeoPosition geoPos,
       double atPress,
       double atTemp) {
-    String starname = "";
+    String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
       starname = target;
     } else if (target is HeavenlyBody) {
       targetCode = target.value;
     } else {
-      throw Exception("Target must be String or HeavenlyBody");
+      throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
       Pointer<Double> gsect = arena<Double>(2);

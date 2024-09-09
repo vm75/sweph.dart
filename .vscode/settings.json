@@ -30,4 +30,7 @@
   "C_Cpp.default.cppStandard": "c++20",
   "C_Cpp.default.cStandard": "c17",
   "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+  "dart.debugSdkLibraries": true,
+  "dart.debugExternalPackageLibraries": true,
+  "dart.devToolsBrowser": "default",
 }

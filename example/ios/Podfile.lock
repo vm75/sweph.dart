@@ -3,7 +3,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - "sweph (2.10.3+14)":
+  - "sweph (3.0.0+2.10.3)":
     - Flutter
 
 DEPENDENCIES:

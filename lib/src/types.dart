@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-import 'ffi_proxy.dart';
+import 'package:wasm_ffi/ffi_bridge.dart';
+import 'package:wasm_ffi/ffi_utils_bridge.dart';
 import 'utils.dart';
 
 const String libName = 'sweph';

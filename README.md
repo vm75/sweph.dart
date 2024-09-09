@@ -1,12 +1,12 @@
 # Sweph
 
-Cross-platform bindings of Swiss Ephemeris APIs for Flutter.
+Cross-platform bindings of Swiss Ephemeris APIs for Dart & Flutter.
 Everything you need to create Astrology and Astronomy applications with Dart and Flutter.
 
 * 100% API coverage
 * Dart friendly parameters and return values
-* Supported on all platforms. Uses ffi for non-Web platforms and wasm for Web
-* Version matched with source
+* Supported on all platforms. Uses ffi for non-Web platforms and [wasm_ffi](https://pub.dev/packages/wasm_ffi) for Web
+* Original Swiss Ephemeris version used as build number for reference
 
 References:
 - [Official programmers documentation for the Swiss Ephemeris by Astrodienst AG](https://www.astro.com/swisseph/swephprg.htm)
@@ -20,13 +20,19 @@ References:
 import 'package:sweph/sweph.dart';
 
 Future<void> main() async {
-  // Sweph comes bundled with some ephe file. Refer to Sweph.bundledEpheAssets
-  // These or any other bundled ephe files can be initialized during Sweph.init
+  // Sweph comes bundled with some ephe file. These are available for Flutter but not for vanilla Dart
+  // These or any other bundled ephe files can be initialized during Sweph init
   // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
   // For Web, this is the only way to provide ephe files, and they are loaded into memory
-  await Sweph.init(epheAssets: [
-    "packages/sweph/assets/ephe/sefstars.txt",
-  ]);
+  await Sweph.init(
+    'sweph', // where to load module from.
+    epheAssets: [
+      "packages/sweph/assets/ephe/sefstars.txt",
+    ],
+    assetLoader: SomeLoader(), // platform-specific asset loader.
+    epheFilesPath: 'ephe_files', // where to store ephe files.
+  );
+  // refer to example. Both Flutter and vanilla Dart examples are available
 
   // alternately if a folder already contains ephe files, Sweph can be used in sync mode like this:
   // await Sweph.swe_set_ephe_path(<path-to-existing-folder>)
@@ -59,9 +65,7 @@ If you own a professional license for the Swiss Ephemeris, you may use any versi
 
 ## Versioning
 
-This library is version locked to the Swiss Ephemeris in addition to its own revisions. For example, version `2.10.02+1` corresponds to the Swiss Ephemeris version `2.10.02` and this library's revision `1`.
-
-Updates to this library will be released under new revisions, while updates to Swiss Ephemeris will be released under matching semver versions.
+The Swiss Ephemeris version string is used as a build number in the version.
 
 ## Ephemeris files
 

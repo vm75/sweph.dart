@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sweph/sweph.dart';
 
+import 'web_helper.dart' if (dart.library.ffi) 'io_helper.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final stopwatch = Stopwatch()..start();
+
   // Only load the assets you need. By default will load none
-  // Bundled assets are available in Sweph.bundledEpheAssets
-  await Sweph.init(epheAssets: [
-    "packages/sweph/assets/ephe/seas_18.se1", // For house calc
-    "packages/sweph/assets/ephe/sefstars.txt", // For star name
-    "packages/sweph/assets/ephe/seasnam.txt", // For asteriods
+  // Some assets are bundled with Sweph
+  await initSweph([
+    'packages/sweph/assets/ephe/seas_18.se1', // For house calc
+    'packages/sweph/assets/ephe/sefstars.txt', // For star position
+    'packages/sweph/assets/ephe/seasnam.txt', // For asteriods
   ]);
 
   runApp(MyApp(
@@ -30,7 +33,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String swephVersion = Sweph.swe_version();
   String moonPosition = getMoonPosition();
-  String starDistance = getStarName();
+  String starDistance = getStarPosition();
   String asteroidName = getAstroidName();
   HouseCuspData houseSystemAscmc = getHouseSystemAscmc();
   CoordinatesWithSpeed chironPosition = getChironPosition();
@@ -73,10 +76,10 @@ class _MyAppState extends State<MyApp> {
         Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     final pos =
         Sweph.swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
-    return "lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}";
+    return 'lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}';
   }
 
-  static String getStarName() {
+  static String getStarPosition() {
     final jd =
         Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     try {

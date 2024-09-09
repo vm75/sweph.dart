@@ -1,3 +1,7 @@
+## 3.0.0+2.10.3
+
+- Converting to pure dart package. Some changes to init and example. Modified versioning format. Now including sweph version as build number.
+
 ## 2.10.3+18
 
 - Corrected swe_house_pos method parameters
