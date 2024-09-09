@@ -1,8 +1,5 @@
-import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
-
-import '../sweph.dart' show AssetLoader;
 
 abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
   final DynamicLibrary _lib;
@@ -15,11 +12,10 @@ abstract class AbstractPlatformProvider<DynamicLibrary, Allocator> {
   Allocator get allocator => _allocator;
   String get epheFilesPath => _epheFilesPath;
 
-  Future<void> saveEpheAssets(
-      List<String> epheAssets, AssetLoader assetLoader) async {
-    for (final asset in epheAssets) {
+  Future<void> saveEpheAssets(List<String>? epheAssets) async {
+    for (final asset in epheAssets ?? []) {
       final destFile = basename(asset);
-      final contents = await assetLoader.load(asset);
+      final contents = (await rootBundle.load(asset)).buffer.asUint8List();
 
       saveEpheFile(destFile, contents);
     }
