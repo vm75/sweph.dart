@@ -43,6 +43,12 @@
             "type": "dart",
             "request": "launch",
             "program": "tool/bump_version.dart",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "patch",
+                "log",
+                "test",
+            ]
         },
     ]
 }
