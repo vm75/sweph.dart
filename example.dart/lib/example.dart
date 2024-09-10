@@ -17,13 +17,6 @@ Future<Map<String, String>> getSwephData() async {
     'assets/seasnam.txt', // For asteriods
   ]);
 
-  final version = Sweph.swe_version();
-  final asteriodName =
-      Sweph.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16);
-  final starPosition = getStarPosition();
-
-  print('$version\n$asteriodName\n$starPosition');
-
   return {
     'sweph-version': Sweph.swe_version(),
     'asteroid-name': Sweph.swe_get_planet_name(HeavenlyBody.SE_AST_OFFSET + 16),

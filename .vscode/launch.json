@@ -26,7 +26,7 @@
         },
         {
             "name": "dart-example (ffi)",
-            "program": "bin/example.dart",
+            "program": "bin/example_dart.dart",
             "cwd": "example.dart",
             "request": "launch",
             "type": "dart",
