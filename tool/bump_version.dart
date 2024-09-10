@@ -3,39 +3,74 @@
 import 'dart:convert';
 import 'dart:io';
 
-const changeLogFiles = ['CHANGELOG.md'];
-const filesToUpdate = [
-  'pubspec.yaml',
-  'ios/sweph.podspec',
-  'macos/sweph.podspec',
-];
+List<String> getopt(String parseOptions, List<String> args) {
+  final optString = ',$parseOptions,';
+  var stopParsing = false;
+  final List<String> options = [];
+  final List<String> result = [];
+  outer:
+  while (args.isNotEmpty) {
+    final nextArg = args.removeAt(0);
+    if (nextArg == '--') {
+      stopParsing = true;
+      continue;
+    }
+
+    if (!stopParsing && nextArg.isNotEmpty) {
+      switch (nextArg) {
+        case '--d':
+          continue outer;
+        case '--t':
+          continue outer;
+        case '--h':
+          continue outer;
+      }
+      if (optString.contains(RegExp('.*,$nextArg:,.*'))) {
+        options.add(nextArg);
+        if (args.isNotEmpty) {
+          options.add(args.removeAt(0));
+        }
+        continue outer;
+      } else if (optString.contains(RegExp('.*,$nextArg,.*'))) {
+        options.add(nextArg);
+        continue outer;
+      }
+    }
+    result.add(nextArg);
+  }
+  if (parseOptions.isEmpty) {
+    return result;
+  } else {
+    options.add('--');
+    options.addAll(result);
+    return options;
+  }
+}
+
+final versionRegex = r'(?:(\d+)\.(\d+)\.(\d+)(?:\+(.+))?)';
 
 class Version {
   final int _major;
   final int _minor;
   final int _patch;
   final String? _buildNumber;
+  static final defaultVersion = Version(0, 0, 1);
 
   Version(this._major, this._minor, this._patch, [this._buildNumber]);
 
-  @override
-  String toString() {
-    if (_buildNumber == null) {
-      return '$_major.$_minor.$_patch';
-    } else {
-      return '$_major.$_minor.$_patch+$_buildNumber';
+  static bool isValid(String? versionStr) {
+    if (versionStr == null || versionStr.isEmpty) {
+      return false;
     }
+    RegExp pattern = RegExp(r'^(?:(\d+)\.(\d+)\.(\d+)(?:\+(.+))?)$');
+    return pattern.hasMatch(versionStr);
   }
 
-  Version nextPatch() => Version(_major, _minor, _patch + 1, _buildNumber);
-  Version nextMinor() => Version(_major, _minor + 1, 0, _buildNumber);
-  Version nextMajor() => Version(_major + 1, 0, 0, _buildNumber);
-
-  static Version fromString(String? versionStr, [String? buildNumber]) {
+  static Version? fromString(String? versionStr, [String? buildNumber]) {
     RegExp pattern = RegExp(r'^(?:(\d+)\.(\d+)\.(\d+)(?:\+(.+))?)$');
 
     if (versionStr == null || !pattern.hasMatch(versionStr)) {
-      return Version(0, 0, 1, buildNumber);
+      return null;
     }
 
     final match = pattern.firstMatch(versionStr)!;
@@ -46,76 +81,195 @@ class Version {
 
     return Version(major, minor, patch, buildNumber);
   }
-}
 
-void updateVersion(Version from, Version to) {
-  for (final path in filesToUpdate) {
-    final file = File(path);
-    final contents = file.readAsStringSync();
-    file.writeAsStringSync(contents.replaceAll(from.toString(), to.toString()));
-  }
-}
-
-void changeLog(Version to, String log) {
-  for (final path in changeLogFiles) {
-    final file = File(path);
-    final contents = file.readAsStringSync();
-    final prefix = '## $to\n\n- $log\n\n';
-    file.writeAsStringSync(prefix);
-    file.writeAsStringSync(contents, mode: FileMode.append);
-  }
-}
-
-String? getVersion(File file, RegExp pattern) {
-  for (final line in file.readAsLinesSync()) {
-    final match = pattern.firstMatch(line);
-    if (match == null) {
-      continue;
+  static Version? fromFile(String filePath, [String? prefix, String? suffix]) {
+    final file = File(filePath);
+    if (!file.existsSync()) {
+      print('File not found: $filePath');
+      return null;
     }
-    return match.group(1)!;
+
+    RegExp pattern = RegExp('${prefix ?? ''}($versionRegex)${suffix ?? ''}');
+
+    for (final line in file.readAsLinesSync()) {
+      final match = pattern.firstMatch(line);
+      if (match == null) {
+        continue;
+      }
+      return fromString(match.group(1)!);
+    }
+    return null;
   }
-  return null;
+
+  @override
+  String toString() {
+    if (_buildNumber == null) {
+      return '$_major.$_minor.$_patch';
+    } else {
+      return '$_major.$_minor.$_patch+$_buildNumber';
+    }
+  }
+
+  Version bumpPatch([String? buildNumber]) =>
+      Version(_major, _minor, _patch + 1, buildNumber ?? _buildNumber);
+
+  Version bumpMinor([String? buildNumber]) =>
+      Version(_major, _minor + 1, 0, buildNumber ?? _buildNumber);
+
+  Version bumpMajor([String? buildNumber]) =>
+      Version(_major + 1, 0, 0, buildNumber ?? _buildNumber);
 }
+
+void prependToFile(String path, String prefix) {
+  final file = File(path);
+  try {
+    final contents = file.readAsStringSync();
+    file.writeAsStringSync(prefix + contents);
+  } catch (e) {
+    print('Failed to update $path: $e');
+  }
+}
+
+void replaceInFiles(List<String> files, String from, String to,
+    [String? prefix]) {
+  if (prefix != null) {
+    from = prefix + from;
+    to = prefix + to;
+  }
+  for (final filePath in files) {
+    final file = File(filePath);
+    final contents = file.readAsStringSync();
+    final updatedContents = contents.replaceAll(from, to);
+    file.writeAsStringSync(updatedContents);
+  }
+}
+
+List<String> getChangelogs() {
+  final changelogs = <String>[];
+  print('Enter changelogs (empty line to stop):');
+  while (true) {
+    final line = stdin.readLineSync();
+    if (line == null || line.trim().isEmpty || line.trim() == '.') {
+      break;
+    }
+    changelogs.add(line.trim());
+  }
+  return changelogs;
+}
+
+String changelogToString(Version version, List<String> changelogs,
+    {bool versionInBraces = true, String tab = '*'}) {
+  String log = versionInBraces ? '## [$version]\n' : '## $version\n';
+  for (final changelog in changelogs) {
+    log += '$tab $changelog\n';
+  }
+  log += '\n';
+  return log;
+}
+
+enum BumpType { major, minor, patch }
 
 void main(List<String> args) {
+  final opts = getopt('patch,major,minor,log:,help', args.toList());
+  BumpType? bumpType;
+
+  List<String> changeLogs = [];
+  while (opts.isNotEmpty) {
+    String opt = opts.removeAt(0);
+    if (opt == '--') {
+      break;
+    }
+    switch (opt) {
+      case 'major':
+        bumpType = BumpType.major;
+        break;
+      case 'minor':
+        bumpType = BumpType.minor;
+        break;
+      case 'patch':
+        bumpType = BumpType.patch;
+        break;
+      case 'log':
+        changeLogs.add(opts.removeAt(0));
+        break;
+      case 'help':
+        print('usage: bump_version [major|minor|patch|log <message>|help]');
+        exit(0);
+    }
+  }
+
   final rootDir = Directory.current;
 
-  final pubspecFile = File('${rootDir.path}/pubspec.yaml');
-  if (!pubspecFile.existsSync()) {
+  final pubspecFile = '${rootDir.path}/pubspec.yaml';
+  if (!File(pubspecFile).existsSync()) {
     print('Run from root folder');
-    return;
+    exit(1);
   }
 
-  final bumpType = ['major', 'minor', 'patch'];
-  if (args.isEmpty || !bumpType.contains(args[0])) {
-    print('Specify major, minor, or patch');
-    return;
+  // Get current version
+  Version? currentVersion = Version.fromFile(pubspecFile, 'version: ');
+  if (currentVersion == null) {
+    print('Failed to parse version from $pubspecFile');
+    exit(2);
   }
 
-  late Version nextVersion;
-  String? nativeVersion = getVersion(
-      File('${rootDir.path}/native/sweph/src/sweph.h'),
-      RegExp(r'^#define SE_VERSION\s+"(.*)"\s*$'));
-  Version currentVersion = Version.fromString(
-      getVersion(pubspecFile, RegExp(r'^version: (.*)$')), nativeVersion);
-
-  if (args[0] == 'major') {
-    nextVersion = currentVersion.nextMajor();
-  } else if (args[0] == 'minor') {
-    nextVersion = currentVersion.nextMinor();
-  } else if (args[0] == 'patch') {
-    nextVersion = currentVersion.nextPatch();
+  // Get next version
+  Version? nextVersion;
+  if (bumpType == BumpType.major) {
+    nextVersion = currentVersion.bumpMajor();
+  } else if (bumpType == BumpType.minor) {
+    nextVersion = currentVersion.bumpMinor();
+  } else if (bumpType == BumpType.patch) {
+    nextVersion = currentVersion.bumpPatch();
+  } else {
+    stdout.write('Enter new version (current version is $currentVersion): ');
+    final versionStr = stdin.readLineSync(encoding: utf8);
+    nextVersion = Version.fromString(versionStr);
+    if (nextVersion == null) {
+      print('Invalid version: $versionStr');
+      exit(3);
+    }
   }
 
-  stdout.write('Enter changelog: ');
-  final log = stdin.readLineSync(encoding: utf8);
-  if (log == null) {
-    return;
+  // Get changelogs
+  if (changeLogs.isEmpty) {
+    changeLogs = getChangelogs();
+    if (changeLogs.isEmpty) {
+      print('No changelog provided');
+      return;
+    }
   }
 
-  updateVersion(currentVersion, nextVersion);
-  changeLog(nextVersion, log);
+  // Update changelogs in files
+  final log = changelogToString(nextVersion, changeLogs);
+  prependToFile('CHANGELOG.md', log);
 
-  print(
-      "Updated version from '$currentVersion' to $nextVersion with log: $log");
+  // Update version in files
+  replaceInFiles(
+    [pubspecFile],
+    currentVersion.toString(),
+    nextVersion.toString(),
+    '\nversion: ',
+  );
+  replaceInFiles(
+    ['ios/sweph.podspec', 'macos/sweph.podspec'],
+    currentVersion.toString(),
+    nextVersion.toString(),
+    "\n  s.version          = '",
+  );
+  replaceInFiles(
+    ['android/build.gradle'],
+    currentVersion.toString(),
+    nextVersion.toString(),
+    "\nversion '",
+  );
+  replaceInFiles(
+    ['linux/CMakeLists.txt', 'windows/CMakeLists.txt'],
+    currentVersion.toString(),
+    nextVersion.toString(),
+    '} VERSION ',
+  );
+
+  print("Updated version from '$currentVersion' to $nextVersion");
+  print("Commit log: ${changeLogs.join('. ')}");
 }

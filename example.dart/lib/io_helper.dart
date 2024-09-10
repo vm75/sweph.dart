@@ -14,7 +14,6 @@ Future<void> initSweph([List<String> epheAssets = const []]) async {
   final epheFilesPath = './.test';
 
   await Sweph.init(
-    'sweph',
     epheAssets: epheAssets,
     epheFilesPath: epheFilesPath,
     assetLoader: _FileAssetLoader(),

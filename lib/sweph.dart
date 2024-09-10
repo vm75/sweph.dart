@@ -36,20 +36,22 @@ class Sweph {
   /// Should be called before any use of Sweph
   ///
   /// [modulePath] Path where the platform lib or wasm file is stored
-  ///   For Flutter, use 'assets/packages/sweph/assets/sweph.wasm' for web and 'sweph' for other platforms
+  ///   defaults to 'assets/packages/sweph/assets/sweph.wasm' for web and 'sweph' for other platforms
   /// [epheAssets] List of bundled ephemeris files to be loaded into sweph.
   ///   An [assetLoader] is needed to load these files.
   ///   For Flutter, use http get for web and rootBundle for other platforms
   /// [assetLoader] The asset loader to use for loading the epheAssets.
   /// [epheFilesPath] The path where the ephemeris files are to be stored.
   ///   On web, it is store in the wasm memory.
-  static init(
-    String modulePath, {
+  static init({
+    String? modulePath,
     List<String> epheAssets = const [],
     AssetLoader? assetLoader,
-    String epheFilesPath = 'ephe_files',
+    String? epheFilesPath,
   }) async {
-    _provider = await SwephPlatformProvider.init(modulePath, epheFilesPath);
+    modulePath ??= kIsWeb ? 'assets/packages/sweph/assets/sweph.wasm' : 'sweph';
+    _provider = await SwephPlatformProvider.init(
+        modulePath, epheFilesPath ?? 'ephe_files');
     _allocator = _provider.allocator;
     _bindings = SwephBindings(_provider.lib);
     if (epheAssets.isNotEmpty && assetLoader != null) {

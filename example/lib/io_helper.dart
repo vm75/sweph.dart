@@ -14,7 +14,6 @@ Future<void> initSweph([List<String> epheAssets = const []]) async {
       '${(await getApplicationSupportDirectory()).path}/ephe_files';
 
   await Sweph.init(
-    'sweph',
     epheAssets: epheAssets,
     epheFilesPath: epheFilesPath,
     assetLoader: _RootBundleAssetLoader(),

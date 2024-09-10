@@ -25,7 +25,7 @@ Future<void> main() async {
   // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
   // For Web, this is the only way to provide ephe files, and they are loaded into memory
   await Sweph.init(
-    'sweph', // where to load module from.
+    modulePath: 'sweph', // where to load module from.
     epheAssets: [
       "packages/sweph/assets/ephe/sefstars.txt",
     ],

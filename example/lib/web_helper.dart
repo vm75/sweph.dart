@@ -16,7 +16,6 @@ class _WebAssetLoader implements AssetLoader {
 
 Future<void> initSweph([List<String> epheAssets = const []]) async {
   await Sweph.init(
-    'assets/packages/sweph/assets/sweph.wasm',
     epheAssets: epheAssets,
     epheFilesPath: 'ephe_files',
     assetLoader: _WebAssetLoader(),

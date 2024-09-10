@@ -24,8 +24,8 @@ publish: publish_flutter
 publish_flutter:
 	flutter analyze && flutter pub publish
 
-bump_version:
-	dart tool/bump_version.dart
+bump-version:
+	dart tool/bump_version.dart $(ARGS)
 
 # Wasm
 COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"

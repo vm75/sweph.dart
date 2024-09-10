@@ -6,37 +6,43 @@
     "configurations": [
         {
             "name": "flutter-example",
-            "cwd": "example",
+            "type": "dart",
             "request": "launch",
-            "type": "dart"
+            "cwd": "example",
         },
         {
             "name": "flutter-example (profile mode)",
-            "cwd": "example",
-            "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "request": "launch",
+            "flutterMode": "profile",
+            "cwd": "example",
         },
         {
             "name": "flutter-example (release mode)",
-            "cwd": "example",
-            "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "request": "launch",
+            "flutterMode": "release",
+            "cwd": "example",
         },
         {
             "name": "dart-example (ffi)",
+            "type": "dart",
+            "request": "launch",
             "program": "bin/example_dart.dart",
             "cwd": "example.dart",
-            "request": "launch",
-            "type": "dart",
         },
         {
             "name": "dart-example (web)",
+            "type": "dart",
+            "request": "launch",
             "program": "web",
             "cwd": "example.dart",
+        },
+        {
+            "name": "Bump Version",
+            "type": "dart",
             "request": "launch",
-            "type": "dart"
-        }
+            "program": "tool/bump_version.dart",
+        },
     ]
 }

@@ -1,7 +1,7 @@
 // The Android Gradle Plugin builds the native code with the Android NDK.
 
 group 'org.duckdns.vm75.sweph'
-version '1.0'
+version '3.0.1+2.10.3'
 
 buildscript {
     repositories {
