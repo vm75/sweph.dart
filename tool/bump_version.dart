@@ -144,10 +144,10 @@ class VersionUpdateHelper {
   final Map<String, List<String>> _filesWithVersion = {};
   final List<String> _filesWithChangelogs = [];
 
-  VersionUpdateHelper._(this._currentVersion, this._buildCode);
-
-  static VersionUpdateHelper create(VersionFileSpec versionFile,
-      [VersionFileSpec? buildFile]) {
+  factory VersionUpdateHelper(
+    VersionFileSpec versionFile, [
+    VersionFileSpec? buildFile,
+  ]) {
     final version = versionFile.getVersion();
     if (version == null) {
       throw Exception('Version not found in ${versionFile.filePath}');
@@ -160,6 +160,8 @@ class VersionUpdateHelper {
     return VersionUpdateHelper._(version, build?.toString());
   }
 
+  VersionUpdateHelper._(this._currentVersion, this._buildCode);
+
   String currentVersion() => _currentVersion.toString();
 
   void addFilesWithVersion(String prefix, List<String> files) {
@@ -170,15 +172,19 @@ class VersionUpdateHelper {
     _filesWithChangelogs.addAll(files);
   }
 
-  void setChangelog(List<String> changelogs,
-      [bool? versionInBraces, String? tab]) {
+  void setChangelog(
+    List<String> changelogs, {
+    bool? versionInBraces,
+    String? tab,
+  }) {
+    var changeLogs = changelogs;
     if (changelogs.isEmpty) {
-      changelogs = _getChangelogs();
-      if (changelogs.isEmpty) {
+      changeLogs = _getChangelogs();
+      if (changeLogs.isEmpty) {
         throw Exception('No changelog provided');
       }
     }
-    _changelogs.addAll(changelogs);
+    _changelogs.addAll(changeLogs);
     _versionInBraces = versionInBraces ?? _versionInBraces;
     _tab = tab ?? _tab;
   }
@@ -258,20 +264,21 @@ class VersionUpdateHelper {
       throw Exception('No changelogs specified');
     }
     _prependToFiles(
-        _filesWithChangelogs,
-        _changelogToString(
-          nextVersion,
-          _changelogs,
-          versionInBraces: _versionInBraces,
-          tab: _tab,
-        ));
+      _filesWithChangelogs,
+      _changelogToString(
+        nextVersion,
+        _changelogs,
+        versionInBraces: _versionInBraces,
+        tab: _tab,
+      ),
+    );
 
     print("Updated version from '$from' to $to");
     print("Commit log: ${_changelogs.join('. ')}");
   }
 
   void bump(BumpType bumpType) {
-    Version? nextVersion = _currentVersion.bump(bumpType, _buildCode);
+    final nextVersion = _currentVersion.bump(bumpType, _buildCode);
     return _bump(nextVersion);
   }
 
@@ -290,7 +297,7 @@ void main(List<String> args) {
   final opts = getopt('patch,major,minor,log:,help', args.toList());
   BumpType? bumpType;
 
-  List<String> changeLogs = [];
+  final List<String> changeLogs = [];
   while (opts.isNotEmpty) {
     final String opt = opts.removeAt(0);
     if (opt == '--') {
@@ -315,13 +322,17 @@ void main(List<String> args) {
     }
   }
 
-  final rootDir = Directory.current;
-
   try {
-    VersionUpdateHelper helper = VersionUpdateHelper.create(
-      VersionFileSpec('${rootDir.path}/pubspec.yaml', 'version: '),
-      VersionFileSpec('${rootDir.path}/native/sweph/src/sweph.h',
-          '^#define SE_VERSION\\s+"', '"'),
+    final helper = VersionUpdateHelper(
+      VersionFileSpec(
+        'pubspec.yaml',
+        'version: ',
+      ),
+      VersionFileSpec(
+        'native/sweph/src/sweph.h',
+        '^#define SE_VERSION\\s+"',
+        '"',
+      ),
     );
 
     // Add files to update version
