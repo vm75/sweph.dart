@@ -52,8 +52,8 @@ class Sweph {
     modulePath ??= kIsWeb ? 'assets/packages/sweph/assets/sweph.wasm' : 'sweph';
     _provider = await SwephPlatformProvider.init(
         modulePath, epheFilesPath ?? 'ephe_files');
-    _allocator = _provider.allocator;
-    _bindings = SwephBindings(_provider.lib);
+    _allocator = _provider.allocator as Allocator;
+    _bindings = SwephBindings(_provider.lib as DynamicLibrary);
     if (epheAssets.isNotEmpty && assetLoader != null) {
       await _provider.saveEpheAssets(epheAssets, assetLoader);
       return using((Arena arena) {
@@ -69,29 +69,23 @@ class Sweph {
 
   static DateTime _toDateTime(
       int year, int month, int day, int hour, int minute, double seconds) {
-    int second = seconds.floor();
-    seconds = (seconds - second) * 1000;
-    int milliSecond = seconds.floor();
-    seconds = (seconds - milliSecond) * 1000;
-    int microSecond = seconds.floor();
+    final int secondRounded = seconds.floor();
+    final double milliSeconds = (seconds - secondRounded) * 1000;
+    final int milliSecondRounded = milliSeconds.floor();
+    final double microSeconds = (milliSeconds - milliSecondRounded) * 1000;
+    final int microSecondRounded = microSeconds.floor();
 
-    return DateTime.utc(
-        year, month, day, hour, minute, second, milliSecond, microSecond);
+    return DateTime.utc(year, month, day, hour, minute, secondRounded,
+        milliSecondRounded, microSecondRounded);
   }
 
   static DateTime _toDateTime2(int year, int month, int day, double hours) {
-    int hour = hours.floor();
-    hours = (hours - hour) * 60;
-    int minute = hours.floor();
-    hours = (hours - minute) * 60;
-    int second = hours.floor();
-    hours = (hours - second) * 1000;
-    int milliSecond = hours.floor();
-    hours = (hours - milliSecond) * 1000;
-    int microSecond = hours.floor();
+    final int hoursRounded = hours.floor();
+    final double minutes = (hours - hoursRounded) * 60;
+    final int minutesRounded = minutes.floor();
+    final double seconds = (minutes - minutesRounded) * 60;
 
-    return DateTime.utc(
-        year, month, day, hour, minute, second, milliSecond, microSecond);
+    return _toDateTime(year, month, day, hoursRounded, minutesRounded, seconds);
   }
 
   // -----------------------------------------------------------------------------------------
@@ -113,8 +107,8 @@ class Sweph {
   static CoordinatesWithSpeed swe_calc_ut(
       double julianDay, HeavenlyBody planet, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> coords = arena<Double>(6);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc_ut(
         julianDay,
         planet.value,
@@ -146,8 +140,8 @@ class Sweph {
   static CoordinatesWithSpeed swe_calc(
       double julianDay, HeavenlyBody planet, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> coords = arena<Double>(6);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc(
         julianDay,
         planet.value,
@@ -184,8 +178,8 @@ class Sweph {
   static CoordinatesWithSpeed swe_calc_pctr(double julianDay,
       HeavenlyBody target, HeavenlyBody center, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> coords = arena<Double>(6);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_calc_pctr(
         julianDay,
         target.value,
@@ -220,11 +214,11 @@ class Sweph {
   static NodesAndAspides swe_nod_aps_ut(double julianDay, HeavenlyBody target,
       SwephFlag flags, NodApsFlag method) {
     return using((Arena arena) {
-      Pointer<Double> nodesAsc = arena<Double>(6);
-      Pointer<Double> nodesDesc = arena<Double>(6);
-      Pointer<Double> perihelion = arena<Double>(6);
-      Pointer<Double> aphelion = arena<Double>(6);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> nodesAsc = arena<Double>(6);
+      final Pointer<Double> nodesDesc = arena<Double>(6);
+      final Pointer<Double> perihelion = arena<Double>(6);
+      final Pointer<Double> aphelion = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_nod_aps_ut(
         julianDay,
         target.value,
@@ -261,11 +255,11 @@ class Sweph {
   static NodesAndAspides swe_nod_aps(double julianDay, HeavenlyBody target,
       SwephFlag flags, NodApsFlag method) {
     return using((Arena arena) {
-      Pointer<Double> nodesAsc = arena<Double>(6);
-      Pointer<Double> nodesDesc = arena<Double>(6);
-      Pointer<Double> perihelion = arena<Double>(6);
-      Pointer<Double> aphelion = arena<Double>(6);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> nodesAsc = arena<Double>(6);
+      final Pointer<Double> nodesDesc = arena<Double>(6);
+      final Pointer<Double> perihelion = arena<Double>(6);
+      final Pointer<Double> aphelion = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_nod_aps(
         julianDay,
         target.value,
@@ -304,9 +298,9 @@ class Sweph {
   static StarInfo swe_fixstar2_ut(
       String star, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> cstar = star.toNativeString(arena, 50);
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
       final result = _bindings.swe_fixstar2_ut(
         cstar,
         julianDay,
@@ -341,9 +335,9 @@ class Sweph {
   /// Returns [StarInfo]
   static StarInfo swe_fixstar2(String star, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> cstar = star.toNativeString(arena, 50);
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
       final result = _bindings.swe_fixstar2(
         cstar,
         julianDay,
@@ -379,9 +373,9 @@ class Sweph {
   static StarInfo swe_fixstar_ut(
       String star, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> cstar = star.toNativeString(arena, 50);
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
       final result = _bindings.swe_fixstar_ut(
         cstar,
         julianDay,
@@ -416,9 +410,9 @@ class Sweph {
   /// Returns [StarInfo]
   static StarInfo swe_fixstar(String star, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> cstar = star.toNativeString(arena, 50);
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> coords = arena<Double>(6);
+      final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> coords = arena<Double>(6);
       final result = _bindings.swe_fixstar(
         cstar,
         julianDay,
@@ -450,8 +444,8 @@ class Sweph {
   /// Returns magnitude of the star
   static double swe_fixstar2_mag(String star) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> mag = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> mag = arena<Double>(6);
       final result =
           _bindings.swe_fixstar2_mag(star.toNativeString(arena), mag, error);
       if (result < 0) {
@@ -468,8 +462,8 @@ class Sweph {
   /// Returns magnitude of the star
   static double swe_fixstar_mag(String star) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> mag = arena<Double>(6);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> mag = arena<Double>(6);
       final result =
           _bindings.swe_fixstar_mag(star.toNativeString(arena), mag, error);
       if (result < 0) {
@@ -513,8 +507,8 @@ class Sweph {
   /// Returns ayanamsha value
   static double swe_get_ayanamsa_ex_ut(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> ayanamsa = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> ayanamsa = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_ayanamsa_ex_ut(
           julianDay, flags.value, ayanamsa, error);
       if (result < 0) {
@@ -532,8 +526,8 @@ class Sweph {
   /// Returns ayanamsha value
   static double swe_get_ayanamsa_ex(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> ayanamsa = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> ayanamsa = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_ayanamsa_ex(
           julianDay, flags.value, ayanamsa, error);
       if (result < 0) {
@@ -591,9 +585,9 @@ class Sweph {
   static EclipseInfo swe_sol_eclipse_when_loc(double startJulianDay,
       SwephFlag flags, GeoPosition geoPos, bool backward) {
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Double> attr = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Double> attr = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_when_loc(
         startJulianDay,
         flags.value,
@@ -625,8 +619,8 @@ class Sweph {
   static EclipseInfo swe_sol_eclipse_when_glob(double startJulianDay,
       SwephFlag flags, EclipseFlag eclType, bool backward) {
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_when_glob(
         startJulianDay,
         flags.value,
@@ -656,8 +650,8 @@ class Sweph {
   static EclipseInfo swe_sol_eclipse_how(
       double julianDay, SwephFlag flags, GeoPosition geoPos) {
     return using((Arena arena) {
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_how(
         julianDay,
         flags.value,
@@ -683,9 +677,9 @@ class Sweph {
   /// Returns [EclipseInfo]
   static EclipseInfo swe_sol_eclipse_where(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> geoPos = arena<Double>(2);
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> geoPos = arena<Double>(2);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_sol_eclipse_where(
         julianDay,
         flags.value,
@@ -725,9 +719,9 @@ class Sweph {
   static EclipseInfo swe_lun_occult_where<Target>(
       double julianDay, Target target, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> geoPos = arena<Double>(2);
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> geoPos = arena<Double>(2);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
 
       String starname = '';
       int targetCode = HeavenlyBody.SE_FIXSTAR.value;
@@ -782,9 +776,9 @@ class Sweph {
     }
 
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_loc(
         startJulianDay,
         targetCode,
@@ -828,8 +822,8 @@ class Sweph {
       throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_occult_when_glob(
         startJulianDay,
         targetCode,
@@ -861,9 +855,9 @@ class Sweph {
   static EclipseInfo swe_lun_eclipse_when_loc(double startJulianDay,
       SwephFlag flags, GeoPosition geoPos, bool backward) {
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_when_loc(
         startJulianDay,
         flags.value,
@@ -895,8 +889,8 @@ class Sweph {
   static EclipseInfo swe_lun_eclipse_when(double startJulianDay,
       SwephFlag flags, EclipseFlag eclType, bool backward) {
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>(10);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>(10);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_when(
         startJulianDay,
         flags.value,
@@ -925,8 +919,8 @@ class Sweph {
   static EclipseInfo swe_lun_eclipse_how(
       double julianDay, SwephFlag flags, GeoPosition geoPos) {
     return using((Arena arena) {
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_lun_eclipse_how(
         julianDay,
         flags.value,
@@ -974,8 +968,8 @@ class Sweph {
       throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans(
         julianDay,
         targetCode,
@@ -1028,8 +1022,8 @@ class Sweph {
       throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
-      Pointer<Double> times = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> times = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_rise_trans_true_hor(
         julianDay,
         targetCode,
@@ -1073,9 +1067,9 @@ class Sweph {
       HeliacalEventType eventType,
       HeliacalFlags heliacalFlags) {
     return using((Arena arena) {
-      Arena arena = Arena(_allocator);
-      Pointer<Double> values = arena<Double>(50);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Arena arena = Arena(_allocator);
+      final Pointer<Double> values = arena<Double>(50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_heliacal_ut(
         startJulianDay,
         geoPos.toNativeArray(arena),
@@ -1144,9 +1138,9 @@ class Sweph {
       HeliacalEventType eventType,
       HeliacalFlags heliacalFlags) {
     return using((Arena arena) {
-      Arena arena = Arena(_allocator);
-      Pointer<Double> values = arena<Double>(50);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Arena arena = Arena(_allocator);
+      final Pointer<Double> values = arena<Double>(50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_heliacal_pheno_ut(
         startJulianDay,
         geoPos.toNativeArray(arena),
@@ -1183,9 +1177,9 @@ class Sweph {
       String name,
       HeliacalFlags heliacalFlags) {
     return using((Arena arena) {
-      Arena arena = Arena(_allocator);
-      Pointer<Double> values = arena<Double>(8);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Arena arena = Arena(_allocator);
+      final Pointer<Double> values = arena<Double>(8);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_vis_limit_mag(
         startJulianDay,
         geoPos.toNativeArray(arena),
@@ -1221,8 +1215,8 @@ class Sweph {
   static List<double> swe_pheno_ut(
       double julianDay, HeavenlyBody target, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_pheno_ut(
         julianDay,
         target.value,
@@ -1255,8 +1249,8 @@ class Sweph {
   static List<double> swe_pheno(
       double julianDay, HeavenlyBody target, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> attributes = arena<Double>(20);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> attributes = arena<Double>(20);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_pheno(
           julianDay, target.value, flags.value, attributes, error);
       if (result < 0) {
@@ -1280,7 +1274,7 @@ class Sweph {
   static AzimuthAltitudeInfo swe_azalt(double julianDay, AzAltMode azAltMode,
       GeoPosition geoPos, double atPress, double atTemp, Coordinates coord) {
     return using((Arena arena) {
-      Pointer<Double> azAlt = arena<Double>(3);
+      final Pointer<Double> azAlt = arena<Double>(3);
       _bindings.swe_azalt(
         julianDay,
         azAltMode.value,
@@ -1306,8 +1300,8 @@ class Sweph {
   static Coordinates swe_azalt_rev(double julianDay, AzAltMode azAltMode,
       GeoPosition geoPos, double azimuth, double trueAltitude) {
     return using((Arena arena) {
-      Pointer<Double> azAlt = arena<Double>(2);
-      Pointer<Double> coord = arena<Double>(2);
+      final Pointer<Double> azAlt = arena<Double>(2);
+      final Pointer<Double> coord = arena<Double>(2);
       azAlt[0] = azimuth;
       azAlt[1] = trueAltitude;
       _bindings.swe_azalt_rev(
@@ -1332,7 +1326,7 @@ class Sweph {
   /// Returns: [AltitudeRefracInfo]
   static AltitudeRefracInfo swe_refrac(double altOfObject, double atmPressure,
       double atmTemp, RefractionMode refracMode) {
-    double calcAlt = _bindings.swe_refrac(
+    final double calcAlt = _bindings.swe_refrac(
         altOfObject, atmPressure, atmTemp, refracMode.value);
     if (refracMode == RefractionMode.SE_TRUE_TO_APP) {
       return AltitudeRefracInfo(altOfObject, calcAlt);
@@ -1361,7 +1355,7 @@ class Sweph {
       double lapseRate,
       RefractionMode refracMode) {
     return using((Arena arena) {
-      Pointer<Double> values = arena<Double>(20);
+      final Pointer<Double> values = arena<Double>(20);
       _bindings.swe_refrac_extended(
         altOfObject,
         altOfObserver,
@@ -1408,8 +1402,8 @@ class Sweph {
   static List<double> swe_get_orbital_elements(
       double julianDay, HeavenlyBody target, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> values = arena<Double>(50);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> values = arena<Double>(50);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_orbital_elements(
         julianDay,
         target.value,
@@ -1436,10 +1430,10 @@ class Sweph {
   static OrbitalDistance swe_orbit_max_min_true_distance(
       double julianDay, HeavenlyBody target, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Double> dmax = arena<Double>();
-      Pointer<Double> dmin = arena<Double>();
-      Pointer<Double> dtrue = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> dmax = arena<Double>();
+      final Pointer<Double> dmin = arena<Double>();
+      final Pointer<Double> dtrue = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_orbit_max_min_true_distance(
         julianDay,
         target.value,
@@ -1464,8 +1458,9 @@ class Sweph {
   /// Returns delatT in seconds
   static double swe_deltat_ex(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      double delta = _bindings.swe_deltat_ex(julianDay, flags.value, error);
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final double delta =
+          _bindings.swe_deltat_ex(julianDay, flags.value, error);
       return delta;
     }, _allocator);
   }
@@ -1498,7 +1493,7 @@ class Sweph {
   static double swe_date_conversion(
       int year, int month, int day, double hours, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Double> julianDay = arena<Double>();
+      final Pointer<Double> julianDay = arena<Double>();
       final result = _bindings.swe_date_conversion(
         year,
         month,
@@ -1536,10 +1531,10 @@ class Sweph {
   /// Returns [DateTime]
   static DateTime swe_revjul(double julianDay, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int32> year = arena<Int32>();
-      Pointer<Int32> month = arena<Int32>();
-      Pointer<Int32> day = arena<Int32>();
-      Pointer<Double> hours = arena<Double>();
+      final Pointer<Int32> year = arena<Int32>();
+      final Pointer<Int32> month = arena<Int32>();
+      final Pointer<Int32> day = arena<Int32>();
+      final Pointer<Double> hours = arena<Double>();
       _bindings.swe_revjul(julianDay, calType.value, year, month, day, hours);
       return _toDateTime2(year.value, month.value, day.value, hours.value);
     }, _allocator);
@@ -1559,12 +1554,12 @@ class Sweph {
   static DateTime swe_utc_time_zone(int year, int month, int day, int hour,
       int minute, double seconds, double timezone) {
     return using((Arena arena) {
-      Pointer<Int32> yearOut = arena<Int32>();
-      Pointer<Int32> monthOut = arena<Int32>();
-      Pointer<Int32> dayOut = arena<Int32>();
-      Pointer<Int32> hourOut = arena<Int32>();
-      Pointer<Int32> minuteOut = arena<Int32>();
-      Pointer<Double> secondsOut = arena<Double>();
+      final Pointer<Int32> yearOut = arena<Int32>();
+      final Pointer<Int32> monthOut = arena<Int32>();
+      final Pointer<Int32> dayOut = arena<Int32>();
+      final Pointer<Int32> hourOut = arena<Int32>();
+      final Pointer<Int32> minuteOut = arena<Int32>();
+      final Pointer<Double> secondsOut = arena<Double>();
       _bindings.swe_utc_time_zone(
         year,
         month,
@@ -1607,8 +1602,8 @@ class Sweph {
   static List<double> swe_utc_to_jd(int year, int month, int day, int hour,
       int min, double sec, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Double> julianDays = arena<Double>(2);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> julianDays = arena<Double>(2);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_utc_to_jd(
         year,
         month,
@@ -1635,12 +1630,12 @@ class Sweph {
   /// Returns [DateTime]
   static DateTime swe_jdet_to_utc(double julianDay, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int32> year = arena<Int32>();
-      Pointer<Int32> mon = arena<Int32>();
-      Pointer<Int32> day = arena<Int32>();
-      Pointer<Int32> hour = arena<Int32>();
-      Pointer<Int32> min = arena<Int32>();
-      Pointer<Double> sec = arena<Double>();
+      final Pointer<Int32> year = arena<Int32>();
+      final Pointer<Int32> mon = arena<Int32>();
+      final Pointer<Int32> day = arena<Int32>();
+      final Pointer<Int32> hour = arena<Int32>();
+      final Pointer<Int32> min = arena<Int32>();
+      final Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdet_to_utc(
         julianDay,
         calType.value,
@@ -1670,12 +1665,12 @@ class Sweph {
   /// Returns [DateTime]
   static DateTime swe_jdut1_to_utc(double julianDay, CalendarType calType) {
     return using((Arena arena) {
-      Pointer<Int32> year = arena<Int32>();
-      Pointer<Int32> mon = arena<Int32>();
-      Pointer<Int32> day = arena<Int32>();
-      Pointer<Int32> hour = arena<Int32>();
-      Pointer<Int32> min = arena<Int32>();
-      Pointer<Double> sec = arena<Double>();
+      final Pointer<Int32> year = arena<Int32>();
+      final Pointer<Int32> mon = arena<Int32>();
+      final Pointer<Int32> day = arena<Int32>();
+      final Pointer<Int32> hour = arena<Int32>();
+      final Pointer<Int32> min = arena<Int32>();
+      final Pointer<Double> sec = arena<Double>();
       _bindings.swe_jdut1_to_utc(
         julianDay,
         calType.value,
@@ -1723,8 +1718,8 @@ class Sweph {
   /// Returns the difference between local apparent and local mean time
   static double swe_time_equ(double julianDay) {
     return using((Arena arena) {
-      Pointer<Double> timeDiff = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> timeDiff = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_time_equ(julianDay, timeDiff, error);
       if (result < 0) {
         throw Exception(error.toDartString());
@@ -1741,8 +1736,8 @@ class Sweph {
   /// Returns Local Apparent Time (LAT)
   static double swe_lmt_to_lat(double julianDayLmt, double geoLon) {
     return using((Arena arena) {
-      Pointer<Double> julianDayLat = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> julianDayLat = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result =
           _bindings.swe_lmt_to_lat(julianDayLmt, geoLon, julianDayLat, error);
       if (result < 0) {
@@ -1760,8 +1755,8 @@ class Sweph {
   /// Returns Local Mean Time (LMT)
   static double swe_lat_to_lmt(double julianDayLat, double geoLon) {
     return using((Arena arena) {
-      Pointer<Double> julianDayLmt = arena<Double>();
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> julianDayLmt = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result =
           _bindings.swe_lat_to_lmt(julianDayLat, geoLon, julianDayLmt, error);
       if (result < 0) {
@@ -1814,7 +1809,7 @@ class Sweph {
   /// Returns version number as String
   static String swe_version() {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(256);
+      final Pointer<Uint8> buffer = arena<Uint8>(256);
       _bindings.swe_version(buffer);
       final ver = buffer.toDartString();
       return ver;
@@ -1826,7 +1821,7 @@ class Sweph {
   /// Returns library path as String
   static String swe_get_library_path() {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(256);
+      final Pointer<Uint8> buffer = arena<Uint8>(256);
       _bindings.swe_get_library_path(buffer);
       final path = buffer.toDartString();
       return path;
@@ -1845,9 +1840,9 @@ class Sweph {
   /// Returns [FileData]
   static FileData swe_get_current_file_data(int ifno) {
     return using((Arena arena) {
-      Pointer<Double> tfstart = arena<Double>();
-      Pointer<Double> tfend = arena<Double>();
-      Pointer<Int32> denum = arena<Int32>();
+      final Pointer<Double> tfstart = arena<Double>();
+      final Pointer<Double> tfend = arena<Double>();
+      final Pointer<Int32> denum = arena<Int32>();
 
       final path =
           _bindings.swe_get_current_file_data(ifno, tfstart, tfend, denum);
@@ -1913,8 +1908,8 @@ class Sweph {
       double julianDay, double geoLat, double geoLon, Hsys hSys) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(cuspsSize);
-      Pointer<Double> ascmc = arena<Double>(10);
+      final Pointer<Double> cusps = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses(julianDay, geoLat, geoLon, hSys.value, cusps, ascmc);
       return HouseCuspData(
         cusps.toList(cuspsSize),
@@ -1936,8 +1931,8 @@ class Sweph {
       double geoLat, double geoLon, Hsys hSys) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(cuspsSize);
-      Pointer<Double> ascmc = arena<Double>(10);
+      final Pointer<Double> cusps = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_ex(
           julianDay, flags.value, geoLat, geoLon, hSys.value, cusps, ascmc);
       return HouseCuspData(
@@ -1960,11 +1955,11 @@ class Sweph {
       double geoLat, double geoLon, Hsys hSys) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(cuspsSize);
-      Pointer<Double> ascmc = arena<Double>(10);
-      Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
-      Pointer<Double> ascmcSpeed = arena<Double>(10);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> cusps = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmc = arena<Double>(10);
+      final Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmcSpeed = arena<Double>(10);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_houses_ex2(
         julianDay,
         flags.value,
@@ -2001,8 +1996,8 @@ class Sweph {
       double armc, double geoLat, double eps, Hsys hSys) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(cuspsSize);
-      Pointer<Double> ascmc = arena<Double>(10);
+      final Pointer<Double> cusps = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_armc(armc, geoLat, eps, hSys.value, cusps, ascmc);
       return HouseCuspData(
         cusps.toList(cuspsSize),
@@ -2023,11 +2018,11 @@ class Sweph {
       double armc, double geoLat, double eps, Hsys hSys) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return using((Arena arena) {
-      Pointer<Double> cusps = arena<Double>(cuspsSize);
-      Pointer<Double> ascmc = arena<Double>(10);
-      Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
-      Pointer<Double> ascmcSpeed = arena<Double>(10);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> cusps = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmc = arena<Double>(10);
+      final Pointer<Double> cuspsSpeed = arena<Double>(cuspsSize);
+      final Pointer<Double> ascmcSpeed = arena<Double>(10);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_houses_armc_ex2(
         armc,
         geoLat,
@@ -2064,10 +2059,10 @@ class Sweph {
   static double swe_house_pos(double armc, double geoLat, double eps, Hsys hSys,
       double xpin0, double xpin1) {
     return using((Arena arena) {
-      Pointer<Double> eclPos = arena<Double>(2);
+      final Pointer<Double> eclPos = arena<Double>(2);
       eclPos[0] = xpin0;
       eclPos[1] = xpin1;
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final pos = _bindings.swe_house_pos(
         armc,
         geoLat,
@@ -2112,8 +2107,8 @@ class Sweph {
       throw Exception('Target must be String or HeavenlyBody');
     }
     return using((Arena arena) {
-      Pointer<Double> gsect = arena<Double>(2);
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> gsect = arena<Double>(2);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_gauquelin_sector(
         julianDay,
         targetCode,
@@ -2147,7 +2142,7 @@ class Sweph {
   static double swe_solcross(
       double x2cross, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final julianDayCalc =
           _bindings.swe_solcross(x2cross, julianDay, flags.value, error);
       if (julianDayCalc < julianDay) {
@@ -2167,7 +2162,7 @@ class Sweph {
   static double swe_solcross_ut(
       double x2cross, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final julianDayCalc =
           _bindings.swe_solcross_ut(x2cross, julianDay, flags.value, error);
       if (julianDayCalc < julianDay) {
@@ -2187,7 +2182,7 @@ class Sweph {
   static double swe_mooncross(
       double x2cross, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final julianDayCalc =
           _bindings.swe_mooncross(x2cross, julianDay, flags.value, error);
       if (julianDayCalc < julianDay) {
@@ -2207,7 +2202,7 @@ class Sweph {
   static double swe_mooncross_ut(
       double x2cross, double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Uint8> error = arena<Uint8>(256);
       final julianDayCalc =
           _bindings.swe_mooncross_ut(x2cross, julianDay, flags.value, error);
       if (julianDayCalc < julianDay) {
@@ -2225,9 +2220,9 @@ class Sweph {
   /// Returns [CrossingInfo]
   static CrossingInfo swe_mooncross_node(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> xlon = arena<Double>();
-      Pointer<Double> xlat = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> xlon = arena<Double>();
+      final Pointer<Double> xlat = arena<Double>();
       final julianDayCalc = _bindings.swe_mooncross_node(
           julianDay, flags.value, xlon, xlat, error);
       if (julianDayCalc < julianDay) {
@@ -2249,9 +2244,9 @@ class Sweph {
   /// Returns [CrossingInfo]
   static CrossingInfo swe_mooncross_node_ut(double julianDay, SwephFlag flags) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> xlon = arena<Double>();
-      Pointer<Double> xlat = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> xlon = arena<Double>();
+      final Pointer<Double> xlat = arena<Double>();
       final julianDayCalc = _bindings.swe_mooncross_node_ut(
         julianDay,
         flags.value,
@@ -2282,8 +2277,8 @@ class Sweph {
   static double swe_helio_cross(HeavenlyBody target, double x2cross,
       double julianDay, SwephFlag flags, int dir) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> julianDayCalc = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> julianDayCalc = arena<Double>();
       final result = _bindings.swe_helio_cross(
         target.value,
         x2cross,
@@ -2312,8 +2307,8 @@ class Sweph {
   static double swe_helio_cross_ut(HeavenlyBody target, double x2cross,
       double julianDay, SwephFlag flags, int dir) {
     return using((Arena arena) {
-      Pointer<Uint8> error = arena<Uint8>(256);
-      Pointer<Double> julianDayCalc = arena<Double>();
+      final Pointer<Uint8> error = arena<Uint8>(256);
+      final Pointer<Double> julianDayCalc = arena<Double>();
       final result = _bindings.swe_helio_cross_ut(
         target.value,
         x2cross,
@@ -2342,7 +2337,7 @@ class Sweph {
   /// Returns [Coordinates]
   static Coordinates swe_cotrans(Coordinates coordinates, double eps) {
     return using((Arena arena) {
-      Pointer<Double> xpn = arena<Double>(3);
+      final Pointer<Double> xpn = arena<Double>(3);
       _bindings.swe_cotrans(coordinates.toNativeArray(arena), xpn, eps);
       return Coordinates(xpn[0], xpn[1], xpn[2]);
     }, _allocator);
@@ -2356,7 +2351,7 @@ class Sweph {
   /// Returns [CoordinatesWithSpeed]
   static CoordinatesWithSpeed swe_cotrans_sp(List<double> xpo, double eps) {
     return using((Arena arena) {
-      Pointer<Double> xpn = arena<Double>(6);
+      final Pointer<Double> xpn = arena<Double>(6);
       _bindings.swe_cotrans_sp(xpo.toNativeString(arena), xpn, eps);
       return CoordinatesWithSpeed(
           xpn[0], xpn[1], xpn[2], xpn[3], xpn[4], xpn[5]);
@@ -2370,7 +2365,7 @@ class Sweph {
   /// Returns name of planet
   static String swe_get_planet_name(HeavenlyBody planet) {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(256);
+      final Pointer<Uint8> buffer = arena<Uint8>(256);
       _bindings.swe_get_planet_name(planet.value, buffer);
       final name = buffer.toDartString();
       return name;
@@ -2423,11 +2418,11 @@ class Sweph {
   /// Returns [DegreeSplitData]
   static DegreeSplitData swe_split_deg(double deg, SplitDegFlags roundflag) {
     return using((Arena arena) {
-      Pointer<Int32> splitDeg = arena<Int32>();
-      Pointer<Int32> splitMin = arena<Int32>();
-      Pointer<Int32> splitSec = arena<Int32>();
-      Pointer<Double> splitSecOfArc = arena<Double>();
-      Pointer<Int32> splitSgn = arena<Int32>();
+      final Pointer<Int32> splitDeg = arena<Int32>();
+      final Pointer<Int32> splitMin = arena<Int32>();
+      final Pointer<Int32> splitSec = arena<Int32>();
+      final Pointer<Double> splitSecOfArc = arena<Double>();
+      final Pointer<Int32> splitSgn = arena<Int32>();
       _bindings.swe_split_deg(
         deg,
         roundflag.value,
@@ -2536,7 +2531,7 @@ class Sweph {
   /// Returns time string
   static String swe_cs2timestr(Centisec deg, int sep, bool suppressZero) {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(10);
+      final Pointer<Uint8> buffer = arena<Uint8>(10);
       _bindings.swe_cs2timestr(deg, sep, suppressZero.value, buffer);
       return buffer.toDartString();
     }, _allocator);
@@ -2551,7 +2546,7 @@ class Sweph {
   /// Returns longitude or latitude string
   static String swe_cs2lonlatstr(Centisec deg, String pchar, String mchar) {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(12);
+      final Pointer<Uint8> buffer = arena<Uint8>(12);
       _bindings.swe_cs2lonlatstr(
           deg, pchar.firstChar(), mchar.firstChar(), buffer);
       return buffer.toDartString();
@@ -2565,7 +2560,7 @@ class Sweph {
   /// Returns degrees string
   static String swe_cs2degstr(Centisec deg) {
     return using((Arena arena) {
-      Pointer<Uint8> buffer = arena<Uint8>(10);
+      final Pointer<Uint8> buffer = arena<Uint8>(10);
       _bindings.swe_cs2degstr(deg, buffer);
       return buffer.toDartString();
     }, _allocator);

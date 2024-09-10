@@ -3,6 +3,13 @@ import 'dart:typed_data';
 import 'package:wasm_ffi/ffi_bridge.dart';
 import 'abstract_platform_provider.dart';
 
+typedef WriteFile = int Function(
+  int path,
+  int contents,
+  int len,
+  int forceOverwrite,
+);
+
 class SwephPlatformProvider
     extends AbstractPlatformProvider<DynamicLibrary, Allocator> {
   static SwephPlatformProvider? _instance;
@@ -21,6 +28,8 @@ class SwephPlatformProvider
     return _instance!;
   }
 
+  // typedef for int write_file(const char* path, char* contents, size_t len, int forceOverwrite)
+
   @override
   Future<void> saveEpheFile(String destFile, Uint8List contents) async {
     final destPath = '$epheFilesPath/$destFile';
@@ -28,7 +37,8 @@ class SwephPlatformProvider
     final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
     final dataPtr = _copyToWasm(contents);
 
-    final writeFile = lib.lookupFunction('write_file');
+    final writeFile = lib.lookupFunction<WriteFile, WriteFile>('write_file');
+    // ignore: avoid_dynamic_calls
     writeFile.call(destPathPtr, dataPtr, contents.length, 0);
 
     lib.module.free(destPathPtr);
