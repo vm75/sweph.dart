@@ -12,14 +12,12 @@ endif
 SOURCES_CC = $(wildcard native/sweph/src/*.c) $(wildcard native/sweph/src/*.h) $(wildcard native/utils/*.c) $(wildcard native/utils/*.h)
 
 flutter: wasm
-	cd example
-	flutter build web
+	cd example && flutter build web
 
 test: test_flutter
 
 test_flutter:
-	cd example
-	flutter run
+	cd example && flutter run
 
 publish: publish_flutter
 

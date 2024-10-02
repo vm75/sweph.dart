@@ -2033,31 +2033,35 @@ class Sweph {
     }, _allocator);
   }
 
-  /// Get the house position of a celestial point
+  /// Get which house a planet is and how far from its cusp it is
   ///
-  /// [armc] Sidereal time
-  /// [geoLat] Latitude of observer
+  /// [armc] ARMC
+  /// [geoLat] geographic latitude, in degrees
   /// [eps] Obliquity of ecliptic in degrees
   /// [hSys] House system
+  /// [xpin0] Ecliptic longitude of the planet
+  /// [xpin1] Ecliptic latitude of the planet
   ///
-  /// Returns [HousePosition]
-  static HousePosition swe_house_pos(
-      double armc, double geoLat, double eps, Hsys hSys) {
+  /// Returns [double] which house a planet is and how far from its cusp it is
+  static double swe_house_pos(double armc, double geoLat, double eps, Hsys hSys,
+      double xpin0, double xpin1) {
     return using((Arena arena) {
-      Pointer<Double> position = arena<Double>(2);
+      Pointer<Double> eclPos = arena<Double>(2);
+      eclPos[0] = xpin0;
+      eclPos[1] = xpin1;
       Pointer<Uint8> error = arena<Uint8>(256);
       final pos = _bindings.swe_house_pos(
         armc,
         geoLat,
         eps,
         hSys.value,
-        position,
+        eclPos,
         error,
       );
       if (pos < 0) {
         throw Exception(error.toDartString());
       }
-      return HousePosition(position[0], position[1], pos);
+      return pos;
     }, _allocator);
   }
 
