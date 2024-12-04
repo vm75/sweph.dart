@@ -1,3 +1,6 @@
+## [3.0.2+2.10.3]
+* Updated example to latest template. added additional asset for init.
+
 ## [3.0.1+2.10.3]
 * Made init friendler for flutter
 
