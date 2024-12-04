@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.10)
 
 # Project-level configuration.
 set(PROJECT_NAME "sweph")
-project(${PROJECT_NAME} VERSION 3.0.1 LANGUAGES CXX)
+project(${PROJECT_NAME} VERSION 3.0.2 LANGUAGES CXX)
 
 # Invoke the build for native code shared with the other target platforms.
 # This can be changed to accomodate different builds.
