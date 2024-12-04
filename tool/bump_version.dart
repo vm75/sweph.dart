@@ -219,10 +219,16 @@ class VersionUpdateHelper {
     final String prefixedTo = prefix != null ? prefix + to : to;
 
     for (final filePath in files) {
+      final bool isCMakefile = filePath.endsWith('CMakeLists.txt');
       final file = File(filePath);
-      final contents = file.readAsStringSync();
-      final updatedContents = contents.replaceAll(prefixedFrom, prefixedTo);
-      file.writeAsStringSync(updatedContents);
+      var contents = file.readAsStringSync();
+      if (isCMakefile) {
+        contents = contents.replaceAll(
+            prefixedFrom.split('+')[0], prefixedTo.split('+')[0]);
+      } else {
+        contents = contents.replaceAll(prefixedFrom, prefixedTo);
+      }
+      file.writeAsStringSync(contents);
     }
   }
 

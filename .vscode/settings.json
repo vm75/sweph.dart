@@ -26,10 +26,6 @@
   "editor.tabSize": 2, // Insert spaces when pressing Tab.
   "editor.insertSpaces": true, // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
   "editor.detectIndentation": true,
-  "C_Cpp.clang_format_fallbackStyle": "WebKit",
-  "C_Cpp.default.cppStandard": "c++20",
-  "C_Cpp.default.cStandard": "c17",
-  "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
   "dart.debugSdkLibraries": true,
   "dart.debugExternalPackageLibraries": true,
   "dart.devToolsBrowser": "default",
