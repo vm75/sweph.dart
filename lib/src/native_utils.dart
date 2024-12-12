@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:typed_data';
-import 'package:ffi/ffi.dart';
+
+import 'package:universal_ffi/ffi.dart';
+import 'package:universal_ffi/ffi_utils.dart';
 
 extension FfiHelperOnDoubleList on List<double> {
   Pointer<Double> toNativeString(Arena arena) {

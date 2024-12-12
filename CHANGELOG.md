@@ -1,3 +1,6 @@
+## [3.1.0+2.10.3]
+* migrated to universl_ffi
+
 ## [3.0.2+2.10.3]
 * Updated example to latest template. added additional asset for init.
 

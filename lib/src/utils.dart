@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:wasm_ffi/ffi_bridge.dart';
-import 'package:wasm_ffi/ffi_utils_bridge.dart';
+import 'package:universal_ffi/ffi.dart';
+import 'package:universal_ffi/ffi_utils.dart';
 
 N valueOf<T, N extends num>(dynamic val) {
   if (val is N) {

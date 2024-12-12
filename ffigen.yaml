@@ -4,7 +4,7 @@ description: |
   Bindings for Sweph.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
-  Replace 'dart:ffi' with 'ffi_proxy.dart'
+  Replace 'dart:ffi' with 'package:universal_ffi/ffi.dart'
 output: 'lib/src/bindings.dart'
 headers:
   entry-points:
