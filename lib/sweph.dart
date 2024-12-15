@@ -55,8 +55,8 @@ class Sweph {
     _ffiHelper = await FfiHelper.load(
       modulePath ?? 'sweph',
       options: {
-        'is-ffi-plugin',
-        'is-standalone-wasm',
+        LoadOption.isFfiPlugin,
+        LoadOption.isStandaloneWasm,
       },
     );
     _assetsaver = await SwephAssetSaver.init(
