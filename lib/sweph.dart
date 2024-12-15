@@ -39,7 +39,7 @@ class Sweph {
   /// Should be called before any use of Sweph
   ///
   /// [modulePath] Path where the platform lib or wasm file is stored
-  ///   defaults to 'assets/packages/sweph/assets/sweph.wasm' for web and 'sweph' for other platforms
+  ///   NOTE: For ffi-plugin, this should be null
   /// [epheAssets] List of bundled ephemeris files to be loaded into sweph.
   ///   An [assetLoader] is needed to load these files.
   ///   For Flutter, use http get for web and rootBundle for other platforms
@@ -55,8 +55,8 @@ class Sweph {
     _ffiHelper = await FfiHelper.load(
       modulePath ?? 'sweph',
       options: {
-        'is-ffi-plugin',
-        'is-standalone-wasm',
+        if (modulePath == null) LoadOption.isFfiPlugin,
+        LoadOption.isStandaloneWasm,
       },
     );
     _assetsaver = await SwephAssetSaver.init(

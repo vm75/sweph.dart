@@ -1,3 +1,6 @@
+## [3.2.0+2.10.3]
+* Updated universal_ffi to version 1.1.0
+
 ## [3.1.0+2.10.3]
 * migrated to universl_ffi
 
