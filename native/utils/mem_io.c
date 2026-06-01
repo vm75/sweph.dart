@@ -17,6 +17,11 @@ typedef struct File {
 
 File* files = NULL;
 
+char* wasmGetenv(const char* name) {
+  (void)name;
+  return NULL;
+}
+
 int write_file(const char* path, char* contents, size_t len, int forceOverwrite) {
   File* file = (File*)fOpen(path, "");
   if (file != NULL) {

@@ -112,12 +112,10 @@ extension Utf8Pointer on Pointer<Uint8> {
   String toDartString({int? length}) {
     _ensureNotNullptr('toDartString');
     final codeUnits = cast<Uint8>();
-    if (length != null) {
-      RangeError.checkNotNegative(length, 'length');
-    } else {
-      length = _length(codeUnits);
-    }
-    return utf8.decode(codeUnits.asTypedList(length));
+    final codeUnitsLength = length == null
+        ? _length(codeUnits)
+        : RangeError.checkNotNegative(length, 'length');
+    return utf8.decode(codeUnits.asTypedList(codeUnitsLength));
   }
 
   static int _length(Pointer<Uint8> codeUnits) {
