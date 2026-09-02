@@ -52,16 +52,18 @@ Future<void> main() async {
 
 ## Licensing
 
-This library follows the licensing requirements for the Swiss Ephemeris by Astrodienst AG.
+This library follows the licensing model of the Swiss Ephemeris by Astrodienst AG. Detailed information and material classification are documented in [LICENSING.md](LICENSING.md).
 
-### - AGPL
+### AGPL-3.0-only (Open Source Path)
 
-Starting from version `2.10.02` and later, this library is licensed under `AGPL-3.0`.
-To install and use the latest version of this library under AGPL, use `flutter pub add sweph`.
+By default, this package and the bundled Swiss Ephemeris code are licensed under the GNU Affero General Public License Version 3 (**`AGPL-3.0-only`**).
 
-### - LGPL
+### LGPL-3.0-only (Professional License Path)
 
-If you own a professional license for the Swiss Ephemeris, you may use any version of this library under `LGPL-3.0`.
+For users who hold an applicable Swiss Ephemeris Professional License purchased directly from Astrodienst AG:
+- Clearly maintainer-authored portions of `sweph.dart` may additionally be used under **`LGPL-3.0-only`**.
+- This grant does **not** relicense material owned by Astrodienst AG (Swiss Ephemeris C source, ephemeris data files, and derived binaries remain governed by your Astrodienst license agreement).
+- See [LICENSING.md](LICENSING.md) for exact material classifications, notice preservation rules, and version-specific declarations (such as [`docs/licensing/3.2.1+2.10.3.md`](docs/licensing/3.2.1+2.10.3.md)).
 
 ## Versioning
 
