@@ -28,7 +28,7 @@ bump-version:
 	dart tool/bump_version.dart $(ARGS)
 
 # Wasm
-COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\"]"
+COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_write_file\"]"
 
 wasm: assets/sweph.wasm
 
