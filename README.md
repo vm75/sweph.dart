@@ -63,7 +63,7 @@ By default, this package and the bundled Swiss Ephemeris code are licensed under
 For users who hold an applicable Swiss Ephemeris Professional License purchased directly from Astrodienst AG:
 - Clearly maintainer-authored portions of `sweph.dart` may additionally be used under **`LGPL-3.0-only`**.
 - This grant does **not** relicense material owned by Astrodienst AG (Swiss Ephemeris C source, ephemeris data files, and derived binaries remain governed by your Astrodienst license agreement).
-- See [LICENSING.md](LICENSING.md) for exact material classifications, notice preservation rules, and version-specific declarations (such as [`docs/licensing/3.2.1+2.10.3.md`](docs/licensing/3.2.1+2.10.3.md)).
+- See [LICENSING.md](LICENSING.md) for exact material classifications, notice preservation rules, and version-specific declarations (such as [`doc/licensing/3.2.1+2.10.3.md`](doc/licensing/3.2.1+2.10.3.md)).
 
 ## Versioning
 
