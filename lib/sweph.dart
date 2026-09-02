@@ -12,6 +12,7 @@ import 'src/types.dart';
 import 'src/utils.dart';
 import 'src/wasm_asset_saver.dart'
     if (dart.library.ffi) 'src/ffi_asset_saver.dart';
+import 'src/web_loader.dart' if (dart.library.ffi) 'src/native_loader.dart';
 
 export 'src/types.dart';
 export 'src/wasm_asset_saver.dart'
@@ -52,13 +53,7 @@ class Sweph {
     AssetLoader? assetLoader,
     String? epheFilesPath,
   }) async {
-    _ffiHelper = await FfiHelper.load(
-      modulePath ?? 'sweph',
-      options: {
-        if (modulePath == null) LoadOption.isFfiPlugin,
-        LoadOption.isStandaloneWasm,
-      },
-    );
+    _ffiHelper = await loadSwephLibrary(modulePath);
     _assetsaver = await SwephAssetSaver.init(
       _ffiHelper.library,
       epheFilesPath ?? 'ephe_files',
