@@ -9,23 +9,28 @@ import 'abstract_asset_saver.dart';
 
 class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
   static SwephAssetSaver? _instance;
+  bool _directoryCreated = false;
 
   SwephAssetSaver._(super.epheFilesPath);
 
-  static Future<SwephAssetSaver> init(
-      DynamicLibrary library, String epheFilesPath) async {
-    if (_instance == null) {
-      _instance = SwephAssetSaver._(epheFilesPath);
-
-      final epheDir = Directory(epheFilesPath);
+  void _ensureDirectoryExists() {
+    if (_directoryCreated) return;
+    final epheDir = Directory(epheFilesPath);
+    if (!epheDir.existsSync()) {
       epheDir.createSync(recursive: true);
     }
+    _directoryCreated = true;
+  }
 
+  static Future<SwephAssetSaver> init(
+      DynamicLibrary library, String epheFilesPath) async {
+    _instance ??= SwephAssetSaver._(epheFilesPath);
     return _instance!;
   }
 
   @override
   Future<void> saveEpheFile(String destFile, Uint8List contents) async {
+    _ensureDirectoryExists();
     final destPath = File('$epheFilesPath/$destFile');
     if (destPath.existsSync()) {
       return;
@@ -40,6 +45,7 @@ class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
       return;
     }
 
+    _ensureDirectoryExists();
     for (final file in srcDir.listSync()) {
       if (file is! File) {
         continue;
@@ -55,6 +61,7 @@ class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
       return;
     }
 
+    _ensureDirectoryExists();
     final filename = basename(filePath);
     final destFile = File('$epheFilesPath/$filename');
     if (destFile.existsSync() && !forceOverwrite) {
