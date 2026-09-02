@@ -17,6 +17,23 @@ typedef struct File {
 
 File* files = NULL;
 
+// Stub for getenv: always returns NULL in WASM (no environment variables)
+char* fakeGetenv(const char* name) { return NULL; }
+
+// Replacement for file-io commands, so that there is no dependency on wasi_snapshot_preview1
+FILE* fOpen(const char* filename, const char* mode) {
+  struct File* filePtr = files;
+  while (filePtr != NULL) {
+    if (!strcmp(filePtr->name, filename)) {
+      filePtr->cursor = 0;
+      return (FILE*)filePtr;
+    }
+    filePtr = filePtr->next;
+  }
+
+  return NULL;
+}
+
 int write_file(const char* path, char* contents, size_t len, int forceOverwrite) {
   File* file = (File*)fOpen(path, "");
   if (file != NULL) {
@@ -42,20 +59,6 @@ int write_file(const char* path, char* contents, size_t len, int forceOverwrite)
   files = file;
 
   return 1;
-}
-
-// Replacement for file-io commands, so that there is no dependency on wasi_snapshot_preview1
-FILE* fOpen(const char* filename, const char* mode) {
-  struct File* filePtr = files;
-  while (filePtr != NULL) {
-    if (!strcmp(filePtr->name, filename)) {
-      filePtr->cursor = 0;
-      return (FILE*)filePtr;
-    }
-    filePtr = filePtr->next;
-  }
-
-  return NULL;
 }
 
 int fClose(FILE* stream) {

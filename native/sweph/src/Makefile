@@ -3,7 +3,7 @@
 # Redhat Enterprise Linux RHEL 7.
 
 # The mode marked as 'Linux' should also work with the GNU C compiler
-# gcc on other systems. 
+# gcc on other systems.
 
 # If you modify this makefile for another compiler, please
 # let us know. We would like to add as many variations as possible.
@@ -11,18 +11,17 @@
 # let us know. We like to fix the source code so that it compiles
 # free of warnings.
 # send email to the Swiss Ephemeris mailing list.
-# 
+#
 
-CFLAGS =  -g -Wall -fPIC # for Linux and other gcc systems
-CFLAGS =  -O2 -Wall -fPIC # for Linux and other gcc systems
-OP=$(CFLAGS)  
+CFLAGS = -Dftello=ftell -Dfseeko=fseek -O2 -Wall -fPIC # for Linux and other gcc systems
+OP=$(CFLAGS)
 CC=cc	#for Linux
 
 # compilation rule for general cases
 .o :
 	$(CC) $(OP) -o $@ $? -lm
 .c.o:
-	$(CC) -c $(OP) $<     
+	$(CC) -c $(OP) $<
 
 SWEOBJ = swedate.o swehouse.o swejpl.o swemmoon.o swemplan.o sweph.o\
 	 swephlib.o swecl.o swehel.o
@@ -62,7 +61,7 @@ test.exp:
 clean:
 	rm -f *.o swetest libswe*
 	cd setest && make clean
-	
+
 ###
 swecl.o: swejpl.h sweodef.h swephexp.h swedll.h sweph.h swephlib.h
 sweclips.o: sweodef.h swephexp.h swedll.h

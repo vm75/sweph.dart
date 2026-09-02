@@ -24,7 +24,7 @@ set_target_properties(sweph PROPERTIES
   OUTPUT_NAME "sweph"
 )
 
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+add_definitions(-D_CRT_SECURE_NO_WARNINGS -Dftello=ftell -Dfseeko=fseek)
 IF (WIN32)
   add_definitions(-DMAKE_DLL)
 ENDIF()

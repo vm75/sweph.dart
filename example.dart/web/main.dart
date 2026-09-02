@@ -2,7 +2,7 @@ import 'package:example_dart/example.dart';
 import 'package:web/web.dart';
 
 void setValue(String id, String value) {
-  (document.querySelector('#$id') as HTMLElement).text = value;
+  (document.querySelector('#$id') as HTMLElement).textContent = value;
 }
 
 void main() {
