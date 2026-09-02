@@ -20,16 +20,16 @@ References:
 import 'package:sweph/sweph.dart';
 
 Future<void> main() async {
-  // Sweph comes bundled with some ephe file. These are available for Flutter but not for vanilla Dart
-  // These or any other bundled ephe files can be initialized during Sweph init
-  // These are coped to <ApplicationSupportDirectory>/ephe_files folder for non-Web platforms
-  // For Web, this is the only way to provide ephe files, and they are loaded into memory
+  // Sweph comes bundled with some ephe files. These are available for Flutter but not for vanilla Dart.
+  // These or any other bundled ephe files can be initialized during Sweph.init.
+  // For non-Web platforms, these are copied to the epheFilesPath (e.g. <ApplicationSupportDirectory>/ephe_files).
+  // For Web, this is the only way to provide ephe files, and they are loaded into Wasm memory.
+  // NOTE: For standard Flutter apps, omit `modulePath` (it defaults to null to use native plugin loading).
   await Sweph.init(
-    modulePath: 'sweph', // where to load module from.
     epheAssets: [
       "packages/sweph/assets/ephe/sefstars.txt",
     ],
-    assetLoader: SomeLoader(), // platform-specific asset loader.
+    assetLoader: SomeLoader(), // platform-specific asset loader (e.g. rootBundle).
     epheFilesPath: 'ephe_files', // where to store ephe files.
   );
   // refer to example. Both Flutter and vanilla Dart examples are available
@@ -83,16 +83,47 @@ The following ephemeris files are bundled with this plugin:
 These could also be download from [https://www.astro.com/ftp/swisseph/ephe/](https://www.astro.com/ftp/swisseph/ephe/).
 More information can be found in the [Swiss Ephemeris files documentation](https://www.astro.com/ftp/swisseph/doc/swisseph.htm#_Toc58931065).
 
+## Platform Support and Packaging
+
+Sweph supports all Flutter platforms:
+
+* **macOS & iOS**: Fully supports both **Swift Package Manager** (default in Flutter 3.44+) and **CocoaPods**. `Package.swift` manifests are included for each platform, compiling the canonical C sources cleanly as dynamic frameworks.
+* **Android**: Modernized Gradle build supporting 16 KB page sizes with NDK r28 and compileSdk 36.
+* **Linux & Windows**: CMake-based native library compilation.
+* **Web**: Compiled to WebAssembly using Emscripten and standalone Wasm, loaded via `wasm_ffi` and compatible with both `dart2js` and `dart2wasm`.
+
+### Native Library Loading
+
+In ordinary Flutter applications, simply call `Sweph.init()` without specifying a `modulePath`:
+```dart
+await Sweph.init();
+```
+Flutter's plugin loader handles resolution of the native shared library/framework on all platforms automatically.
+
+For custom standalone Dart CLI scripts, desktop builds without Flutter tooling, or custom library paths, you can provide an explicit path:
+```dart
+await Sweph.init(modulePath: '/path/to/libsweph.dylib');
+```
+Alternatively, set the `SWEPH_DYLIB_PATH` environment variable.
+
+### Testing with `flutter_test`
+
+Because `flutter test` executes in a headless host test runner (`flutter_tester`) that does not automatically build or bundle native platform frameworks into `@rpath`:
+
+1. `Sweph.init()` includes automatic fallback resolution: if the application was previously built (via `flutter build macos`, `flutter run`, etc.), `Sweph.init()` locates the compiled framework in the project's build output (`build/macos/Build/Products/...`) and loads it seamlessly.
+2. Alternatively, specify an explicit library location via `Sweph.init(modulePath: ...)` or the `SWEPH_DYLIB_PATH` environment variable.
+3. For pure Dart unit tests that do not need Swiss Ephemeris calculations, you can test higher-level logic independently, or run integration tests via `flutter test integration_test` where the full native application bundle is executed.
+
 ## Using bundled Ephemeris files
-Sweph.init accepts a list of ephemeris files as assets. These could be any of the bundled ones or other app assets. It does not accept local file path!
+`Sweph.init` accepts a list of ephemeris files as assets. These could be any of the bundled ones or other app assets. It does not accept local file path!
 ### non-Web
 These are cached in \<ApplicationSupportDirectory\>/ephe_files folder. First load will be slow.
-Async methods swe_set_ephe_path & swe_set_jpl_file could be called to set new ephe files.
-If file already present, it is not overwritten, unless  forceOverwrite is true.
+Async methods `swe_set_ephe_path` & `swe_set_jpl_file` could be called to set new ephe files.
+If file already present, it is not overwritten, unless `forceOverwrite` is true.
 ### Web
-Sweph.init is the only way to provide ephe files, and they are loaded into memory. This is a limitation of the Web plugin.
-Calls to swe_set_ephe_path has no effect on Web. Only the loaded assets are used.
-If custom JPL files are needed, the need to be loaded as with the name "jpl_file.eph" during init and swe_set_jpl_file could be called.
+`Sweph.init` is the only way to provide ephe files, and they are loaded into memory. This is a limitation of the Web plugin.
+Calls to `swe_set_ephe_path` have no effect on Web. Only the loaded assets are used.
+If custom JPL files are needed, they need to be loaded with the name "jpl_file.eph" during init and `swe_set_jpl_file` could be called.
 
 ## Contributing
 
