@@ -67,7 +67,20 @@ For users who hold an applicable Swiss Ephemeris Professional License purchased 
 
 ## Versioning
 
-The Swiss Ephemeris version string is used as a build number in the version.
+This package integrates the upstream Swiss Ephemeris version into its composite version string using the format:
+
+```
+<package_version>+<sweph_version>
+```
+
+For example, in `4.0.0+2.10.3`:
+* **Package Version (`4.0.0`)**: Follows [Semantic Versioning (SemVer)](https://semver.org/) for Dart/Flutter wrapper APIs, platform integrations, build tooling, and package-level features or fixes:
+  * **Major**: Breaking API changes, major platform requirement shifts, or major toolchain updates.
+  * **Minor**: Backward-compatible new functionality or wrapper enhancements.
+  * **Patch**: Backward-compatible bug fixes and minor adjustments.
+* **Build Number (`+2.10.3`)**: Denotes the exact upstream Swiss Ephemeris C library version bundled in the release (extracted directly from `SE_VERSION` in `native/sweph/src/sweph.h`). Whenever the underlying Swiss Ephemeris C sources are upgraded, this build component is updated to reflect the upstream calculation engine version.
+
+Platform build files (`pubspec.yaml`, iOS/macOS Podspecs, Android Gradle, and Linux/Windows CMake) are synchronized automatically via `tool/bump_version.dart`.
 
 ## Ephemeris files
 

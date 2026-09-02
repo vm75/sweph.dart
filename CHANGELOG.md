@@ -1,5 +1,26 @@
+## [4.0.0+2.10.3]
+* **Platform & SDK Modernization**:
+  * Updated Dart SDK constraint to `^3.5.1` and modernized build tooling across platforms.
+  * Added Apple **Swift Package Manager (SwiftPM)** dynamic framework support for macOS and iOS (matching Flutter 3.44+ standards) alongside existing CocoaPods integration.
+  * Added Android 16 KB page-size compatibility with NDK r28 and compileSdk 36.
+  * Added full support for WebAssembly via `dart2wasm` and standalone Wasm builds (`wasm_ffi`).
+* **Dynamic Library Loading & Test Runner Improvements**:
+  * Added multi-tier fallback dynamic library loader in `Sweph.init`:
+    * Automatically resolves compiled framework artifacts during `flutter test` (`flutter_tester`).
+    * Supports custom shared library paths via `Sweph.init(modulePath: ...)` without name-mangling.
+    * Added environment variable override via `SWEPH_DYLIB_PATH`.
+    * Added process symbol fallback lookup.
+  * Lazily create ephemeris asset directories on write in native asset saver.
+* **Licensing & Maintenance**:
+  * Added comprehensive licensing documentation (`LICENSING.md`) detailing the dual-licensing structure (`AGPL-3.0-only` open source path and `LGPL-3.0-only` for Swiss Ephemeris Professional License holders).
+  * Added automated GitHub Actions publish workflow for package verification and publishing on version update.
+
+## [3.2.1+2.10.3]
+* Added package topics to `pubspec.yaml`.
+
 ## [3.2.0+2.10.3]
 * Updated universal_ffi to version 1.1.0
+
 
 ## [3.1.0+2.10.3]
 * migrated to universl_ffi
