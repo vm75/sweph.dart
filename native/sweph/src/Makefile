@@ -13,7 +13,7 @@
 # send email to the Swiss Ephemeris mailing list.
 #
 
-CFLAGS = -Dftello=ftell -Dfseeko=fseek -O2 -Wall -fPIC # for Linux and other gcc systems
+CFLAGS = -O2 -Wall -fPIC # for Linux and other gcc systems
 OP=$(CFLAGS)
 CC=cc	#for Linux
 
