@@ -29,9 +29,7 @@ void main() {
     setUpAll(() async {
       tempEpheDir = Directory.systemTemp.createTempSync('sweph_test_ephe');
       await Sweph.init(
-        epheAssets: [
-          'packages/sweph/assets/ephe/sefstars.txt',
-        ],
+        epheAssets: ['packages/sweph/assets/ephe/sefstars.txt'],
         assetLoader: _TestAssetLoader(),
         epheFilesPath: tempEpheDir.path,
       );
@@ -108,11 +106,7 @@ void main() {
 
     test('fixed-star calculation with loaded ephemeris asset', () {
       final jd = Sweph.swe_julday(2025, 1, 1, 12, CalendarType.SE_GREG_CAL);
-      final star = Sweph.swe_fixstar2_ut(
-        'Rohini',
-        jd,
-        SwephFlag.SEFLG_SWIEPH,
-      );
+      final star = Sweph.swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH);
       expect(star.name, contains('Rohini'));
       expect(star.coordinates.longitude, inInclusiveRange(0.0, 360.0));
       expect(star.coordinates.latitude, inInclusiveRange(-90.0, 90.0));

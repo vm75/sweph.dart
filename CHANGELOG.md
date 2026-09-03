@@ -1,9 +1,13 @@
-## [4.0.0+2.10.3]
-* **Platform & SDK Modernization**:
-  * Updated Dart SDK constraint to `^3.5.1` and modernized build tooling across platforms.
+## [4.1.0+2.10.3]
+* **Web / Wasm Stack Upgrade**:
+  * Raised minimum Dart SDK constraint to `^3.10.8` and upgraded `universal_ffi` to `^1.5.1` (with `wasm_ffi ^2.4.0`).
+  * Converted Web `write_file` binding to typed FFI signature (`NativeFunction<WriteFileNative>`) using `Pointer<Uint8>` and `Size`, replacing raw integer marshalling.
+  * Verified full runtime calculation behavior across both normal Flutter Web (`dart2js`) and Flutter Web compiled with `--wasm` (`dart2wasm`).
+* **CI**:
+  * Switched publish workflow to tag-based triggering (`v<version>` tag push) replacing fragile `HEAD~1` version-diff detection.
+  * Added tag-vs-pubspec version verification before publishing.
   * Added Apple **Swift Package Manager (SwiftPM)** dynamic framework support for macOS and iOS (matching Flutter 3.44+ standards) alongside existing CocoaPods integration.
   * Added Android 16 KB page-size compatibility with NDK r28 and compileSdk 36.
-  * Added full support for WebAssembly via `dart2wasm` and standalone Wasm builds (`wasm_ffi`).
 * **Dynamic Library Loading & Test Runner Improvements**:
   * Added multi-tier fallback dynamic library loader in `Sweph.init`:
     * Automatically resolves compiled framework artifacts during `flutter test` (`flutter_tester`).

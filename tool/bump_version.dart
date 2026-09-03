@@ -82,8 +82,9 @@ class Version {
       return null;
     }
 
-    final RegExp pattern =
-        RegExp('${prefix ?? ''}($versionRegex)${suffix ?? ''}');
+    final RegExp pattern = RegExp(
+      '${prefix ?? ''}($versionRegex)${suffix ?? ''}',
+    );
 
     for (final line in file.readAsLinesSync()) {
       final match = pattern.firstMatch(line);
@@ -224,7 +225,9 @@ class VersionUpdateHelper {
       var contents = file.readAsStringSync();
       if (isCMakefile) {
         contents = contents.replaceAll(
-            prefixedFrom.split('+')[0], prefixedTo.split('+')[0]);
+          prefixedFrom.split('+')[0],
+          prefixedTo.split('+')[0],
+        );
       } else {
         contents = contents.replaceAll(prefixedFrom, prefixedTo);
       }
@@ -321,10 +324,7 @@ void main(List<String> args) {
 
   try {
     final helper = VersionUpdateHelper(
-      VersionFileSpec(
-        'pubspec.yaml',
-        'version: ',
-      ),
+      VersionFileSpec('pubspec.yaml', 'version: '),
       VersionFileSpec(
         'native/sweph/src/sweph.h',
         '^#define SE_VERSION\\s+"',
@@ -333,22 +333,16 @@ void main(List<String> args) {
     );
 
     // Add files to update version
-    helper.addFilesWithVersion(
-      '\nversion: ',
-      ['pubspec.yaml'],
-    );
-    helper.addFilesWithVersion(
-      "\n  s.version          = '",
-      ['ios/sweph.podspec', 'macos/sweph.podspec'],
-    );
-    helper.addFilesWithVersion(
-      "\nversion '",
-      ['android/build.gradle'],
-    );
-    helper.addFilesWithVersion(
-      '} VERSION ',
-      ['linux/CMakeLists.txt', 'windows/CMakeLists.txt'],
-    );
+    helper.addFilesWithVersion('\nversion: ', ['pubspec.yaml']);
+    helper.addFilesWithVersion("\n  s.version          = '", [
+      'ios/sweph.podspec',
+      'macos/sweph.podspec',
+    ]);
+    helper.addFilesWithVersion("\nversion '", ['android/build.gradle']);
+    helper.addFilesWithVersion('} VERSION ', [
+      'linux/CMakeLists.txt',
+      'windows/CMakeLists.txt',
+    ]);
 
     // Get changelogs
     helper.setChangelog(changeLogs);

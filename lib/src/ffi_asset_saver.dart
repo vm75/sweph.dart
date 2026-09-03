@@ -23,7 +23,9 @@ class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
   }
 
   static Future<SwephAssetSaver> init(
-      DynamicLibrary library, String epheFilesPath) async {
+    DynamicLibrary library,
+    String epheFilesPath,
+  ) async {
     _instance ??= SwephAssetSaver._(epheFilesPath);
     return _instance!;
   }

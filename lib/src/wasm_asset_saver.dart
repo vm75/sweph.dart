@@ -3,12 +3,21 @@ import 'dart:typed_data';
 import 'package:universal_ffi/ffi.dart';
 import 'abstract_asset_saver.dart';
 
-typedef WriteFile = int Function(
-  int path,
-  int contents,
-  int len,
-  int forceOverwrite,
-);
+typedef WriteFileNative =
+    Int32 Function(
+      Pointer<Uint8> path,
+      Pointer<Uint8> contents,
+      Size len,
+      Int32 forceOverwrite,
+    );
+
+typedef WriteFile =
+    int Function(
+      Pointer<Uint8> path,
+      Pointer<Uint8> contents,
+      int len,
+      int forceOverwrite,
+    );
 
 class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
   static SwephAssetSaver? _instance;
@@ -17,11 +26,15 @@ class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
   late WriteFile writeFile;
 
   SwephAssetSaver._(super.epheFilesPath, this.library) {
-    writeFile = library.lookupFunction<WriteFile, WriteFile>('write_file');
+    writeFile = library
+        .lookup<NativeFunction<WriteFileNative>>('write_file')
+        .asFunction<WriteFile>();
   }
 
   static Future<SwephAssetSaver> init(
-      DynamicLibrary library, String epheFilesPath) async {
+    DynamicLibrary library,
+    String epheFilesPath,
+  ) async {
     _instance ??= SwephAssetSaver._(epheFilesPath, library);
 
     return _instance!;
@@ -36,18 +49,17 @@ class SwephAssetSaver extends AbstractAssetSaver<DynamicLibrary, Allocator> {
     final destPathPtr = _copyToWasm(Uint8List.fromList(destPath.codeUnits));
     final dataPtr = _copyToWasm(contents);
 
-    // ignore: avoid_dynamic_calls
     writeFile.call(destPathPtr, dataPtr, contents.length, 0);
 
-    library.module.free(destPathPtr);
+    library.module.free(destPathPtr.address);
   }
 
-  int _copyToWasm(Uint8List data) {
+  Pointer<Uint8> _copyToWasm(Uint8List data) {
     final size = data.length;
     final dataPtr = library.module.malloc(size + 1);
     final memoryView = library.module.heap.asUint8List();
     memoryView.setAll(dataPtr, data);
     memoryView[dataPtr + size] = 0;
-    return dataPtr;
+    return Pointer<Uint8>.fromAddress(dataPtr);
   }
 }
