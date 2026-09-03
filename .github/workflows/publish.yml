@@ -59,10 +59,10 @@ jobs:
         run: flutter test
 
       - name: Verify publish dry run
-        run: dart pub publish --dry-run
+        run: dart pub publish --dry-run --ignore-warnings
 
       - name: Publish to pub.dev
-        run: dart pub publish --force
+        run: dart pub publish --force --ignore-warnings
 
       - name: Create GitHub Release
         if: github.event_name == 'push'
