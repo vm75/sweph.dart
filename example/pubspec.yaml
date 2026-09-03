@@ -22,12 +22,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-dependency_overrides:
-  universal_ffi:
-    path: ../../universal_ffi
-  wasm_ffi:
-    path: ../../wasm_ffi
-
 
 flutter:
   uses-material-design: true

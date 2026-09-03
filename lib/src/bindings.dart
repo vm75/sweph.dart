@@ -16,16 +16,17 @@ import 'package:universal_ffi/ffi.dart' as ffi;
 class SwephBindings {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-  _lookup;
+      _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   SwephBindings(ffi.DynamicLibrary dynamicLibrary)
-    : _lookup = dynamicLibrary.lookup;
+      : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   SwephBindings.fromLookup(
-    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
-  ) : _lookup = lookup;
+      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
+          lookup)
+      : _lookup = lookup;
 
   /// ext_def(x) evaluates to x on Unix
   int swe_heliacal_ut(
@@ -52,25 +53,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_heliacal_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_heliacal_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_heliacal_ut');
-  late final _swe_heliacal_ut = _swe_heliacal_utPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_heliacal_ut');
+  late final _swe_heliacal_ut = _swe_heliacal_utPtr.asFunction<
+      int Function(
           double,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
@@ -79,9 +75,7 @@ class SwephBindings {
           int,
           int,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_heliacal_pheno_ut(
     double tjd_ut,
@@ -107,25 +101,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_heliacal_pheno_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_heliacal_pheno_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_heliacal_pheno_ut');
-  late final _swe_heliacal_pheno_ut = _swe_heliacal_pheno_utPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_heliacal_pheno_ut');
+  late final _swe_heliacal_pheno_ut = _swe_heliacal_pheno_utPtr.asFunction<
+      int Function(
           double,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
@@ -134,9 +123,7 @@ class SwephBindings {
           int,
           int,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_vis_limit_mag(
     double tjdut,
@@ -160,24 +147,19 @@ class SwephBindings {
     );
   }
 
-  late final _swe_vis_limit_magPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_vis_limit_magPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_vis_limit_mag');
-  late final _swe_vis_limit_mag = _swe_vis_limit_magPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_vis_limit_mag');
+  late final _swe_vis_limit_mag = _swe_vis_limit_magPtr.asFunction<
+      int Function(
           double,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
@@ -185,34 +167,36 @@ class SwephBindings {
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// exports from sweph.c
-  ffi.Pointer<ffi.Uint8> swe_version(ffi.Pointer<ffi.Uint8> arg0) {
-    return _swe_version(arg0);
+  ffi.Pointer<ffi.Uint8> swe_version(
+    ffi.Pointer<ffi.Uint8> arg0,
+  ) {
+    return _swe_version(
+      arg0,
+    );
   }
 
-  late final _swe_versionPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>)
-        >
-      >('swe_version');
+  late final _swe_versionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>)>>('swe_version');
   late final _swe_version = _swe_versionPtr
       .asFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>)>();
 
-  ffi.Pointer<ffi.Uint8> swe_get_library_path(ffi.Pointer<ffi.Uint8> arg0) {
-    return _swe_get_library_path(arg0);
+  ffi.Pointer<ffi.Uint8> swe_get_library_path(
+    ffi.Pointer<ffi.Uint8> arg0,
+  ) {
+    return _swe_get_library_path(
+      arg0,
+    );
   }
 
-  late final _swe_get_library_pathPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>)
-        >
-      >('swe_get_library_path');
+  late final _swe_get_library_pathPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>)>>('swe_get_library_path');
   late final _swe_get_library_path = _swe_get_library_pathPtr
       .asFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>)>();
 
@@ -224,31 +208,22 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_calc(tjd, ipl, iflag, xx, serr);
+    return _swe_calc(
+      tjd,
+      ipl,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_calcPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            ffi.Int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_calc');
-  late final _swe_calc = _swe_calcPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_calcPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, ffi.Int32, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_calc');
+  late final _swe_calc = _swe_calcPtr.asFunction<
+      int Function(
+          double, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_calc_ut(
     double tjd_ut,
@@ -257,31 +232,22 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_calc_ut(tjd_ut, ipl, iflag, xx, serr);
+    return _swe_calc_ut(
+      tjd_ut,
+      ipl,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_calc_utPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_calc_ut');
-  late final _swe_calc_ut = _swe_calc_utPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_calc_utPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_calc_ut');
+  late final _swe_calc_ut = _swe_calc_utPtr.asFunction<
+      int Function(
+          double, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_calc_pctr(
     double tjd,
@@ -291,33 +257,28 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xxret,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_calc_pctr(tjd, ipl, iplctr, iflag, xxret, serr);
+    return _swe_calc_pctr(
+      tjd,
+      ipl,
+      iplctr,
+      iflag,
+      xxret,
+      serr,
+    );
   }
 
-  late final _swe_calc_pctrPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_calc_pctrPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_calc_pctr');
-  late final _swe_calc_pctr = _swe_calc_pctrPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_calc_pctr');
+  late final _swe_calc_pctr = _swe_calc_pctrPtr.asFunction<
+      int Function(double, int, int, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   double swe_solcross(
     double x2cross,
@@ -325,24 +286,20 @@ class SwephBindings {
     int flag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_solcross(x2cross, jd_et, flag, serr);
+    return _swe_solcross(
+      x2cross,
+      jd_et,
+      flag,
+      serr,
+    );
   }
 
-  late final _swe_solcrossPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_solcross');
-  late final _swe_solcross = _swe_solcrossPtr
-      .asFunction<
-        double Function(double, double, int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_solcrossPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Double, ffi.Double, int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_solcross');
+  late final _swe_solcross = _swe_solcrossPtr.asFunction<
+      double Function(double, double, int, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_solcross_ut(
     double x2cross,
@@ -350,24 +307,20 @@ class SwephBindings {
     int flag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_solcross_ut(x2cross, jd_ut, flag, serr);
+    return _swe_solcross_ut(
+      x2cross,
+      jd_ut,
+      flag,
+      serr,
+    );
   }
 
-  late final _swe_solcross_utPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_solcross_ut');
-  late final _swe_solcross_ut = _swe_solcross_utPtr
-      .asFunction<
-        double Function(double, double, int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_solcross_utPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Double, ffi.Double, int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_solcross_ut');
+  late final _swe_solcross_ut = _swe_solcross_utPtr.asFunction<
+      double Function(double, double, int, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_mooncross(
     double x2cross,
@@ -375,24 +328,20 @@ class SwephBindings {
     int flag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_mooncross(x2cross, jd_et, flag, serr);
+    return _swe_mooncross(
+      x2cross,
+      jd_et,
+      flag,
+      serr,
+    );
   }
 
-  late final _swe_mooncrossPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_mooncross');
-  late final _swe_mooncross = _swe_mooncrossPtr
-      .asFunction<
-        double Function(double, double, int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_mooncrossPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Double, ffi.Double, int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_mooncross');
+  late final _swe_mooncross = _swe_mooncrossPtr.asFunction<
+      double Function(double, double, int, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_mooncross_ut(
     double x2cross,
@@ -400,24 +349,20 @@ class SwephBindings {
     int flag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_mooncross_ut(x2cross, jd_ut, flag, serr);
+    return _swe_mooncross_ut(
+      x2cross,
+      jd_ut,
+      flag,
+      serr,
+    );
   }
 
-  late final _swe_mooncross_utPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_mooncross_ut');
-  late final _swe_mooncross_ut = _swe_mooncross_utPtr
-      .asFunction<
-        double Function(double, double, int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_mooncross_utPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Double, ffi.Double, int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_mooncross_ut');
+  late final _swe_mooncross_ut = _swe_mooncross_utPtr.asFunction<
+      double Function(double, double, int, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_mooncross_node(
     double jd_et,
@@ -426,31 +371,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xlat,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_mooncross_node(jd_et, flag, xlon, xlat, serr);
+    return _swe_mooncross_node(
+      jd_et,
+      flag,
+      xlon,
+      xlat,
+      serr,
+    );
   }
 
-  late final _swe_mooncross_nodePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_mooncross_nodePtr = _lookup<
+      ffi.NativeFunction<
           ffi.Double Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_mooncross_node');
-  late final _swe_mooncross_node = _swe_mooncross_nodePtr
-      .asFunction<
-        double Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_mooncross_node');
+  late final _swe_mooncross_node = _swe_mooncross_nodePtr.asFunction<
+      double Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_mooncross_node_ut(
     double jd_ut,
@@ -459,31 +399,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xlat,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_mooncross_node_ut(jd_ut, flag, xlon, xlat, serr);
+    return _swe_mooncross_node_ut(
+      jd_ut,
+      flag,
+      xlon,
+      xlat,
+      serr,
+    );
   }
 
-  late final _swe_mooncross_node_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_mooncross_node_utPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Double Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_mooncross_node_ut');
-  late final _swe_mooncross_node_ut = _swe_mooncross_node_utPtr
-      .asFunction<
-        double Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_mooncross_node_ut');
+  late final _swe_mooncross_node_ut = _swe_mooncross_node_utPtr.asFunction<
+      double Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_helio_cross(
     int ipl,
@@ -494,35 +429,30 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> jd_cross,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_helio_cross(ipl, x2cross, jd_et, iflag, dir, jd_cross, serr);
+    return _swe_helio_cross(
+      ipl,
+      x2cross,
+      jd_et,
+      iflag,
+      dir,
+      jd_cross,
+      serr,
+    );
   }
 
-  late final _swe_helio_crossPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_helio_crossPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            int32,
-            ffi.Double,
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_helio_cross');
-  late final _swe_helio_cross = _swe_helio_crossPtr
-      .asFunction<
-        int Function(
-          int,
-          double,
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              int32,
+              ffi.Double,
+              ffi.Double,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_helio_cross');
+  late final _swe_helio_cross = _swe_helio_crossPtr.asFunction<
+      int Function(int, double, double, int, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_helio_cross_ut(
     int ipl,
@@ -533,35 +463,30 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> jd_cross,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_helio_cross_ut(ipl, x2cross, jd_ut, iflag, dir, jd_cross, serr);
+    return _swe_helio_cross_ut(
+      ipl,
+      x2cross,
+      jd_ut,
+      iflag,
+      dir,
+      jd_cross,
+      serr,
+    );
   }
 
-  late final _swe_helio_cross_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_helio_cross_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            int32,
-            ffi.Double,
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_helio_cross_ut');
-  late final _swe_helio_cross_ut = _swe_helio_cross_utPtr
-      .asFunction<
-        int Function(
-          int,
-          double,
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              int32,
+              ffi.Double,
+              ffi.Double,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_helio_cross_ut');
+  late final _swe_helio_cross_ut = _swe_helio_cross_utPtr.asFunction<
+      int Function(int, double, double, int, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// fixed stars
   int swe_fixstar(
@@ -571,31 +496,22 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar(star, tjd, iflag, xx, serr);
+    return _swe_fixstar(
+      star,
+      tjd,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_fixstarPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar');
-  late final _swe_fixstar = _swe_fixstarPtr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_fixstarPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Double, int32,
+              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>>('swe_fixstar');
+  late final _swe_fixstar = _swe_fixstarPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_fixstar_ut(
     ffi.Pointer<ffi.Uint8> star,
@@ -604,58 +520,46 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar_ut(star, tjd_ut, iflag, xx, serr);
+    return _swe_fixstar_ut(
+      star,
+      tjd_ut,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_fixstar_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_fixstar_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar_ut');
-  late final _swe_fixstar_ut = _swe_fixstar_utPtr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_fixstar_ut');
+  late final _swe_fixstar_ut = _swe_fixstar_utPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_fixstar_mag(
     ffi.Pointer<ffi.Uint8> star,
     ffi.Pointer<ffi.Double> mag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar_mag(star, mag, serr);
+    return _swe_fixstar_mag(
+      star,
+      mag,
+      serr,
+    );
   }
 
-  late final _swe_fixstar_magPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar_mag');
-  late final _swe_fixstar_mag = _swe_fixstar_magPtr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_fixstar_magPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_fixstar_mag');
+  late final _swe_fixstar_mag = _swe_fixstar_magPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_fixstar2(
     ffi.Pointer<ffi.Uint8> star,
@@ -664,31 +568,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar2(star, tjd, iflag, xx, serr);
+    return _swe_fixstar2(
+      star,
+      tjd,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_fixstar2Ptr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_fixstar2Ptr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar2');
-  late final _swe_fixstar2 = _swe_fixstar2Ptr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_fixstar2');
+  late final _swe_fixstar2 = _swe_fixstar2Ptr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_fixstar2_ut(
     ffi.Pointer<ffi.Uint8> star,
@@ -697,137 +596,142 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xx,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar2_ut(star, tjd_ut, iflag, xx, serr);
+    return _swe_fixstar2_ut(
+      star,
+      tjd_ut,
+      iflag,
+      xx,
+      serr,
+    );
   }
 
-  late final _swe_fixstar2_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_fixstar2_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar2_ut');
-  late final _swe_fixstar2_ut = _swe_fixstar2_utPtr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_fixstar2_ut');
+  late final _swe_fixstar2_ut = _swe_fixstar2_utPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_fixstar2_mag(
     ffi.Pointer<ffi.Uint8> star,
     ffi.Pointer<ffi.Double> mag,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_fixstar2_mag(star, mag, serr);
+    return _swe_fixstar2_mag(
+      star,
+      mag,
+      serr,
+    );
   }
 
-  late final _swe_fixstar2_magPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_fixstar2_mag');
-  late final _swe_fixstar2_mag = _swe_fixstar2_magPtr
-      .asFunction<
-        int Function(
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_fixstar2_magPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_fixstar2_mag');
+  late final _swe_fixstar2_mag = _swe_fixstar2_magPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// close Swiss Ephemeris
   void swe_close() {
     return _swe_close();
   }
 
-  late final _swe_closePtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>(
-    'swe_close',
-  );
+  late final _swe_closePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('swe_close');
   late final _swe_close = _swe_closePtr.asFunction<void Function()>();
 
   /// set directory path of ephemeris files
-  void swe_set_ephe_path(ffi.Pointer<ffi.Uint8> path) {
-    return _swe_set_ephe_path(path);
+  void swe_set_ephe_path(
+    ffi.Pointer<ffi.Uint8> path,
+  ) {
+    return _swe_set_ephe_path(
+      path,
+    );
   }
 
   late final _swe_set_ephe_pathPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Uint8>)>>(
-        'swe_set_ephe_path',
-      );
-  late final _swe_set_ephe_path = _swe_set_ephe_pathPtr
-      .asFunction<void Function(ffi.Pointer<ffi.Uint8>)>();
+          'swe_set_ephe_path');
+  late final _swe_set_ephe_path =
+      _swe_set_ephe_pathPtr.asFunction<void Function(ffi.Pointer<ffi.Uint8>)>();
 
   /// set file name of JPL file
-  void swe_set_jpl_file(ffi.Pointer<ffi.Uint8> fname) {
-    return _swe_set_jpl_file(fname);
+  void swe_set_jpl_file(
+    ffi.Pointer<ffi.Uint8> fname,
+  ) {
+    return _swe_set_jpl_file(
+      fname,
+    );
   }
 
   late final _swe_set_jpl_filePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Uint8>)>>(
-        'swe_set_jpl_file',
-      );
-  late final _swe_set_jpl_file = _swe_set_jpl_filePtr
-      .asFunction<void Function(ffi.Pointer<ffi.Uint8>)>();
+          'swe_set_jpl_file');
+  late final _swe_set_jpl_file =
+      _swe_set_jpl_filePtr.asFunction<void Function(ffi.Pointer<ffi.Uint8>)>();
 
   /// get planet name
   ffi.Pointer<ffi.Uint8> swe_get_planet_name(
     int ipl,
     ffi.Pointer<ffi.Uint8> spname,
   ) {
-    return _swe_get_planet_name(ipl, spname);
+    return _swe_get_planet_name(
+      ipl,
+      spname,
+    );
   }
 
-  late final _swe_get_planet_namePtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(ffi.Int32, ffi.Pointer<ffi.Uint8>)
-        >
-      >('swe_get_planet_name');
-  late final _swe_get_planet_name = _swe_get_planet_namePtr
-      .asFunction<
-        ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_get_planet_namePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Int32, ffi.Pointer<ffi.Uint8>)>>('swe_get_planet_name');
+  late final _swe_get_planet_name = _swe_get_planet_namePtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Uint8>)>();
 
   /// set geographic position of observer
-  void swe_set_topo(double geolon, double geolat, double geoalt) {
-    return _swe_set_topo(geolon, geolat, geoalt);
+  void swe_set_topo(
+    double geolon,
+    double geolat,
+    double geoalt,
+  ) {
+    return _swe_set_topo(
+      geolon,
+      geolat,
+      geoalt,
+    );
   }
 
-  late final _swe_set_topoPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(ffi.Double, ffi.Double, ffi.Double)
-        >
-      >('swe_set_topo');
-  late final _swe_set_topo = _swe_set_topoPtr
-      .asFunction<void Function(double, double, double)>();
+  late final _swe_set_topoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Double, ffi.Double, ffi.Double)>>('swe_set_topo');
+  late final _swe_set_topo =
+      _swe_set_topoPtr.asFunction<void Function(double, double, double)>();
 
   /// set sidereal mode
-  void swe_set_sid_mode(int sid_mode, double t0, double ayan_t0) {
-    return _swe_set_sid_mode(sid_mode, t0, ayan_t0);
+  void swe_set_sid_mode(
+    int sid_mode,
+    double t0,
+    double ayan_t0,
+  ) {
+    return _swe_set_sid_mode(
+      sid_mode,
+      t0,
+      ayan_t0,
+    );
   }
 
-  late final _swe_set_sid_modePtr =
-      _lookup<
-        ffi.NativeFunction<ffi.Void Function(int32, ffi.Double, ffi.Double)>
-      >('swe_set_sid_mode');
-  late final _swe_set_sid_mode = _swe_set_sid_modePtr
-      .asFunction<void Function(int, double, double)>();
+  late final _swe_set_sid_modePtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(int32, ffi.Double, ffi.Double)>>(
+      'swe_set_sid_mode');
+  late final _swe_set_sid_mode =
+      _swe_set_sid_modePtr.asFunction<void Function(int, double, double)>();
 
   /// get ayanamsa
   int swe_get_ayanamsa_ex(
@@ -836,29 +740,21 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> daya,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_get_ayanamsa_ex(tjd_et, iflag, daya, serr);
+    return _swe_get_ayanamsa_ex(
+      tjd_et,
+      iflag,
+      daya,
+      serr,
+    );
   }
 
-  late final _swe_get_ayanamsa_exPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_get_ayanamsa_ex');
-  late final _swe_get_ayanamsa_ex = _swe_get_ayanamsa_exPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_get_ayanamsa_exPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_get_ayanamsa_ex');
+  late final _swe_get_ayanamsa_ex = _swe_get_ayanamsa_exPtr.asFunction<
+      int Function(
+          double, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_get_ayanamsa_ex_ut(
     double tjd_ut,
@@ -866,60 +762,61 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> daya,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_get_ayanamsa_ex_ut(tjd_ut, iflag, daya, serr);
+    return _swe_get_ayanamsa_ex_ut(
+      tjd_ut,
+      iflag,
+      daya,
+      serr,
+    );
   }
 
-  late final _swe_get_ayanamsa_ex_utPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_get_ayanamsa_ex_ut');
-  late final _swe_get_ayanamsa_ex_ut = _swe_get_ayanamsa_ex_utPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_get_ayanamsa_ex_utPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_get_ayanamsa_ex_ut');
+  late final _swe_get_ayanamsa_ex_ut = _swe_get_ayanamsa_ex_utPtr.asFunction<
+      int Function(
+          double, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
-  double swe_get_ayanamsa(double tjd_et) {
-    return _swe_get_ayanamsa(tjd_et);
+  double swe_get_ayanamsa(
+    double tjd_et,
+  ) {
+    return _swe_get_ayanamsa(
+      tjd_et,
+    );
   }
 
   late final _swe_get_ayanamsaPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_get_ayanamsa',
-      );
-  late final _swe_get_ayanamsa = _swe_get_ayanamsaPtr
-      .asFunction<double Function(double)>();
+          'swe_get_ayanamsa');
+  late final _swe_get_ayanamsa =
+      _swe_get_ayanamsaPtr.asFunction<double Function(double)>();
 
-  double swe_get_ayanamsa_ut(double tjd_ut) {
-    return _swe_get_ayanamsa_ut(tjd_ut);
+  double swe_get_ayanamsa_ut(
+    double tjd_ut,
+  ) {
+    return _swe_get_ayanamsa_ut(
+      tjd_ut,
+    );
   }
 
   late final _swe_get_ayanamsa_utPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_get_ayanamsa_ut',
-      );
-  late final _swe_get_ayanamsa_ut = _swe_get_ayanamsa_utPtr
-      .asFunction<double Function(double)>();
+          'swe_get_ayanamsa_ut');
+  late final _swe_get_ayanamsa_ut =
+      _swe_get_ayanamsa_utPtr.asFunction<double Function(double)>();
 
-  ffi.Pointer<ffi.Uint8> swe_get_ayanamsa_name(int isidmode) {
-    return _swe_get_ayanamsa_name(isidmode);
+  ffi.Pointer<ffi.Uint8> swe_get_ayanamsa_name(
+    int isidmode,
+  ) {
+    return _swe_get_ayanamsa_name(
+      isidmode,
+    );
   }
 
   late final _swe_get_ayanamsa_namePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(int32)>>(
-        'swe_get_ayanamsa_name',
-      );
+          'swe_get_ayanamsa_name');
   late final _swe_get_ayanamsa_name = _swe_get_ayanamsa_namePtr
       .asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
 
@@ -929,29 +826,25 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> tfend,
     ffi.Pointer<ffi.Int32> denum,
   ) {
-    return _swe_get_current_file_data(ifno, tfstart, tfend, denum);
+    return _swe_get_current_file_data(
+      ifno,
+      tfstart,
+      tfend,
+      denum,
+    );
   }
 
-  late final _swe_get_current_file_dataPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_get_current_file_dataPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Int32>,
-          )
-        >
-      >('swe_get_current_file_data');
-  late final _swe_get_current_file_data = _swe_get_current_file_dataPtr
-      .asFunction<
-        ffi.Pointer<ffi.Uint8> Function(
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Int32>,
-        )
-      >();
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Int32>)>>('swe_get_current_file_data');
+  late final _swe_get_current_file_data =
+      _swe_get_current_file_dataPtr.asFunction<
+          ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Int32>)>();
 
   /// exports from swedate.c
   int swe_date_conversion(
@@ -962,45 +855,45 @@ class SwephBindings {
     int c,
     ffi.Pointer<ffi.Double> tjd,
   ) {
-    return _swe_date_conversion(y, m, d, utime, c, tjd);
+    return _swe_date_conversion(
+      y,
+      m,
+      d,
+      utime,
+      c,
+      tjd,
+    );
   }
 
-  late final _swe_date_conversionPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Int32 Function(
-            ffi.Int32,
-            ffi.Int32,
-            ffi.Int32,
-            ffi.Double,
-            ffi.Uint8,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_date_conversion');
-  late final _swe_date_conversion = _swe_date_conversionPtr
-      .asFunction<
-        int Function(int, int, int, double, int, ffi.Pointer<ffi.Double>)
-      >();
+  late final _swe_date_conversionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Double,
+              ffi.Uint8, ffi.Pointer<ffi.Double>)>>('swe_date_conversion');
+  late final _swe_date_conversion = _swe_date_conversionPtr.asFunction<
+      int Function(int, int, int, double, int, ffi.Pointer<ffi.Double>)>();
 
-  double swe_julday(int year, int month, int day, double hour, int gregflag) {
-    return _swe_julday(year, month, day, hour, gregflag);
+  double swe_julday(
+    int year,
+    int month,
+    int day,
+    double hour,
+    int gregflag,
+  ) {
+    return _swe_julday(
+      year,
+      month,
+      day,
+      hour,
+      gregflag,
+    );
   }
 
-  late final _swe_juldayPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(
-            ffi.Int32,
-            ffi.Int32,
-            ffi.Int32,
-            ffi.Double,
-            ffi.Int32,
-          )
-        >
-      >('swe_julday');
-  late final _swe_julday = _swe_juldayPtr
-      .asFunction<double Function(int, int, int, double, int)>();
+  late final _swe_juldayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Double,
+              ffi.Int32)>>('swe_julday');
+  late final _swe_julday =
+      _swe_juldayPtr.asFunction<double Function(int, int, int, double, int)>();
 
   void swe_revjul(
     double jd,
@@ -1010,33 +903,28 @@ class SwephBindings {
     ffi.Pointer<ffi.Int32> jday,
     ffi.Pointer<ffi.Double> jut,
   ) {
-    return _swe_revjul(jd, gregflag, jyear, jmon, jday, jut);
+    return _swe_revjul(
+      jd,
+      gregflag,
+      jyear,
+      jmon,
+      jday,
+      jut,
+    );
   }
 
-  late final _swe_revjulPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_revjulPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Int32>,
-            ffi.Pointer<ffi.Int32>,
-            ffi.Pointer<ffi.Int32>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_revjul');
-  late final _swe_revjul = _swe_revjulPtr
-      .asFunction<
-        void Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Int32>,
-          ffi.Pointer<ffi.Int32>,
-          ffi.Pointer<ffi.Int32>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ffi.Double>)>>('swe_revjul');
+  late final _swe_revjul = _swe_revjulPtr.asFunction<
+      void Function(double, int, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int32>,
+          ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Double>)>();
 
   int swe_utc_to_jd(
     int iyear,
@@ -1062,36 +950,21 @@ class SwephBindings {
     );
   }
 
-  late final _swe_utc_to_jdPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_utc_to_jdPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            int32,
-            int32,
-            int32,
-            int32,
-            int32,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_utc_to_jd');
-  late final _swe_utc_to_jd = _swe_utc_to_jdPtr
-      .asFunction<
-        int Function(
-          int,
-          int,
-          int,
-          int,
-          int,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              int32,
+              int32,
+              int32,
+              int32,
+              int32,
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_utc_to_jd');
+  late final _swe_utc_to_jd = _swe_utc_to_jdPtr.asFunction<
+      int Function(int, int, int, int, int, double, int,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   void swe_jdet_to_utc(
     double tjd_et,
@@ -1115,24 +988,19 @@ class SwephBindings {
     );
   }
 
-  late final _swe_jdet_to_utcPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_jdet_to_utcPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_jdet_to_utc');
-  late final _swe_jdet_to_utc = _swe_jdet_to_utcPtr
-      .asFunction<
-        void Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<ffi.Double>)>>('swe_jdet_to_utc');
+  late final _swe_jdet_to_utc = _swe_jdet_to_utcPtr.asFunction<
+      void Function(
           double,
           int,
           ffi.Pointer<int32>,
@@ -1140,9 +1008,7 @@ class SwephBindings {
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+          ffi.Pointer<ffi.Double>)>();
 
   void swe_jdut1_to_utc(
     double tjd_ut,
@@ -1166,24 +1032,19 @@ class SwephBindings {
     );
   }
 
-  late final _swe_jdut1_to_utcPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_jdut1_to_utcPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_jdut1_to_utc');
-  late final _swe_jdut1_to_utc = _swe_jdut1_to_utcPtr
-      .asFunction<
-        void Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<ffi.Double>)>>('swe_jdut1_to_utc');
+  late final _swe_jdut1_to_utc = _swe_jdut1_to_utcPtr.asFunction<
+      void Function(
           double,
           int,
           ffi.Pointer<int32>,
@@ -1191,9 +1052,7 @@ class SwephBindings {
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+          ffi.Pointer<ffi.Double>)>();
 
   void swe_utc_time_zone(
     int iyear,
@@ -1227,29 +1086,24 @@ class SwephBindings {
     );
   }
 
-  late final _swe_utc_time_zonePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_utc_time_zonePtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            int32,
-            int32,
-            int32,
-            int32,
-            int32,
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_utc_time_zone');
-  late final _swe_utc_time_zone = _swe_utc_time_zonePtr
-      .asFunction<
-        void Function(
+              int32,
+              int32,
+              int32,
+              int32,
+              int32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<ffi.Double>)>>('swe_utc_time_zone');
+  late final _swe_utc_time_zone = _swe_utc_time_zonePtr.asFunction<
+      void Function(
           int,
           int,
           int,
@@ -1262,9 +1116,7 @@ class SwephBindings {
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
           ffi.Pointer<int32>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+          ffi.Pointer<ffi.Double>)>();
 
   /// exports from swehouse.c
   int swe_houses(
@@ -1275,33 +1127,23 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> cusps,
     ffi.Pointer<ffi.Double> ascmc,
   ) {
-    return _swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+    return _swe_houses(
+      tjd_ut,
+      geolat,
+      geolon,
+      hsys,
+      cusps,
+      ascmc,
+    );
   }
 
-  late final _swe_housesPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Int32 Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_houses');
-  late final _swe_houses = _swe_housesPtr
-      .asFunction<
-        int Function(
-          double,
-          double,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+  late final _swe_housesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Double, ffi.Double, ffi.Double, ffi.Int32,
+              ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>>('swe_houses');
+  late final _swe_houses = _swe_housesPtr.asFunction<
+      int Function(double, double, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
 
   int swe_houses_ex(
     double tjd_ut,
@@ -1312,35 +1154,30 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> cusps,
     ffi.Pointer<ffi.Double> ascmc,
   ) {
-    return _swe_houses_ex(tjd_ut, iflag, geolat, geolon, hsys, cusps, ascmc);
+    return _swe_houses_ex(
+      tjd_ut,
+      iflag,
+      geolat,
+      geolon,
+      hsys,
+      cusps,
+      ascmc,
+    );
   }
 
-  late final _swe_houses_exPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_houses_exPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_houses_ex');
-  late final _swe_houses_ex = _swe_houses_exPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          double,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('swe_houses_ex');
+  late final _swe_houses_ex = _swe_houses_exPtr.asFunction<
+      int Function(double, int, double, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
 
   int swe_houses_ex2(
     double tjd_ut,
@@ -1368,26 +1205,21 @@ class SwephBindings {
     );
   }
 
-  late final _swe_houses_ex2Ptr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_houses_ex2Ptr = _lookup<
+      ffi.NativeFunction<
           ffi.Int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_houses_ex2');
-  late final _swe_houses_ex2 = _swe_houses_ex2Ptr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_houses_ex2');
+  late final _swe_houses_ex2 = _swe_houses_ex2Ptr.asFunction<
+      int Function(
           double,
           int,
           double,
@@ -1397,9 +1229,7 @@ class SwephBindings {
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_houses_armc(
     double armc,
@@ -1409,33 +1239,28 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> cusps,
     ffi.Pointer<ffi.Double> ascmc,
   ) {
-    return _swe_houses_armc(armc, geolat, eps, hsys, cusps, ascmc);
+    return _swe_houses_armc(
+      armc,
+      geolat,
+      eps,
+      hsys,
+      cusps,
+      ascmc,
+    );
   }
 
-  late final _swe_houses_armcPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_houses_armcPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Int32 Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_houses_armc');
-  late final _swe_houses_armc = _swe_houses_armcPtr
-      .asFunction<
-        int Function(
-          double,
-          double,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('swe_houses_armc');
+  late final _swe_houses_armc = _swe_houses_armcPtr.asFunction<
+      int Function(double, double, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
 
   int swe_houses_armc_ex2(
     double armc,
@@ -1461,25 +1286,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_houses_armc_ex2Ptr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_houses_armc_ex2Ptr = _lookup<
+      ffi.NativeFunction<
           ffi.Int32 Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_houses_armc_ex2');
-  late final _swe_houses_armc_ex2 = _swe_houses_armc_ex2Ptr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_houses_armc_ex2');
+  late final _swe_houses_armc_ex2 = _swe_houses_armc_ex2Ptr.asFunction<
+      int Function(
           double,
           double,
           double,
@@ -1488,9 +1308,7 @@ class SwephBindings {
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   double swe_house_pos(
     double armc,
@@ -1500,44 +1318,42 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xpin,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_house_pos(armc, geolat, eps, hsys, xpin, serr);
+    return _swe_house_pos(
+      armc,
+      geolat,
+      eps,
+      hsys,
+      xpin,
+      serr,
+    );
   }
 
-  late final _swe_house_posPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_house_posPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_house_pos');
-  late final _swe_house_pos = _swe_house_posPtr
-      .asFunction<
-        double Function(
-          double,
-          double,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_house_pos');
+  late final _swe_house_pos = _swe_house_posPtr.asFunction<
+      double Function(double, double, double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Uint8>)>();
 
-  ffi.Pointer<ffi.Uint8> swe_house_name(int hsys) {
-    return _swe_house_name(hsys);
+  ffi.Pointer<ffi.Uint8> swe_house_name(
+    int hsys,
+  ) {
+    return _swe_house_name(
+      hsys,
+    );
   }
 
   late final _swe_house_namePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Int32)>>(
-        'swe_house_name',
-      );
-  late final _swe_house_name = _swe_house_namePtr
-      .asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
+          'swe_house_name');
+  late final _swe_house_name =
+      _swe_house_namePtr.asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
 
   /// exports from swecl.c
   int swe_gauquelin_sector(
@@ -1566,26 +1382,21 @@ class SwephBindings {
     );
   }
 
-  late final _swe_gauquelin_sectorPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_gauquelin_sectorPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_gauquelin_sector');
-  late final _swe_gauquelin_sector = _swe_gauquelin_sectorPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_gauquelin_sector');
+  late final _swe_gauquelin_sector = _swe_gauquelin_sectorPtr.asFunction<
+      int Function(
           double,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -1595,9 +1406,7 @@ class SwephBindings {
           double,
           double,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// computes geographic location and attributes of solar
   /// eclipse at a given tjd
@@ -1608,31 +1417,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_sol_eclipse_where(tjd, ifl, geopos, attr, serr);
+    return _swe_sol_eclipse_where(
+      tjd,
+      ifl,
+      geopos,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_sol_eclipse_wherePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_sol_eclipse_wherePtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_sol_eclipse_where');
-  late final _swe_sol_eclipse_where = _swe_sol_eclipse_wherePtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_sol_eclipse_where');
+  late final _swe_sol_eclipse_where = _swe_sol_eclipse_wherePtr.asFunction<
+      int Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lun_occult_where(
     double tjd,
@@ -1643,35 +1447,36 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_lun_occult_where(tjd, ipl, starname, ifl, geopos, attr, serr);
+    return _swe_lun_occult_where(
+      tjd,
+      ipl,
+      starname,
+      ifl,
+      geopos,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_lun_occult_wherePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_lun_occult_wherePtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_occult_where');
-  late final _swe_lun_occult_where = _swe_lun_occult_wherePtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lun_occult_where');
+  late final _swe_lun_occult_where = _swe_lun_occult_wherePtr.asFunction<
+      int Function(
           double,
           int,
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// computes attributes of a solar eclipse for given tjd, geolon, geolat
   int swe_sol_eclipse_how(
@@ -1681,31 +1486,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_sol_eclipse_how(tjd, ifl, geopos, attr, serr);
+    return _swe_sol_eclipse_how(
+      tjd,
+      ifl,
+      geopos,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_sol_eclipse_howPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_sol_eclipse_howPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_sol_eclipse_how');
-  late final _swe_sol_eclipse_how = _swe_sol_eclipse_howPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_sol_eclipse_how');
+  late final _swe_sol_eclipse_how = _swe_sol_eclipse_howPtr.asFunction<
+      int Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   /// finds time of next local eclipse
   int swe_sol_eclipse_when_loc(
@@ -1728,32 +1528,26 @@ class SwephBindings {
     );
   }
 
-  late final _swe_sol_eclipse_when_locPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_sol_eclipse_when_locPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_sol_eclipse_when_loc');
-  late final _swe_sol_eclipse_when_loc = _swe_sol_eclipse_when_locPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_sol_eclipse_when_loc');
+  late final _swe_sol_eclipse_when_loc =
+      _swe_sol_eclipse_when_locPtr.asFunction<
+          int Function(
+              double,
+              int,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              int,
+              ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lun_occult_when_loc(
     double tjd_start,
@@ -1779,25 +1573,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_lun_occult_when_locPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_lun_occult_when_locPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_occult_when_loc');
-  late final _swe_lun_occult_when_loc = _swe_lun_occult_when_locPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lun_occult_when_loc');
+  late final _swe_lun_occult_when_loc = _swe_lun_occult_when_locPtr.asFunction<
+      int Function(
           double,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -1806,9 +1595,7 @@ class SwephBindings {
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
           int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// finds time of next eclipse globally
   int swe_sol_eclipse_when_glob(
@@ -1829,30 +1616,14 @@ class SwephBindings {
     );
   }
 
-  late final _swe_sol_eclipse_when_globPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_sol_eclipse_when_glob');
-  late final _swe_sol_eclipse_when_glob = _swe_sol_eclipse_when_globPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_sol_eclipse_when_globPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              int32, ffi.Pointer<ffi.Uint8>)>>('swe_sol_eclipse_when_glob');
+  late final _swe_sol_eclipse_when_glob =
+      _swe_sol_eclipse_when_globPtr.asFunction<
+          int Function(double, int, int, ffi.Pointer<ffi.Double>, int,
+              ffi.Pointer<ffi.Uint8>)>();
 
   /// finds time of next occultation globally
   int swe_lun_occult_when_glob(
@@ -1877,34 +1648,21 @@ class SwephBindings {
     );
   }
 
-  late final _swe_lun_occult_when_globPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_lun_occult_when_globPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_occult_when_glob');
-  late final _swe_lun_occult_when_glob = _swe_lun_occult_when_globPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lun_occult_when_glob');
+  late final _swe_lun_occult_when_glob =
+      _swe_lun_occult_when_globPtr.asFunction<
+          int Function(double, int, ffi.Pointer<ffi.Uint8>, int, int,
+              ffi.Pointer<ffi.Double>, int, ffi.Pointer<ffi.Uint8>)>();
 
   /// computes attributes of a lunar eclipse for given tjd
   int swe_lun_eclipse_how(
@@ -1914,31 +1672,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_lun_eclipse_how(tjd_ut, ifl, geopos, attr, serr);
+    return _swe_lun_eclipse_how(
+      tjd_ut,
+      ifl,
+      geopos,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_lun_eclipse_howPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_lun_eclipse_howPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_eclipse_how');
-  late final _swe_lun_eclipse_how = _swe_lun_eclipse_howPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lun_eclipse_how');
+  late final _swe_lun_eclipse_how = _swe_lun_eclipse_howPtr.asFunction<
+      int Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lun_eclipse_when(
     double tjd_start,
@@ -1948,33 +1701,23 @@ class SwephBindings {
     int backward,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_lun_eclipse_when(tjd_start, ifl, ifltype, tret, backward, serr);
+    return _swe_lun_eclipse_when(
+      tjd_start,
+      ifl,
+      ifltype,
+      tret,
+      backward,
+      serr,
+    );
   }
 
-  late final _swe_lun_eclipse_whenPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_eclipse_when');
-  late final _swe_lun_eclipse_when = _swe_lun_eclipse_whenPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_lun_eclipse_whenPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              int32, ffi.Pointer<ffi.Uint8>)>>('swe_lun_eclipse_when');
+  late final _swe_lun_eclipse_when = _swe_lun_eclipse_whenPtr.asFunction<
+      int Function(double, int, int, ffi.Pointer<ffi.Double>, int,
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lun_eclipse_when_loc(
     double tjd_start,
@@ -1996,32 +1739,26 @@ class SwephBindings {
     );
   }
 
-  late final _swe_lun_eclipse_when_locPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_lun_eclipse_when_locPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lun_eclipse_when_loc');
-  late final _swe_lun_eclipse_when_loc = _swe_lun_eclipse_when_locPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              int32,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lun_eclipse_when_loc');
+  late final _swe_lun_eclipse_when_loc =
+      _swe_lun_eclipse_when_locPtr.asFunction<
+          int Function(
+              double,
+              int,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              int,
+              ffi.Pointer<ffi.Uint8>)>();
 
   /// planetary phenomena
   int swe_pheno(
@@ -2031,31 +1768,22 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_pheno(tjd, ipl, iflag, attr, serr);
+    return _swe_pheno(
+      tjd,
+      ipl,
+      iflag,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_phenoPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_pheno');
-  late final _swe_pheno = _swe_phenoPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_phenoPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_pheno');
+  late final _swe_pheno = _swe_phenoPtr.asFunction<
+      int Function(
+          double, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_pheno_ut(
     double tjd_ut,
@@ -2064,31 +1792,22 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> attr,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_pheno_ut(tjd_ut, ipl, iflag, attr, serr);
+    return _swe_pheno_ut(
+      tjd_ut,
+      ipl,
+      iflag,
+      attr,
+      serr,
+    );
   }
 
-  late final _swe_pheno_utPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_pheno_ut');
-  late final _swe_pheno_ut = _swe_pheno_utPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_pheno_utPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_pheno_ut');
+  late final _swe_pheno_ut = _swe_pheno_utPtr.asFunction<
+      int Function(
+          double, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   double swe_refrac(
     double inalt,
@@ -2096,17 +1815,20 @@ class SwephBindings {
     double attemp,
     int calc_flag,
   ) {
-    return _swe_refrac(inalt, atpress, attemp, calc_flag);
+    return _swe_refrac(
+      inalt,
+      atpress,
+      attemp,
+      calc_flag,
+    );
   }
 
-  late final _swe_refracPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(ffi.Double, ffi.Double, ffi.Double, int32)
-        >
-      >('swe_refrac');
-  late final _swe_refrac = _swe_refracPtr
-      .asFunction<double Function(double, double, double, int)>();
+  late final _swe_refracPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(
+              ffi.Double, ffi.Double, ffi.Double, int32)>>('swe_refrac');
+  late final _swe_refrac =
+      _swe_refracPtr.asFunction<double Function(double, double, double, int)>();
 
   double swe_refrac_extended(
     double inalt,
@@ -2128,43 +1850,33 @@ class SwephBindings {
     );
   }
 
-  late final _swe_refrac_extendedPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_refrac_extendedPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Double Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_refrac_extended');
-  late final _swe_refrac_extended = _swe_refrac_extendedPtr
-      .asFunction<
-        double Function(
-          double,
-          double,
-          double,
-          double,
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>)>>('swe_refrac_extended');
+  late final _swe_refrac_extended = _swe_refrac_extendedPtr.asFunction<
+      double Function(double, double, double, double, double, int,
+          ffi.Pointer<ffi.Double>)>();
 
-  void swe_set_lapse_rate(double lapse_rate) {
-    return _swe_set_lapse_rate(lapse_rate);
+  void swe_set_lapse_rate(
+    double lapse_rate,
+  ) {
+    return _swe_set_lapse_rate(
+      lapse_rate,
+    );
   }
 
   late final _swe_set_lapse_ratePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Double)>>(
-        'swe_set_lapse_rate',
-      );
-  late final _swe_set_lapse_rate = _swe_set_lapse_ratePtr
-      .asFunction<void Function(double)>();
+          'swe_set_lapse_rate');
+  late final _swe_set_lapse_rate =
+      _swe_set_lapse_ratePtr.asFunction<void Function(double)>();
 
   void swe_azalt(
     double tjd_ut,
@@ -2175,35 +1887,30 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xin,
     ffi.Pointer<ffi.Double> xaz,
   ) {
-    return _swe_azalt(tjd_ut, calc_flag, geopos, atpress, attemp, xin, xaz);
+    return _swe_azalt(
+      tjd_ut,
+      calc_flag,
+      geopos,
+      atpress,
+      attemp,
+      xin,
+      xaz,
+    );
   }
 
-  late final _swe_azaltPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_azaltPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_azalt');
-  late final _swe_azalt = _swe_azaltPtr
-      .asFunction<
-        void Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          double,
-          double,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('swe_azalt');
+  late final _swe_azalt = _swe_azaltPtr.asFunction<
+      void Function(double, int, ffi.Pointer<ffi.Double>, double, double,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>();
 
   void swe_azalt_rev(
     double tjd_ut,
@@ -2212,31 +1919,26 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xin,
     ffi.Pointer<ffi.Double> xout,
   ) {
-    return _swe_azalt_rev(tjd_ut, calc_flag, geopos, xin, xout);
+    return _swe_azalt_rev(
+      tjd_ut,
+      calc_flag,
+      geopos,
+      xin,
+      xout,
+    );
   }
 
-  late final _swe_azalt_revPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_azalt_revPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-          )
-        >
-      >('swe_azalt_rev');
-  late final _swe_azalt_rev = _swe_azalt_revPtr
-      .asFunction<
-        void Function(
-          double,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Double>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('swe_azalt_rev');
+  late final _swe_azalt_rev = _swe_azalt_revPtr.asFunction<
+      void Function(double, int, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>();
 
   int swe_rise_trans_true_hor(
     double tjd_ut,
@@ -2266,27 +1968,22 @@ class SwephBindings {
     );
   }
 
-  late final _swe_rise_trans_true_horPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_rise_trans_true_horPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_rise_trans_true_hor');
-  late final _swe_rise_trans_true_hor = _swe_rise_trans_true_horPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_rise_trans_true_hor');
+  late final _swe_rise_trans_true_hor = _swe_rise_trans_true_horPtr.asFunction<
+      int Function(
           double,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -2297,9 +1994,7 @@ class SwephBindings {
           double,
           double,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_rise_trans(
     double tjd_ut,
@@ -2327,26 +2022,21 @@ class SwephBindings {
     );
   }
 
-  late final _swe_rise_transPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_rise_transPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<ffi.Uint8>,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_rise_trans');
-  late final _swe_rise_trans = _swe_rise_transPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              ffi.Pointer<ffi.Uint8>,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Double,
+              ffi.Double,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_rise_trans');
+  late final _swe_rise_trans = _swe_rise_transPtr.asFunction<
+      int Function(
           double,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -2356,9 +2046,7 @@ class SwephBindings {
           double,
           double,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_nod_aps(
     double tjd_et,
@@ -2384,25 +2072,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_nod_apsPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_nod_apsPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_nod_aps');
-  late final _swe_nod_aps = _swe_nod_apsPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_nod_aps');
+  late final _swe_nod_aps = _swe_nod_apsPtr.asFunction<
+      int Function(
           double,
           int,
           int,
@@ -2411,9 +2094,7 @@ class SwephBindings {
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_nod_aps_ut(
     double tjd_ut,
@@ -2439,25 +2120,20 @@ class SwephBindings {
     );
   }
 
-  late final _swe_nod_aps_utPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_nod_aps_utPtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_nod_aps_ut');
-  late final _swe_nod_aps_ut = _swe_nod_aps_utPtr
-      .asFunction<
-        int Function(
+              ffi.Double,
+              int32,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_nod_aps_ut');
+  late final _swe_nod_aps_ut = _swe_nod_aps_utPtr.asFunction<
+      int Function(
           double,
           int,
           int,
@@ -2466,9 +2142,7 @@ class SwephBindings {
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
           ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+          ffi.Pointer<ffi.Uint8>)>();
 
   int swe_get_orbital_elements(
     double tjd_et,
@@ -2477,31 +2151,23 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> dret,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_get_orbital_elements(tjd_et, ipl, iflag, dret, serr);
+    return _swe_get_orbital_elements(
+      tjd_et,
+      ipl,
+      iflag,
+      dret,
+      serr,
+    );
   }
 
-  late final _swe_get_orbital_elementsPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_get_orbital_elements');
-  late final _swe_get_orbital_elements = _swe_get_orbital_elementsPtr
-      .asFunction<
-        int Function(
-          double,
-          int,
-          int,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_get_orbital_elementsPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, int32, int32, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_get_orbital_elements');
+  late final _swe_get_orbital_elements =
+      _swe_get_orbital_elementsPtr.asFunction<
+          int Function(double, int, int, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>();
 
   int swe_orbit_max_min_true_distance(
     double tjd_et,
@@ -2523,55 +2189,57 @@ class SwephBindings {
     );
   }
 
-  late final _swe_orbit_max_min_true_distancePtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_orbit_max_min_true_distancePtr = _lookup<
+      ffi.NativeFunction<
           int32 Function(
-            ffi.Double,
-            int32,
-            int32,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_orbit_max_min_true_distance');
+              ffi.Double,
+              int32,
+              int32,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_orbit_max_min_true_distance');
   late final _swe_orbit_max_min_true_distance =
-      _swe_orbit_max_min_true_distancePtr
-          .asFunction<
-            int Function(
+      _swe_orbit_max_min_true_distancePtr.asFunction<
+          int Function(
               double,
               int,
               int,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
               ffi.Pointer<ffi.Double>,
-              ffi.Pointer<ffi.Uint8>,
-            )
-          >();
+              ffi.Pointer<ffi.Uint8>)>();
 
   /// delta t
-  double swe_deltat(double tjd) {
-    return _swe_deltat(tjd);
+  double swe_deltat(
+    double tjd,
+  ) {
+    return _swe_deltat(
+      tjd,
+    );
   }
 
   late final _swe_deltatPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_deltat',
-      );
+          'swe_deltat');
   late final _swe_deltat = _swe_deltatPtr.asFunction<double Function(double)>();
 
-  double swe_deltat_ex(double tjd, int iflag, ffi.Pointer<ffi.Uint8> serr) {
-    return _swe_deltat_ex(tjd, iflag, serr);
+  double swe_deltat_ex(
+    double tjd,
+    int iflag,
+    ffi.Pointer<ffi.Uint8> serr,
+  ) {
+    return _swe_deltat_ex(
+      tjd,
+      iflag,
+      serr,
+    );
   }
 
-  late final _swe_deltat_exPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(ffi.Double, int32, ffi.Pointer<ffi.Uint8>)
-        >
-      >('swe_deltat_ex');
+  late final _swe_deltat_exPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(
+              ffi.Double, int32, ffi.Pointer<ffi.Uint8>)>>('swe_deltat_ex');
   late final _swe_deltat_ex = _swe_deltat_exPtr
       .asFunction<double Function(double, int, ffi.Pointer<ffi.Uint8>)>();
 
@@ -2581,23 +2249,19 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> te,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_time_equ(tjd, te, serr);
+    return _swe_time_equ(
+      tjd,
+      te,
+      serr,
+    );
   }
 
-  late final _swe_time_equPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_time_equ');
-  late final _swe_time_equ = _swe_time_equPtr
-      .asFunction<
-        int Function(double, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_time_equPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_time_equ');
+  late final _swe_time_equ = _swe_time_equPtr.asFunction<
+      int Function(double, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lmt_to_lat(
     double tjd_lmt,
@@ -2605,29 +2269,21 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> tjd_lat,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_lmt_to_lat(tjd_lmt, geolon, tjd_lat, serr);
+    return _swe_lmt_to_lat(
+      tjd_lmt,
+      geolon,
+      tjd_lat,
+      serr,
+    );
   }
 
-  late final _swe_lmt_to_latPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lmt_to_lat');
-  late final _swe_lmt_to_lat = _swe_lmt_to_latPtr
-      .asFunction<
-        int Function(
-          double,
-          double,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_lmt_to_latPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, ffi.Double, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lmt_to_lat');
+  late final _swe_lmt_to_lat = _swe_lmt_to_latPtr.asFunction<
+      int Function(
+          double, double, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   int swe_lat_to_lmt(
     double tjd_lat,
@@ -2635,65 +2291,69 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> tjd_lmt,
     ffi.Pointer<ffi.Uint8> serr,
   ) {
-    return _swe_lat_to_lmt(tjd_lat, geolon, tjd_lmt, serr);
+    return _swe_lat_to_lmt(
+      tjd_lat,
+      geolon,
+      tjd_lmt,
+      serr,
+    );
   }
 
-  late final _swe_lat_to_lmtPtr =
-      _lookup<
-        ffi.NativeFunction<
-          int32 Function(
-            ffi.Double,
-            ffi.Double,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_lat_to_lmt');
-  late final _swe_lat_to_lmt = _swe_lat_to_lmtPtr
-      .asFunction<
-        int Function(
-          double,
-          double,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<ffi.Uint8>,
-        )
-      >();
+  late final _swe_lat_to_lmtPtr = _lookup<
+      ffi.NativeFunction<
+          int32 Function(ffi.Double, ffi.Double, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Uint8>)>>('swe_lat_to_lmt');
+  late final _swe_lat_to_lmt = _swe_lat_to_lmtPtr.asFunction<
+      int Function(
+          double, double, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Uint8>)>();
 
   /// sidereal time
-  double swe_sidtime0(double tjd_ut, double eps, double nut) {
-    return _swe_sidtime0(tjd_ut, eps, nut);
+  double swe_sidtime0(
+    double tjd_ut,
+    double eps,
+    double nut,
+  ) {
+    return _swe_sidtime0(
+      tjd_ut,
+      eps,
+      nut,
+    );
   }
 
-  late final _swe_sidtime0Ptr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Double Function(ffi.Double, ffi.Double, ffi.Double)
-        >
-      >('swe_sidtime0');
-  late final _swe_sidtime0 = _swe_sidtime0Ptr
-      .asFunction<double Function(double, double, double)>();
+  late final _swe_sidtime0Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(
+              ffi.Double, ffi.Double, ffi.Double)>>('swe_sidtime0');
+  late final _swe_sidtime0 =
+      _swe_sidtime0Ptr.asFunction<double Function(double, double, double)>();
 
-  double swe_sidtime(double tjd_ut) {
-    return _swe_sidtime(tjd_ut);
+  double swe_sidtime(
+    double tjd_ut,
+  ) {
+    return _swe_sidtime(
+      tjd_ut,
+    );
   }
 
   late final _swe_sidtimePtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_sidtime',
-      );
-  late final _swe_sidtime = _swe_sidtimePtr
-      .asFunction<double Function(double)>();
+          'swe_sidtime');
+  late final _swe_sidtime =
+      _swe_sidtimePtr.asFunction<double Function(double)>();
 
-  void swe_set_interpolate_nut(int do_interpolate) {
-    return _swe_set_interpolate_nut(do_interpolate);
+  void swe_set_interpolate_nut(
+    int do_interpolate,
+  ) {
+    return _swe_set_interpolate_nut(
+      do_interpolate,
+    );
   }
 
   late final _swe_set_interpolate_nutPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(AS_BOOL)>>(
-        'swe_set_interpolate_nut',
-      );
-  late final _swe_set_interpolate_nut = _swe_set_interpolate_nutPtr
-      .asFunction<void Function(int)>();
+          'swe_set_interpolate_nut');
+  late final _swe_set_interpolate_nut =
+      _swe_set_interpolate_nutPtr.asFunction<void Function(int)>();
 
   /// coordinate transformation polar -> polar
   void swe_cotrans(
@@ -2701,46 +2361,40 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> xpn,
     double eps,
   ) {
-    return _swe_cotrans(xpo, xpn, eps);
+    return _swe_cotrans(
+      xpo,
+      xpn,
+      eps,
+    );
   }
 
-  late final _swe_cotransPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-          )
-        >
-      >('swe_cotrans');
-  late final _swe_cotrans = _swe_cotransPtr
-      .asFunction<
-        void Function(ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, double)
-      >();
+  late final _swe_cotransPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>,
+              ffi.Double)>>('swe_cotrans');
+  late final _swe_cotrans = _swe_cotransPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, double)>();
 
   void swe_cotrans_sp(
     ffi.Pointer<ffi.Double> xpo,
     ffi.Pointer<ffi.Double> xpn,
     double eps,
   ) {
-    return _swe_cotrans_sp(xpo, xpn, eps);
+    return _swe_cotrans_sp(
+      xpo,
+      xpn,
+      eps,
+    );
   }
 
-  late final _swe_cotrans_spPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Double,
-          )
-        >
-      >('swe_cotrans_sp');
-  late final _swe_cotrans_sp = _swe_cotrans_spPtr
-      .asFunction<
-        void Function(ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, double)
-      >();
+  late final _swe_cotrans_spPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>,
+              ffi.Double)>>('swe_cotrans_sp');
+  late final _swe_cotrans_sp = _swe_cotrans_spPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, double)>();
 
   /// tidal acceleration to be used in swe_deltat()
   double swe_get_tid_acc() {
@@ -2749,76 +2403,98 @@ class SwephBindings {
 
   late final _swe_get_tid_accPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function()>>('swe_get_tid_acc');
-  late final _swe_get_tid_acc = _swe_get_tid_accPtr
-      .asFunction<double Function()>();
+  late final _swe_get_tid_acc =
+      _swe_get_tid_accPtr.asFunction<double Function()>();
 
-  void swe_set_tid_acc(double t_acc) {
-    return _swe_set_tid_acc(t_acc);
+  void swe_set_tid_acc(
+    double t_acc,
+  ) {
+    return _swe_set_tid_acc(
+      t_acc,
+    );
   }
 
   late final _swe_set_tid_accPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Double)>>(
-        'swe_set_tid_acc',
-      );
-  late final _swe_set_tid_acc = _swe_set_tid_accPtr
-      .asFunction<void Function(double)>();
+          'swe_set_tid_acc');
+  late final _swe_set_tid_acc =
+      _swe_set_tid_accPtr.asFunction<void Function(double)>();
 
   /// set a user defined delta t to be returned by functions
   /// swe_deltat() and swe_deltat_ex()
-  void swe_set_delta_t_userdef(double dt) {
-    return _swe_set_delta_t_userdef(dt);
+  void swe_set_delta_t_userdef(
+    double dt,
+  ) {
+    return _swe_set_delta_t_userdef(
+      dt,
+    );
   }
 
   late final _swe_set_delta_t_userdefPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Double)>>(
-        'swe_set_delta_t_userdef',
-      );
-  late final _swe_set_delta_t_userdef = _swe_set_delta_t_userdefPtr
-      .asFunction<void Function(double)>();
+          'swe_set_delta_t_userdef');
+  late final _swe_set_delta_t_userdef =
+      _swe_set_delta_t_userdefPtr.asFunction<void Function(double)>();
 
-  double swe_degnorm(double x) {
-    return _swe_degnorm(x);
+  double swe_degnorm(
+    double x,
+  ) {
+    return _swe_degnorm(
+      x,
+    );
   }
 
   late final _swe_degnormPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_degnorm',
-      );
-  late final _swe_degnorm = _swe_degnormPtr
-      .asFunction<double Function(double)>();
+          'swe_degnorm');
+  late final _swe_degnorm =
+      _swe_degnormPtr.asFunction<double Function(double)>();
 
-  double swe_radnorm(double x) {
-    return _swe_radnorm(x);
+  double swe_radnorm(
+    double x,
+  ) {
+    return _swe_radnorm(
+      x,
+    );
   }
 
   late final _swe_radnormPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double)>>(
-        'swe_radnorm',
-      );
-  late final _swe_radnorm = _swe_radnormPtr
-      .asFunction<double Function(double)>();
+          'swe_radnorm');
+  late final _swe_radnorm =
+      _swe_radnormPtr.asFunction<double Function(double)>();
 
-  double swe_rad_midp(double x1, double x0) {
-    return _swe_rad_midp(x1, x0);
+  double swe_rad_midp(
+    double x1,
+    double x0,
+  ) {
+    return _swe_rad_midp(
+      x1,
+      x0,
+    );
   }
 
   late final _swe_rad_midpPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double, ffi.Double)>>(
-        'swe_rad_midp',
-      );
-  late final _swe_rad_midp = _swe_rad_midpPtr
-      .asFunction<double Function(double, double)>();
+          'swe_rad_midp');
+  late final _swe_rad_midp =
+      _swe_rad_midpPtr.asFunction<double Function(double, double)>();
 
-  double swe_deg_midp(double x1, double x0) {
-    return _swe_deg_midp(x1, x0);
+  double swe_deg_midp(
+    double x1,
+    double x0,
+  ) {
+    return _swe_deg_midp(
+      x1,
+      x0,
+    );
   }
 
   late final _swe_deg_midpPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double, ffi.Double)>>(
-        'swe_deg_midp',
-      );
-  late final _swe_deg_midp = _swe_deg_midpPtr
-      .asFunction<double Function(double, double)>();
+          'swe_deg_midp');
+  late final _swe_deg_midp =
+      _swe_deg_midpPtr.asFunction<double Function(double, double)>();
 
   void swe_split_deg(
     double ddeg,
@@ -2829,39 +2505,38 @@ class SwephBindings {
     ffi.Pointer<ffi.Double> dsecfr,
     ffi.Pointer<int32> isgn,
   ) {
-    return _swe_split_deg(ddeg, roundflag, ideg, imin, isec, dsecfr, isgn);
+    return _swe_split_deg(
+      ddeg,
+      roundflag,
+      ideg,
+      imin,
+      isec,
+      dsecfr,
+      isgn,
+    );
   }
 
-  late final _swe_split_degPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_split_degPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Void Function(
-            ffi.Double,
-            int32,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<int32>,
-            ffi.Pointer<ffi.Double>,
-            ffi.Pointer<int32>,
-          )
-        >
-      >('swe_split_deg');
-  late final _swe_split_deg = _swe_split_degPtr
-      .asFunction<
-        void Function(
-          double,
-          int,
-          ffi.Pointer<int32>,
-          ffi.Pointer<int32>,
-          ffi.Pointer<int32>,
-          ffi.Pointer<ffi.Double>,
-          ffi.Pointer<int32>,
-        )
-      >();
+              ffi.Double,
+              int32,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<int32>,
+              ffi.Pointer<ffi.Double>,
+              ffi.Pointer<int32>)>>('swe_split_deg');
+  late final _swe_split_deg = _swe_split_degPtr.asFunction<
+      void Function(double, int, ffi.Pointer<int32>, ffi.Pointer<int32>,
+          ffi.Pointer<int32>, ffi.Pointer<ffi.Double>, ffi.Pointer<int32>)>();
 
   /// normalize argument into interval [0..DEG360]
-  int swe_csnorm(int p) {
-    return _swe_csnorm(p);
+  int swe_csnorm(
+    int p,
+  ) {
+    return _swe_csnorm(
+      p,
+    );
   }
 
   late final _swe_csnormPtr =
@@ -2869,76 +2544,108 @@ class SwephBindings {
   late final _swe_csnorm = _swe_csnormPtr.asFunction<int Function(int)>();
 
   /// distance in centisecs p1 - p2 normalized to [0..360[
-  int swe_difcsn(int p1, int p2) {
-    return _swe_difcsn(p1, p2);
+  int swe_difcsn(
+    int p1,
+    int p2,
+  ) {
+    return _swe_difcsn(
+      p1,
+      p2,
+    );
   }
 
   late final _swe_difcsnPtr =
       _lookup<ffi.NativeFunction<centisec Function(centisec, centisec)>>(
-        'swe_difcsn',
-      );
+          'swe_difcsn');
   late final _swe_difcsn = _swe_difcsnPtr.asFunction<int Function(int, int)>();
 
-  double swe_difdegn(double p1, double p2) {
-    return _swe_difdegn(p1, p2);
+  double swe_difdegn(
+    double p1,
+    double p2,
+  ) {
+    return _swe_difdegn(
+      p1,
+      p2,
+    );
   }
 
   late final _swe_difdegnPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double, ffi.Double)>>(
-        'swe_difdegn',
-      );
-  late final _swe_difdegn = _swe_difdegnPtr
-      .asFunction<double Function(double, double)>();
+          'swe_difdegn');
+  late final _swe_difdegn =
+      _swe_difdegnPtr.asFunction<double Function(double, double)>();
 
   /// distance in centisecs p1 - p2 normalized to [-180..180[
-  int swe_difcs2n(int p1, int p2) {
-    return _swe_difcs2n(p1, p2);
+  int swe_difcs2n(
+    int p1,
+    int p2,
+  ) {
+    return _swe_difcs2n(
+      p1,
+      p2,
+    );
   }
 
   late final _swe_difcs2nPtr =
       _lookup<ffi.NativeFunction<centisec Function(centisec, centisec)>>(
-        'swe_difcs2n',
-      );
-  late final _swe_difcs2n = _swe_difcs2nPtr
-      .asFunction<int Function(int, int)>();
+          'swe_difcs2n');
+  late final _swe_difcs2n =
+      _swe_difcs2nPtr.asFunction<int Function(int, int)>();
 
-  double swe_difdeg2n(double p1, double p2) {
-    return _swe_difdeg2n(p1, p2);
+  double swe_difdeg2n(
+    double p1,
+    double p2,
+  ) {
+    return _swe_difdeg2n(
+      p1,
+      p2,
+    );
   }
 
   late final _swe_difdeg2nPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double, ffi.Double)>>(
-        'swe_difdeg2n',
-      );
-  late final _swe_difdeg2n = _swe_difdeg2nPtr
-      .asFunction<double Function(double, double)>();
+          'swe_difdeg2n');
+  late final _swe_difdeg2n =
+      _swe_difdeg2nPtr.asFunction<double Function(double, double)>();
 
-  double swe_difrad2n(double p1, double p2) {
-    return _swe_difrad2n(p1, p2);
+  double swe_difrad2n(
+    double p1,
+    double p2,
+  ) {
+    return _swe_difrad2n(
+      p1,
+      p2,
+    );
   }
 
   late final _swe_difrad2nPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Double, ffi.Double)>>(
-        'swe_difrad2n',
-      );
-  late final _swe_difrad2n = _swe_difrad2nPtr
-      .asFunction<double Function(double, double)>();
+          'swe_difrad2n');
+  late final _swe_difrad2n =
+      _swe_difrad2nPtr.asFunction<double Function(double, double)>();
 
   /// round second, but at 29.5959 always down
-  int swe_csroundsec(int x) {
-    return _swe_csroundsec(x);
+  int swe_csroundsec(
+    int x,
+  ) {
+    return _swe_csroundsec(
+      x,
+    );
   }
 
   late final _swe_csroundsecPtr =
       _lookup<ffi.NativeFunction<centisec Function(centisec)>>(
-        'swe_csroundsec',
-      );
-  late final _swe_csroundsec = _swe_csroundsecPtr
-      .asFunction<int Function(int)>();
+          'swe_csroundsec');
+  late final _swe_csroundsec =
+      _swe_csroundsecPtr.asFunction<int Function(int)>();
 
   /// double to int32 with rounding, no overflow check
-  int swe_d2l(double x) {
-    return _swe_d2l(x);
+  int swe_d2l(
+    double x,
+  ) {
+    return _swe_d2l(
+      x,
+    );
   }
 
   late final _swe_d2lPtr =
@@ -2946,16 +2653,19 @@ class SwephBindings {
   late final _swe_d2l = _swe_d2lPtr.asFunction<int Function(double)>();
 
   /// monday = 0, ... sunday = 6
-  int swe_day_of_week(double jd) {
-    return _swe_day_of_week(jd);
+  int swe_day_of_week(
+    double jd,
+  ) {
+    return _swe_day_of_week(
+      jd,
+    );
   }
 
   late final _swe_day_of_weekPtr =
       _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Double)>>(
-        'swe_day_of_week',
-      );
-  late final _swe_day_of_week = _swe_day_of_weekPtr
-      .asFunction<int Function(double)>();
+          'swe_day_of_week');
+  late final _swe_day_of_week =
+      _swe_day_of_weekPtr.asFunction<int Function(double)>();
 
   ffi.Pointer<ffi.Uint8> swe_cs2timestr(
     int t,
@@ -2963,24 +2673,20 @@ class SwephBindings {
     int suppressZero,
     ffi.Pointer<ffi.Uint8> a,
   ) {
-    return _swe_cs2timestr(t, sep, suppressZero, a);
+    return _swe_cs2timestr(
+      t,
+      sep,
+      suppressZero,
+      a,
+    );
   }
 
-  late final _swe_cs2timestrPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-            centisec,
-            ffi.Int32,
-            AS_BOOL,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_cs2timestr');
-  late final _swe_cs2timestr = _swe_cs2timestrPtr
-      .asFunction<
-        ffi.Pointer<ffi.Uint8> Function(int, int, int, ffi.Pointer<ffi.Uint8>)
-      >();
+  late final _swe_cs2timestrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(centisec, ffi.Int32, AS_BOOL,
+              ffi.Pointer<ffi.Uint8>)>>('swe_cs2timestr');
+  late final _swe_cs2timestr = _swe_cs2timestrPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(int, int, int, ffi.Pointer<ffi.Uint8>)>();
 
   ffi.Pointer<ffi.Uint8> swe_cs2lonlatstr(
     int t,
@@ -2988,39 +2694,37 @@ class SwephBindings {
     int mchar,
     ffi.Pointer<ffi.Uint8> s,
   ) {
-    return _swe_cs2lonlatstr(t, pchar, mchar, s);
+    return _swe_cs2lonlatstr(
+      t,
+      pchar,
+      mchar,
+      s,
+    );
   }
 
-  late final _swe_cs2lonlatstrPtr =
-      _lookup<
-        ffi.NativeFunction<
+  late final _swe_cs2lonlatstrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(centisec, ffi.Uint8, ffi.Uint8,
+              ffi.Pointer<ffi.Uint8>)>>('swe_cs2lonlatstr');
+  late final _swe_cs2lonlatstr = _swe_cs2lonlatstrPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(int, int, int, ffi.Pointer<ffi.Uint8>)>();
+
+  ffi.Pointer<ffi.Uint8> swe_cs2degstr(
+    int t,
+    ffi.Pointer<ffi.Uint8> a,
+  ) {
+    return _swe_cs2degstr(
+      t,
+      a,
+    );
+  }
+
+  late final _swe_cs2degstrPtr = _lookup<
+      ffi.NativeFunction<
           ffi.Pointer<ffi.Uint8> Function(
-            centisec,
-            ffi.Uint8,
-            ffi.Uint8,
-            ffi.Pointer<ffi.Uint8>,
-          )
-        >
-      >('swe_cs2lonlatstr');
-  late final _swe_cs2lonlatstr = _swe_cs2lonlatstrPtr
-      .asFunction<
-        ffi.Pointer<ffi.Uint8> Function(int, int, int, ffi.Pointer<ffi.Uint8>)
-      >();
-
-  ffi.Pointer<ffi.Uint8> swe_cs2degstr(int t, ffi.Pointer<ffi.Uint8> a) {
-    return _swe_cs2degstr(t, a);
-  }
-
-  late final _swe_cs2degstrPtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(centisec, ffi.Pointer<ffi.Uint8>)
-        >
-      >('swe_cs2degstr');
-  late final _swe_cs2degstr = _swe_cs2degstrPtr
-      .asFunction<
-        ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Uint8>)
-      >();
+              centisec, ffi.Pointer<ffi.Uint8>)>>('swe_cs2degstr');
+  late final _swe_cs2degstr = _swe_cs2degstrPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(int, ffi.Pointer<ffi.Uint8>)>();
 
   int write_file(
     ffi.Pointer<ffi.Uint8> path,
@@ -3028,24 +2732,20 @@ class SwephBindings {
     int len,
     int forceOverwrite,
   ) {
-    return _write_file(path, contents, len, forceOverwrite);
+    return _write_file(
+      path,
+      contents,
+      len,
+      forceOverwrite,
+    );
   }
 
-  late final _write_filePtr =
-      _lookup<
-        ffi.NativeFunction<
-          ffi.Int32 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Pointer<ffi.Uint8>,
-            ffi.Size,
-            ffi.Int32,
-          )
-        >
-      >('write_file');
-  late final _write_file = _write_filePtr
-      .asFunction<
-        int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int, int)
-      >();
+  late final _write_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>,
+              ffi.Size, ffi.Int32)>>('write_file');
+  late final _write_file = _write_filePtr.asFunction<
+      int Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int, int)>();
 }
 
 typedef int32 = ffi.Int32;

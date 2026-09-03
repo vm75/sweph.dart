@@ -183,8 +183,7 @@ class SwephFlag extends AbstractFlag<SwephFlag> {
   static const SEFLG_CENTER_BODY = SwephFlag(1024 * 1024);
 
   /// test raw data in files sepm9*
-  static final SEFLG_TEST_PLMOON =
-      const SwephFlag(2 * 1024 * 1024) |
+  static final SEFLG_TEST_PLMOON = const SwephFlag(2 * 1024 * 1024) |
       SEFLG_J2000 |
       SEFLG_ICRS |
       SEFLG_HELCTR |
@@ -324,8 +323,7 @@ class EclipseFlag extends AbstractFlag<EclipseFlag> {
   /// = annular-total
   static const SE_ECL_HYBRID = EclipseFlag(32);
   static const SE_ECL_PENUMBRAL = EclipseFlag(64);
-  static final SE_ECL_ALLTYPES_SOLAR =
-      SE_ECL_CENTRAL |
+  static final SE_ECL_ALLTYPES_SOLAR = SE_ECL_CENTRAL |
       SE_ECL_NONCENTRAL |
       SE_ECL_TOTAL |
       SE_ECL_ANNULAR |
@@ -417,10 +415,9 @@ class RiseSetTransitFlag extends AbstractFlag<RiseSetTransitFlag> {
   /// This is only an Astrodienst in-house test flag. It forces the usage of the old, slow calculation of risings and settings.
   static const SE_BIT_FORCE_SLOW_METHOD = RiseSetTransitFlag(32768);
   static const SE_BIT_HINDU_RISING = RiseSetTransitFlag(
-    128 /* SE_BIT_GEOCTR_NO_ECL_LAT */ |
-        256 /* SE_BIT_DISC_CENTER */ |
-        512 /* SE_BIT_NO_REFRACTION */,
-  );
+      128 /* SE_BIT_GEOCTR_NO_ECL_LAT */ |
+          256 /* SE_BIT_DISC_CENTER */ |
+          512 /* SE_BIT_NO_REFRACTION */);
 }
 
 /// Modes for Azimuth/Altitude methods
@@ -654,14 +651,8 @@ class CoordinatesWithSpeed {
   final double speedInLatitude;
   final double speedInDistance;
 
-  CoordinatesWithSpeed(
-    this.longitude,
-    this.latitude,
-    this.distance,
-    this.speedInLongitude,
-    this.speedInLatitude,
-    this.speedInDistance,
-  );
+  CoordinatesWithSpeed(this.longitude, this.latitude, this.distance,
+      this.speedInLongitude, this.speedInLatitude, this.speedInDistance);
 
   Pointer<Double> toNativeArray(Arena arena) {
     final array = arena<Double>(6);
@@ -720,12 +711,7 @@ class DegreeSplitData {
   final int sign;
 
   DegreeSplitData(
-    this.degrees,
-    this.minutes,
-    this.seconds,
-    this.secondsOfArc,
-    this.sign,
-  );
+      this.degrees, this.minutes, this.seconds, this.secondsOfArc, this.sign);
 
   @override
   String toString() {
@@ -837,12 +823,8 @@ class NodesAndAspides {
   final List<double> perihelion;
   final List<double> aphelion;
 
-  NodesAndAspides(
-    this.nodesAscending,
-    this.nodesDescending,
-    this.perihelion,
-    this.aphelion,
-  );
+  NodesAndAspides(this.nodesAscending, this.nodesDescending, this.perihelion,
+      this.aphelion);
 
   @override
   String toString() {
@@ -860,12 +842,8 @@ class EclipseInfo {
   final GeoPosition? geoPosition;
   final EclipseFlag? eclipseType;
 
-  EclipseInfo({
-    this.times,
-    this.attributes,
-    this.geoPosition,
-    this.eclipseType,
-  });
+  EclipseInfo(
+      {this.times, this.attributes, this.geoPosition, this.eclipseType});
 
   @override
   String toString() {
