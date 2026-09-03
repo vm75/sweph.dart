@@ -4,12 +4,6 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
-  workflow_dispatch:
-    inputs:
-      force:
-        description: 'Force publish regardless of tag verification'
-        type: boolean
-        default: false
 
 concurrency:
   group: publish-package
