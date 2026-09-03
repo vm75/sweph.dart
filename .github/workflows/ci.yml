@@ -53,7 +53,7 @@ jobs:
       - name: Run example tests
         run: |
           cd example
-          flutter test
+          SWEPH_DYLIB_PATH=$PWD/../example.dart/libsweph.so flutter test
 
       - name: Build Flutter Web (dart2js)
         run: |
