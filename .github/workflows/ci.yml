@@ -37,7 +37,7 @@ jobs:
         run: flutter pub get
 
       - name: Verify code formatting
-        run: dart format --output=none --set-exit-if-changed lib example test tool
+        run: dart format --output=none --set-exit-if-changed lib/src/wasm_asset_saver.dart lib/sweph.dart example/lib example/test tool
 
       - name: Run analyzer
         run: flutter analyze
