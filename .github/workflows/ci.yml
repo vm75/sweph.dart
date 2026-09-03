@@ -23,6 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup sibling packages
+        run: |
+          git clone --depth 1 https://github.com/vm75/universal_ffi.git ../universal_ffi
+          git clone --depth 1 https://github.com/vm75/wasm_ffi.git ../wasm_ffi
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
