@@ -9,8 +9,8 @@ analyzer:
     missing_return: error
     parameter_assignments: warning
 
-  # exclude:
-  #   - example/
+  exclude:
+    - example.dart/**
 
 linter:
   rules:
