@@ -66,4 +66,6 @@ jobs:
           flutter build web --wasm
 
       - name: Verify publish dry run
-        run: dart pub publish --dry-run
+        run: |
+          git checkout -- .
+          dart pub publish --dry-run
