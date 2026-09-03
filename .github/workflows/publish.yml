@@ -48,18 +48,18 @@ jobs:
           echo "Previous version in HEAD~1: $PREV_VERSION"
 
           if [ -n "$PREV_VERSION" ] && [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
-            echo "Version changed from $PREV_VERSION to $CURRENT_VERSION."
-            echo "should_publish=true" >> "$GITHUB_OUTPUT"
-          else
-            # Also check if this version is already published on pub.dev
+            # Check if this version is already published on pub.dev
             PUB_RESPONSE=$(curl -s "https://pub.dev/api/packages/sweph" || echo "{}")
             if echo "$PUB_RESPONSE" | grep -q "\"version\":\"$CURRENT_VERSION\""; then
               echo "Version $CURRENT_VERSION is already published on pub.dev. Skipping publication."
               echo "should_publish=false" >> "$GITHUB_OUTPUT"
             else
-              echo "Version $CURRENT_VERSION is not yet published on pub.dev."
+              echo "Version changed from $PREV_VERSION to $CURRENT_VERSION and is not yet published on pub.dev."
               echo "should_publish=true" >> "$GITHUB_OUTPUT"
             fi
+          else
+            echo "Version was not modified in pubspec.yaml. Skipping publication."
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up Flutter
