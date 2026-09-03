@@ -33,16 +33,11 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
-        with:
-          sdk: stable
-
       - name: Install root dependencies
         run: flutter pub get
 
       - name: Verify code formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: dart format --output=none --set-exit-if-changed lib example test tool
 
       - name: Run analyzer
         run: flutter analyze
