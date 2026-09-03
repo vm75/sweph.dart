@@ -12,7 +12,9 @@ abstract class AbstractAssetSaver<DynamicLibrary, Allocator> {
   String get epheFilesPath => _epheFilesPath;
 
   Future<void> saveEpheAssets(
-      List<String> epheAssets, AssetLoader assetLoader) async {
+    List<String> epheAssets,
+    AssetLoader assetLoader,
+  ) async {
     for (final asset in epheAssets) {
       final destFile = basename(asset);
       final contents = await assetLoader.load(asset);

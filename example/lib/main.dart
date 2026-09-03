@@ -16,9 +16,7 @@ void main() async {
     'packages/sweph/assets/ephe/seasnam.txt', // For asteriods
   ]);
 
-  runApp(MyApp(
-    timeToLoad: stopwatch.elapsed,
-  ));
+  runApp(MyApp(timeToLoad: stopwatch.elapsed));
 }
 
 class MyApp extends StatefulWidget {
@@ -61,32 +59,62 @@ class _MyAppState extends State<MyApp> {
     CalendarType.SE_GREG_CAL,
   );
 
-  AltitudeRefracInfo altInfo =
-      Sweph.swe_refrac(80, 1013.25, 15, RefractionMode.SE_APP_TO_TRUE);
+  AltitudeRefracInfo altInfo = Sweph.swe_refrac(
+    80,
+    1013.25,
+    15,
+    RefractionMode.SE_APP_TO_TRUE,
+  );
   AltitudeRefracInfo altInfoEx = Sweph.swe_refrac_extended(
-      100, 200, 1013.25, 15, 0.0065, RefractionMode.SE_APP_TO_TRUE);
+    100,
+    200,
+    1013.25,
+    15,
+    0.0065,
+    RefractionMode.SE_APP_TO_TRUE,
+  );
 
   @override
   void initState() {
     super.initState();
+    debugPrint('[SWEPH_TEST] version: $swephVersion');
+    debugPrint('[SWEPH_TEST] moon: $moonPosition');
+    debugPrint('[SWEPH_TEST] star: $starDistance');
+    debugPrint('[SWEPH_TEST] asteroid: $asteroidName');
+    debugPrint('[SWEPH_TEST] chiron: $chironPosition');
+    debugPrint('[SWEPH_TEST] SUCCESS');
   }
 
   static String getMoonPosition() {
-    final jd =
-        Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
-    final pos =
-        Sweph.swe_calc_ut(jd, HeavenlyBody.SE_MOON, SwephFlag.SEFLG_SWIEPH);
+    final jd = Sweph.swe_julday(
+      2022,
+      6,
+      29,
+      (2 + 52 / 60),
+      CalendarType.SE_GREG_CAL,
+    );
+    final pos = Sweph.swe_calc_ut(
+      jd,
+      HeavenlyBody.SE_MOON,
+      SwephFlag.SEFLG_SWIEPH,
+    );
     return 'lat=${pos.latitude.toStringAsFixed(3)} lon=${pos.longitude.toStringAsFixed(3)}';
   }
 
   static String getStarPosition() {
-    final jd =
-        Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
+    final jd = Sweph.swe_julday(
+      2022,
+      6,
+      29,
+      (2 + 52 / 60),
+      CalendarType.SE_GREG_CAL,
+    );
     try {
-      return Sweph.swe_fixstar2_ut('Rohini', jd, SwephFlag.SEFLG_SWIEPH)
-          .coordinates
-          .distance
-          .toStringAsFixed(3);
+      return Sweph.swe_fixstar2_ut(
+        'Rohini',
+        jd,
+        SwephFlag.SEFLG_SWIEPH,
+      ).coordinates.distance.toStringAsFixed(3);
     } catch (e) {
       return e.toString();
     }
@@ -104,21 +132,38 @@ class _MyAppState extends State<MyApp> {
 
     const longitude = 81 + 50 / 60.0;
     const latitude = 25 + 57 / 60.0;
-    final julday =
-        Sweph.swe_julday(year, month, day, hour, CalendarType.SE_GREG_CAL);
+    final julday = Sweph.swe_julday(
+      year,
+      month,
+      day,
+      hour,
+      CalendarType.SE_GREG_CAL,
+    );
 
-    Sweph.swe_set_sid_mode(SiderealMode.SE_SIDM_LAHIRI,
-        SiderealModeFlag.SE_SIDBIT_NONE, 0.0 /* t0 */, 0.0 /* ayan_t0 */);
+    Sweph.swe_set_sid_mode(
+      SiderealMode.SE_SIDM_LAHIRI,
+      SiderealModeFlag.SE_SIDBIT_NONE,
+      0.0 /* t0 */,
+      0.0 /* ayan_t0 */,
+    );
     return Sweph.swe_houses(julday, latitude, longitude, Hsys.P);
   }
 
   static CoordinatesWithSpeed getChironPosition() {
     final now = DateTime.now();
-    final jd = Sweph.swe_julday(now.year, now.month, now.day,
-        (now.hour + now.minute / 60), CalendarType.SE_GREG_CAL);
+    final jd = Sweph.swe_julday(
+      now.year,
+      now.month,
+      now.day,
+      (now.hour + now.minute / 60),
+      CalendarType.SE_GREG_CAL,
+    );
     Sweph.swe_julday(2022, 6, 29, (2 + 52 / 60), CalendarType.SE_GREG_CAL);
     return Sweph.swe_calc_ut(
-        jd, HeavenlyBody.SE_CHIRON, SwephFlag.SEFLG_SWIEPH);
+      jd,
+      HeavenlyBody.SE_CHIRON,
+      SwephFlag.SEFLG_SWIEPH,
+    );
   }
 
   void _addText(List<Widget> children, String text) {
@@ -126,11 +171,7 @@ class _MyAppState extends State<MyApp> {
     const spacerSmall = SizedBox(height: 10);
 
     children.add(spacerSmall);
-    children.add(Text(
-      text,
-      style: textStyle,
-      textAlign: TextAlign.center,
-    ));
+    children.add(Text(text, style: textStyle, textAlign: TextAlign.center));
   }
 
   Widget _getContent(BuildContext context) {
@@ -140,23 +181,31 @@ class _MyAppState extends State<MyApp> {
         style: TextStyle(fontSize: 30),
         textAlign: TextAlign.center,
       ),
-      const SizedBox(height: 10)
+      const SizedBox(height: 10),
     ];
 
-    _addText(children,
-        'Time taken to load Sweph: ${widget.timeToLoad.inMilliseconds} ms');
+    _addText(
+      children,
+      'Time taken to load Sweph: ${widget.timeToLoad.inMilliseconds} ms',
+    );
     _addText(children, 'Sweph Version: $swephVersion');
     _addText(
-        children, 'Moon position on 2022-06-29 02:52:00 UTC: $moonPosition');
+      children,
+      'Moon position on 2022-06-29 02:52:00 UTC: $moonPosition',
+    );
     _addText(children, 'Distance of star Rohini: $starDistance AU');
     _addText(children, 'Name of Asteroid 16: $asteroidName');
     _addText(children, 'Position of Chiron: $chironPosition');
-    _addText(children,
-        'House System ASCMC[0] for custom time: ${houseSystemAscmc.ascmc[0]}');
+    _addText(
+      children,
+      'House System ASCMC[0] for custom time: ${houseSystemAscmc.ascmc[0]}',
+    );
     _addText(children, 'Degree Split Data: $degreeSplitData');
     _addText(children, 'House Cusp Data: ${houseCuspData.cusps.sublist(0, 6)}');
-    _addText(children,
-        'TT: ${utcJds[0]} UT1: ${utcJds[1]} UTC: ${Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL)}}');
+    _addText(
+      children,
+      'TT: ${utcJds[0]} UT1: ${utcJds[1]} UTC: ${Sweph.swe_julday(2000, 1, 1, 12, CalendarType.SE_GREG_CAL)}}',
+    );
     _addText(children, 'AltInfo: $altInfo');
     _addText(children, 'AltInfoEx: $altInfoEx');
 
@@ -167,13 +216,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Native Packages'),
-        ),
+        appBar: AppBar(title: const Text('Native Packages')),
         body: SingleChildScrollView(
           child: Center(
             child: Container(
-                padding: const EdgeInsets.all(10), child: _getContent(context)),
+              padding: const EdgeInsets.all(10),
+              child: _getContent(context),
+            ),
           ),
         ),
       ),

@@ -62,8 +62,9 @@ class Sweph {
     if (epheAssets.isNotEmpty && assetLoader != null) {
       await _assetsaver.saveEpheAssets(epheAssets, assetLoader);
       return _ffiHelper.safeUsing((Arena arena) {
-        _bindings
-            .swe_set_ephe_path(_assetsaver.epheFilesPath.toNativeString(arena));
+        _bindings.swe_set_ephe_path(
+          _assetsaver.epheFilesPath.toNativeString(arena),
+        );
       });
     }
   }
@@ -73,15 +74,29 @@ class Sweph {
   }
 
   static DateTime _toDateTime(
-      int year, int month, int day, int hour, int minute, double seconds) {
+    int year,
+    int month,
+    int day,
+    int hour,
+    int minute,
+    double seconds,
+  ) {
     final int secondRounded = seconds.floor();
     final double milliSeconds = (seconds - secondRounded) * 1000;
     final int milliSecondRounded = milliSeconds.floor();
     final double microSeconds = (milliSeconds - milliSecondRounded) * 1000;
     final int microSecondRounded = microSeconds.floor();
 
-    return DateTime.utc(year, month, day, hour, minute, secondRounded,
-        milliSecondRounded, microSecondRounded);
+    return DateTime.utc(
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      secondRounded,
+      milliSecondRounded,
+      microSecondRounded,
+    );
   }
 
   static DateTime _toDateTime2(int year, int month, int day, double hours) {
@@ -110,7 +125,10 @@ class Sweph {
   ///
   /// Returns [CoordinatesWithSpeed]
   static CoordinatesWithSpeed swe_calc_ut(
-      double julianDay, HeavenlyBody planet, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody planet,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> coords = arena<Double>(6);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -143,7 +161,10 @@ class Sweph {
   ///
   /// Returns [CoordinatesWithSpeed]
   static CoordinatesWithSpeed swe_calc(
-      double julianDay, HeavenlyBody planet, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody planet,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> coords = arena<Double>(6);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -180,8 +201,12 @@ class Sweph {
   /// [flags] Ephemeris flags that indicate what kind of computation is wanted
   ///
   /// Returns [CoordinatesWithSpeed]
-  static CoordinatesWithSpeed swe_calc_pctr(double julianDay,
-      HeavenlyBody target, HeavenlyBody center, SwephFlag flags) {
+  static CoordinatesWithSpeed swe_calc_pctr(
+    double julianDay,
+    HeavenlyBody target,
+    HeavenlyBody center,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> coords = arena<Double>(6);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -216,8 +241,12 @@ class Sweph {
   /// [method] What kind of nodes or apsides are required
   ///
   /// Returns [NodesAndAspides]
-  static NodesAndAspides swe_nod_aps_ut(double julianDay, HeavenlyBody target,
-      SwephFlag flags, NodApsFlag method) {
+  static NodesAndAspides swe_nod_aps_ut(
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+    NodApsFlag method,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> nodesAsc = arena<Double>(6);
       final Pointer<Double> nodesDesc = arena<Double>(6);
@@ -257,8 +286,12 @@ class Sweph {
   /// [method] What kind of nodes or apsides are required
   ///
   /// Returns [NodesAndAspides]
-  static NodesAndAspides swe_nod_aps(double julianDay, HeavenlyBody target,
-      SwephFlag flags, NodApsFlag method) {
+  static NodesAndAspides swe_nod_aps(
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+    NodApsFlag method,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> nodesAsc = arena<Double>(6);
       final Pointer<Double> nodesDesc = arena<Double>(6);
@@ -301,7 +334,10 @@ class Sweph {
   ///
   /// Returns [StarInfo]
   static StarInfo swe_fixstar2_ut(
-      String star, double julianDay, SwephFlag flags) {
+    String star,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -376,7 +412,10 @@ class Sweph {
   ///
   /// Returns [StarInfo]
   static StarInfo swe_fixstar_ut(
-      String star, double julianDay, SwephFlag flags) {
+    String star,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> cstar = star.toNativeString(arena, 50);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -451,8 +490,11 @@ class Sweph {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
       final Pointer<Double> mag = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar2_mag(star.toNativeString(arena), mag, error);
+      final result = _bindings.swe_fixstar2_mag(
+        star.toNativeString(arena),
+        mag,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -469,8 +511,11 @@ class Sweph {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
       final Pointer<Double> mag = arena<Double>(6);
-      final result =
-          _bindings.swe_fixstar_mag(star.toNativeString(arena), mag, error);
+      final result = _bindings.swe_fixstar_mag(
+        star.toNativeString(arena),
+        mag,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -497,10 +542,12 @@ class Sweph {
   /// [flags] SiderealModeFlag (optional, default SE_SIDBIT_NONE)
   /// [t0] Starting point of ayanamsha measurement (optional, default 0)
   /// [ayan_t0] Starting point of ayanamsha measurement (optional, default 0)
-  static void swe_set_sid_mode(SiderealMode mode,
-      [SiderealModeFlag flags = SiderealModeFlag.SE_SIDBIT_NONE,
-      double t0 = 0,
-      double ayan_t0 = 0]) {
+  static void swe_set_sid_mode(
+    SiderealMode mode, [
+    SiderealModeFlag flags = SiderealModeFlag.SE_SIDBIT_NONE,
+    double t0 = 0,
+    double ayan_t0 = 0,
+  ]) {
     _bindings.swe_set_sid_mode((mode.value | flags.value), t0, ayan_t0);
   }
 
@@ -515,7 +562,11 @@ class Sweph {
       final Pointer<Double> ayanamsa = arena<Double>();
       final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_ayanamsa_ex_ut(
-          julianDay, flags.value, ayanamsa, error);
+        julianDay,
+        flags.value,
+        ayanamsa,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -534,7 +585,11 @@ class Sweph {
       final Pointer<Double> ayanamsa = arena<Double>();
       final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_get_ayanamsa_ex(
-          julianDay, flags.value, ayanamsa, error);
+        julianDay,
+        flags.value,
+        ayanamsa,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -568,8 +623,10 @@ class Sweph {
   /// [flags] SiderealModeFlag (optional, default SE_SIDBIT_NONE)
   ///
   /// Returns name of the ayanamsha
-  static String swe_get_ayanamsa_name(SiderealMode mode,
-      [SiderealModeFlag flags = SiderealModeFlag.SE_SIDBIT_NONE]) {
+  static String swe_get_ayanamsa_name(
+    SiderealMode mode, [
+    SiderealModeFlag flags = SiderealModeFlag.SE_SIDBIT_NONE,
+  ]) {
     return _bindings
         .swe_get_ayanamsa_name(mode.value | flags.value)
         .toDartString();
@@ -587,8 +644,12 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_sol_eclipse_when_loc(double startJulianDay,
-      SwephFlag flags, GeoPosition geoPos, bool backward) {
+  static EclipseInfo swe_sol_eclipse_when_loc(
+    double startJulianDay,
+    SwephFlag flags,
+    GeoPosition geoPos,
+    bool backward,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> times = arena<Double>(10);
       final Pointer<Double> attr = arena<Double>(20);
@@ -606,10 +667,7 @@ class Sweph {
         throw Exception(error.toDartString());
       }
 
-      return EclipseInfo(
-        times: times.toList(10),
-        attributes: attr.toList(20),
-      );
+      return EclipseInfo(times: times.toList(10), attributes: attr.toList(20));
     });
   }
 
@@ -621,8 +679,12 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_sol_eclipse_when_glob(double startJulianDay,
-      SwephFlag flags, EclipseFlag eclType, bool backward) {
+  static EclipseInfo swe_sol_eclipse_when_glob(
+    double startJulianDay,
+    SwephFlag flags,
+    EclipseFlag eclType,
+    bool backward,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> times = arena<Double>(10);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -653,7 +715,10 @@ class Sweph {
   ///
   /// Returns [EclipseInfo]
   static EclipseInfo swe_sol_eclipse_how(
-      double julianDay, SwephFlag flags, GeoPosition geoPos) {
+    double julianDay,
+    SwephFlag flags,
+    GeoPosition geoPos,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> attributes = arena<Double>(20);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -722,7 +787,10 @@ class Sweph {
   ///
   /// Returns [EclipseInfo]
   static EclipseInfo swe_lun_occult_where<Target>(
-      double julianDay, Target target, SwephFlag flags) {
+    double julianDay,
+    Target target,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> geoPos = arena<Double>(2);
       final Pointer<Double> attributes = arena<Double>(20);
@@ -768,8 +836,13 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_occult_when_loc<Target>(double startJulianDay,
-      Target target, SwephFlag flags, GeoPosition geoPos, bool backward) {
+  static EclipseInfo swe_lun_occult_when_loc<Target>(
+    double startJulianDay,
+    Target target,
+    SwephFlag flags,
+    GeoPosition geoPos,
+    bool backward,
+  ) {
     String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
@@ -815,8 +888,13 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_occult_when_glob<Target>(double startJulianDay,
-      Target target, SwephFlag flags, EclipseFlag eclType, bool backward) {
+  static EclipseInfo swe_lun_occult_when_glob<Target>(
+    double startJulianDay,
+    Target target,
+    SwephFlag flags,
+    EclipseFlag eclType,
+    bool backward,
+  ) {
     String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
@@ -857,8 +935,12 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_eclipse_when_loc(double startJulianDay,
-      SwephFlag flags, GeoPosition geoPos, bool backward) {
+  static EclipseInfo swe_lun_eclipse_when_loc(
+    double startJulianDay,
+    SwephFlag flags,
+    GeoPosition geoPos,
+    bool backward,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> times = arena<Double>(10);
       final Pointer<Double> attributes = arena<Double>(20);
@@ -891,8 +973,12 @@ class Sweph {
   /// [backward] Search backward from start date
   ///
   /// Returns [EclipseInfo]
-  static EclipseInfo swe_lun_eclipse_when(double startJulianDay,
-      SwephFlag flags, EclipseFlag eclType, bool backward) {
+  static EclipseInfo swe_lun_eclipse_when(
+    double startJulianDay,
+    SwephFlag flags,
+    EclipseFlag eclType,
+    bool backward,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> times = arena<Double>(10);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -922,7 +1008,10 @@ class Sweph {
   ///
   /// Returns [EclipseInfo]
   static EclipseInfo swe_lun_eclipse_how(
-      double julianDay, SwephFlag flags, GeoPosition geoPos) {
+    double julianDay,
+    SwephFlag flags,
+    GeoPosition geoPos,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> attributes = arena<Double>(20);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -956,13 +1045,14 @@ class Sweph {
   /// returns [double] for the time of the rising, setting or transit event or
   /// null if an event was not found because the object is circumpolar.
   static double? swe_rise_trans<Target>(
-      double julianDay,
-      Target target,
-      SwephFlag epheFlag,
-      RiseSetTransitFlag rsmi,
-      GeoPosition geoPos,
-      double atPress,
-      double atTemp) {
+    double julianDay,
+    Target target,
+    SwephFlag epheFlag,
+    RiseSetTransitFlag rsmi,
+    GeoPosition geoPos,
+    double atPress,
+    double atTemp,
+  ) {
     String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
@@ -1009,14 +1099,15 @@ class Sweph {
   /// returns [double] for the time of the rising, setting or transit event or
   /// null if an event was not found because the object is circumpolar.
   static double? swe_rise_trans_true_hor<Target>(
-      double julianDay,
-      Target target,
-      SwephFlag epheFlag,
-      RiseSetTransitFlag rsmi,
-      GeoPosition geoPos,
-      double atPress,
-      double atTemp,
-      double horHeight) {
+    double julianDay,
+    Target target,
+    SwephFlag epheFlag,
+    RiseSetTransitFlag rsmi,
+    GeoPosition geoPos,
+    double atPress,
+    double atTemp,
+    double horHeight,
+  ) {
     String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
@@ -1064,13 +1155,14 @@ class Sweph {
   ///  1: optimum visibility (Julian day number), zero if helFlag >= SE_HELFLAG_AV;
   ///  2: end of visibility (Julian day number), zero if helFlag >= SE_HELFLAG_AV.
   static List<double> swe_heliacal_ut(
-      double startJulianDay,
-      GeoPosition geoPos,
-      AtmosphericConditions atm,
-      ObserverConditions obs,
-      String name,
-      HeliacalEventType eventType,
-      HeliacalFlags heliacalFlags) {
+    double startJulianDay,
+    GeoPosition geoPos,
+    AtmosphericConditions atm,
+    ObserverConditions obs,
+    String name,
+    HeliacalEventType eventType,
+    HeliacalFlags heliacalFlags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> values = arena<Double>(50);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1134,13 +1226,14 @@ class Sweph {
   ///   28=CVAact     [deg]     new
   ///   29=MSk        [-]
   static List<double> swe_heliacal_pheno_ut(
-      double startJulianDay,
-      GeoPosition geoPos,
-      AtmosphericConditions atm,
-      ObserverConditions obs,
-      String name,
-      HeliacalEventType eventType,
-      HeliacalFlags heliacalFlags) {
+    double startJulianDay,
+    GeoPosition geoPos,
+    AtmosphericConditions atm,
+    ObserverConditions obs,
+    String name,
+    HeliacalEventType eventType,
+    HeliacalFlags heliacalFlags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> values = arena<Double>(50);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1173,12 +1266,13 @@ class Sweph {
   ///
   /// Returns a [VisibilityInfo]
   static VisibilityInfo swe_vis_limit_mag(
-      double startJulianDay,
-      GeoPosition geoPos,
-      AtmosphericConditions atm,
-      ObserverConditions obs,
-      String name,
-      HeliacalFlags heliacalFlags) {
+    double startJulianDay,
+    GeoPosition geoPos,
+    AtmosphericConditions atm,
+    ObserverConditions obs,
+    String name,
+    HeliacalFlags heliacalFlags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> values = arena<Double>(8);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1215,7 +1309,10 @@ class Sweph {
   ///   3: apparent diameter of disc
   ///   4: apparent magnitude
   static List<double> swe_pheno_ut(
-      double julianDay, HeavenlyBody target, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> attributes = arena<Double>(20);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1249,12 +1346,20 @@ class Sweph {
   ///   3: apparent diameter of disc
   ///   4: apparent magnitude
   static List<double> swe_pheno(
-      double julianDay, HeavenlyBody target, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> attributes = arena<Double>(20);
       final Pointer<Uint8> error = arena<Uint8>(256);
       final result = _bindings.swe_pheno(
-          julianDay, target.value, flags.value, attributes, error);
+        julianDay,
+        target.value,
+        flags.value,
+        attributes,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1273,8 +1378,14 @@ class Sweph {
   /// [coord] Coordinates of the object
   ///
   /// Returns [AzimuthAltitudeInfo]
-  static AzimuthAltitudeInfo swe_azalt(double julianDay, AzAltMode azAltMode,
-      GeoPosition geoPos, double atPress, double atTemp, Coordinates coord) {
+  static AzimuthAltitudeInfo swe_azalt(
+    double julianDay,
+    AzAltMode azAltMode,
+    GeoPosition geoPos,
+    double atPress,
+    double atTemp,
+    Coordinates coord,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> azAlt = arena<Double>(3);
       _bindings.swe_azalt(
@@ -1299,8 +1410,13 @@ class Sweph {
   /// [trueAltitude] True altitude of the object
   ///
   /// Returns [Coordinates]
-  static Coordinates swe_azalt_rev(double julianDay, AzAltMode azAltMode,
-      GeoPosition geoPos, double azimuth, double trueAltitude) {
+  static Coordinates swe_azalt_rev(
+    double julianDay,
+    AzAltMode azAltMode,
+    GeoPosition geoPos,
+    double azimuth,
+    double trueAltitude,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> azAlt = arena<Double>(2);
       final Pointer<Double> coord = arena<Double>(2);
@@ -1326,10 +1442,18 @@ class Sweph {
   /// [refracMode] Refraction mode
   ///
   /// Returns: [AltitudeRefracInfo]
-  static AltitudeRefracInfo swe_refrac(double altOfObject, double atmPressure,
-      double atmTemp, RefractionMode refracMode) {
+  static AltitudeRefracInfo swe_refrac(
+    double altOfObject,
+    double atmPressure,
+    double atmTemp,
+    RefractionMode refracMode,
+  ) {
     final double calcAlt = _bindings.swe_refrac(
-        altOfObject, atmPressure, atmTemp, refracMode.value);
+      altOfObject,
+      atmPressure,
+      atmTemp,
+      refracMode.value,
+    );
     if (refracMode == RefractionMode.SE_TRUE_TO_APP) {
       return AltitudeRefracInfo(altOfObject, calcAlt);
     } else {
@@ -1350,12 +1474,13 @@ class Sweph {
   ///
   /// Returns: [AltitudeRefracInfo]
   static AltitudeRefracInfo swe_refrac_extended(
-      double altOfObject,
-      double altOfObserver,
-      double atmPressure,
-      double atmTemp,
-      double lapseRate,
-      RefractionMode refracMode) {
+    double altOfObject,
+    double altOfObserver,
+    double atmPressure,
+    double atmTemp,
+    double lapseRate,
+    RefractionMode refracMode,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> values = arena<Double>(20);
       _bindings.swe_refrac_extended(
@@ -1402,7 +1527,10 @@ class Sweph {
   ///   15: perihelion distance
   ///   16: aphelion distance
   static List<double> swe_get_orbital_elements(
-      double julianDay, HeavenlyBody target, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> values = arena<Double>(50);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1430,7 +1558,10 @@ class Sweph {
   ///
   /// Returns [OrbitalDistance]
   static OrbitalDistance swe_orbit_max_min_true_distance(
-      double julianDay, HeavenlyBody target, SwephFlag flags) {
+    double julianDay,
+    HeavenlyBody target,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> dmax = arena<Double>();
       final Pointer<Double> dmin = arena<Double>();
@@ -1461,8 +1592,11 @@ class Sweph {
   static double swe_deltat_ex(double julianDay, SwephFlag flags) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final double delta =
-          _bindings.swe_deltat_ex(julianDay, flags.value, error);
+      final double delta = _bindings.swe_deltat_ex(
+        julianDay,
+        flags.value,
+        error,
+      );
       return delta;
     });
   }
@@ -1493,7 +1627,12 @@ class Sweph {
   ///
   /// Returns Julian day number
   static double swe_date_conversion(
-      int year, int month, int day, double hours, CalendarType calType) {
+    int year,
+    int month,
+    int day,
+    double hours,
+    CalendarType calType,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> julianDay = arena<Double>();
       final result = _bindings.swe_date_conversion(
@@ -1521,7 +1660,12 @@ class Sweph {
   ///
   /// Returns Julian day number
   static double swe_julday(
-      int year, int month, int day, double hours, CalendarType calType) {
+    int year,
+    int month,
+    int day,
+    double hours,
+    CalendarType calType,
+  ) {
     return _bindings.swe_julday(year, month, day, hours, calType.value);
   }
 
@@ -1553,8 +1697,15 @@ class Sweph {
   /// [timezone] Timezone
   ///
   /// Returns [DateTime]
-  static DateTime swe_utc_time_zone(int year, int month, int day, int hour,
-      int minute, double seconds, double timezone) {
+  static DateTime swe_utc_time_zone(
+    int year,
+    int month,
+    int day,
+    int hour,
+    int minute,
+    double seconds,
+    double timezone,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Int32> yearOut = arena<Int32>();
       final Pointer<Int32> monthOut = arena<Int32>();
@@ -1601,8 +1752,15 @@ class Sweph {
   /// Returns a List<double> with the following data:
   ///  0: Julian day in ET (TT)
   ///  1: Julian day in UT (UT1)
-  static List<double> swe_utc_to_jd(int year, int month, int day, int hour,
-      int min, double sec, CalendarType calType) {
+  static List<double> swe_utc_to_jd(
+    int year,
+    int month,
+    int day,
+    int hour,
+    int min,
+    double sec,
+    CalendarType calType,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> julianDays = arena<Double>(2);
       final Pointer<Uint8> error = arena<Uint8>(256);
@@ -1740,8 +1898,12 @@ class Sweph {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> julianDayLat = arena<Double>();
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final result =
-          _bindings.swe_lmt_to_lat(julianDayLmt, geoLon, julianDayLat, error);
+      final result = _bindings.swe_lmt_to_lat(
+        julianDayLmt,
+        geoLon,
+        julianDayLat,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1759,8 +1921,12 @@ class Sweph {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> julianDayLmt = arena<Double>();
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final result =
-          _bindings.swe_lat_to_lmt(julianDayLat, geoLon, julianDayLmt, error);
+      final result = _bindings.swe_lat_to_lmt(
+        julianDayLat,
+        geoLon,
+        julianDayLmt,
+        error,
+      );
       if (result < 0) {
         throw Exception(error.toDartString());
       }
@@ -1776,8 +1942,10 @@ class Sweph {
   ///
   /// [epheFilesDir] Path to ephemeris files
   /// [forceOverwrite] Force overwrite of existing files
-  static void swe_set_ephe_path(String? epheFilesDir,
-      {bool forceOverwrite = false}) {
+  static void swe_set_ephe_path(
+    String? epheFilesDir, {
+    bool forceOverwrite = false,
+  }) {
     if (kIsWeb || epheFilesDir == null) {
       return;
     }
@@ -1846,8 +2014,12 @@ class Sweph {
       final Pointer<Double> tfend = arena<Double>();
       final Pointer<Int32> denum = arena<Int32>();
 
-      final path =
-          _bindings.swe_get_current_file_data(ifno, tfstart, tfend, denum);
+      final path = _bindings.swe_get_current_file_data(
+        ifno,
+        tfstart,
+        tfend,
+        denum,
+      );
       return FileData(
         path.toDartString(),
         tfstart.value,
@@ -1907,16 +2079,17 @@ class Sweph {
   ///
   /// Returns [HouseCuspData]
   static HouseCuspData swe_houses(
-      double julianDay, double geoLat, double geoLon, Hsys hSys) {
+    double julianDay,
+    double geoLat,
+    double geoLon,
+    Hsys hSys,
+  ) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> cusps = arena<Double>(cuspsSize);
       final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses(julianDay, geoLat, geoLon, hSys.value, cusps, ascmc);
-      return HouseCuspData(
-        cusps.toList(cuspsSize),
-        ascmc.toList(10),
-      );
+      return HouseCuspData(cusps.toList(cuspsSize), ascmc.toList(10));
     });
   }
 
@@ -1929,18 +2102,27 @@ class Sweph {
   /// [hSys] House system
   ///
   /// Returns [HouseCuspData]
-  static HouseCuspData swe_houses_ex(double julianDay, SwephFlag flags,
-      double geoLat, double geoLon, Hsys hSys) {
+  static HouseCuspData swe_houses_ex(
+    double julianDay,
+    SwephFlag flags,
+    double geoLat,
+    double geoLon,
+    Hsys hSys,
+  ) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> cusps = arena<Double>(cuspsSize);
       final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_ex(
-          julianDay, flags.value, geoLat, geoLon, hSys.value, cusps, ascmc);
-      return HouseCuspData(
-        cusps.toList(cuspsSize),
-        ascmc.toList(10),
+        julianDay,
+        flags.value,
+        geoLat,
+        geoLon,
+        hSys.value,
+        cusps,
+        ascmc,
       );
+      return HouseCuspData(cusps.toList(cuspsSize), ascmc.toList(10));
     });
   }
 
@@ -1953,8 +2135,13 @@ class Sweph {
   /// [hSys] House system
   ///
   /// Returns [HouseCuspData]
-  static HouseCuspData swe_houses_ex2(double julianDay, SwephFlag flags,
-      double geoLat, double geoLon, Hsys hSys) {
+  static HouseCuspData swe_houses_ex2(
+    double julianDay,
+    SwephFlag flags,
+    double geoLat,
+    double geoLon,
+    Hsys hSys,
+  ) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> cusps = arena<Double>(cuspsSize);
@@ -1995,16 +2182,17 @@ class Sweph {
   ///
   /// Returns [HouseCuspData]
   static HouseCuspData swe_houses_armc(
-      double armc, double geoLat, double eps, Hsys hSys) {
+    double armc,
+    double geoLat,
+    double eps,
+    Hsys hSys,
+  ) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> cusps = arena<Double>(cuspsSize);
       final Pointer<Double> ascmc = arena<Double>(10);
       _bindings.swe_houses_armc(armc, geoLat, eps, hSys.value, cusps, ascmc);
-      return HouseCuspData(
-        cusps.toList(cuspsSize),
-        ascmc.toList(10),
-      );
+      return HouseCuspData(cusps.toList(cuspsSize), ascmc.toList(10));
     });
   }
 
@@ -2017,7 +2205,11 @@ class Sweph {
   ///
   /// Returns [HouseCuspData]
   static HouseCuspData swe_houses_armc_ex2(
-      double armc, double geoLat, double eps, Hsys hSys) {
+    double armc,
+    double geoLat,
+    double eps,
+    Hsys hSys,
+  ) {
     final cuspsSize = hSys == Hsys.G ? 37 : 13;
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> cusps = arena<Double>(cuspsSize);
@@ -2058,8 +2250,14 @@ class Sweph {
   /// [xpin1] Ecliptic latitude of the planet
   ///
   /// Returns [double] which house a planet is and how far from its cusp it is
-  static double swe_house_pos(double armc, double geoLat, double eps, Hsys hSys,
-      double xpin0, double xpin1) {
+  static double swe_house_pos(
+    double armc,
+    double geoLat,
+    double eps,
+    Hsys hSys,
+    double xpin0,
+    double xpin1,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Double> eclPos = arena<Double>(2);
       eclPos[0] = xpin0;
@@ -2092,13 +2290,14 @@ class Sweph {
   ///
   /// Returns Gauquelin sector position
   static double swe_gauquelin_sector<Target>(
-      double julianDay,
-      Target target,
-      SwephFlag flags,
-      GauquelinMethod method,
-      GeoPosition geoPos,
-      double atPress,
-      double atTemp) {
+    double julianDay,
+    Target target,
+    SwephFlag flags,
+    GauquelinMethod method,
+    GeoPosition geoPos,
+    double atPress,
+    double atTemp,
+  ) {
     String starname = '';
     int targetCode = HeavenlyBody.SE_FIXSTAR.value;
     if (target is String) {
@@ -2142,11 +2341,18 @@ class Sweph {
   ///
   /// Returns Julian day number of crossing
   static double swe_solcross(
-      double x2cross, double julianDay, SwephFlag flags) {
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final julianDayCalc =
-          _bindings.swe_solcross(x2cross, julianDay, flags.value, error);
+      final julianDayCalc = _bindings.swe_solcross(
+        x2cross,
+        julianDay,
+        flags.value,
+        error,
+      );
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
@@ -2162,11 +2368,18 @@ class Sweph {
   ///
   /// Returns Julian day number of crossing
   static double swe_solcross_ut(
-      double x2cross, double julianDay, SwephFlag flags) {
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final julianDayCalc =
-          _bindings.swe_solcross_ut(x2cross, julianDay, flags.value, error);
+      final julianDayCalc = _bindings.swe_solcross_ut(
+        x2cross,
+        julianDay,
+        flags.value,
+        error,
+      );
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
@@ -2182,11 +2395,18 @@ class Sweph {
   ///
   /// Returns Julian day number of crossing
   static double swe_mooncross(
-      double x2cross, double julianDay, SwephFlag flags) {
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final julianDayCalc =
-          _bindings.swe_mooncross(x2cross, julianDay, flags.value, error);
+      final julianDayCalc = _bindings.swe_mooncross(
+        x2cross,
+        julianDay,
+        flags.value,
+        error,
+      );
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
@@ -2202,11 +2422,18 @@ class Sweph {
   ///
   /// Returns Julian day number of crossing
   static double swe_mooncross_ut(
-      double x2cross, double julianDay, SwephFlag flags) {
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
-      final julianDayCalc =
-          _bindings.swe_mooncross_ut(x2cross, julianDay, flags.value, error);
+      final julianDayCalc = _bindings.swe_mooncross_ut(
+        x2cross,
+        julianDay,
+        flags.value,
+        error,
+      );
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
@@ -2226,15 +2453,16 @@ class Sweph {
       final Pointer<Double> xlon = arena<Double>();
       final Pointer<Double> xlat = arena<Double>();
       final julianDayCalc = _bindings.swe_mooncross_node(
-          julianDay, flags.value, xlon, xlat, error);
+        julianDay,
+        flags.value,
+        xlon,
+        xlat,
+        error,
+      );
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
-      return CrossingInfo(
-        julianDayCalc,
-        xlon.value,
-        xlat.value,
-      );
+      return CrossingInfo(julianDayCalc, xlon.value, xlat.value);
     });
   }
 
@@ -2259,11 +2487,7 @@ class Sweph {
       if (julianDayCalc < julianDay) {
         throw Exception(error.toDartString());
       }
-      return CrossingInfo(
-        julianDayCalc,
-        xlon.value,
-        xlat.value,
-      );
+      return CrossingInfo(julianDayCalc, xlon.value, xlat.value);
     });
   }
 
@@ -2276,8 +2500,13 @@ class Sweph {
   /// [dir] Direction of crossing
   ///
   /// Returns Julian day number of crossing
-  static double swe_helio_cross(HeavenlyBody target, double x2cross,
-      double julianDay, SwephFlag flags, int dir) {
+  static double swe_helio_cross(
+    HeavenlyBody target,
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+    int dir,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
       final Pointer<Double> julianDayCalc = arena<Double>();
@@ -2306,8 +2535,13 @@ class Sweph {
   /// [dir] Direction of crossing
   ///
   /// Returns Julian day number of crossing
-  static double swe_helio_cross_ut(HeavenlyBody target, double x2cross,
-      double julianDay, SwephFlag flags, int dir) {
+  static double swe_helio_cross_ut(
+    HeavenlyBody target,
+    double x2cross,
+    double julianDay,
+    SwephFlag flags,
+    int dir,
+  ) {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> error = arena<Uint8>(256);
       final Pointer<Double> julianDayCalc = arena<Double>();
@@ -2356,7 +2590,13 @@ class Sweph {
       final Pointer<Double> xpn = arena<Double>(6);
       _bindings.swe_cotrans_sp(xpo.toNativeString(arena), xpn, eps);
       return CoordinatesWithSpeed(
-          xpn[0], xpn[1], xpn[2], xpn[3], xpn[4], xpn[5]);
+        xpn[0],
+        xpn[1],
+        xpn[2],
+        xpn[3],
+        xpn[4],
+        xpn[5],
+      );
     });
   }
 
@@ -2550,7 +2790,11 @@ class Sweph {
     return _ffiHelper.safeUsing((Arena arena) {
       final Pointer<Uint8> buffer = arena<Uint8>(12);
       _bindings.swe_cs2lonlatstr(
-          deg, pchar.firstChar(), mchar.firstChar(), buffer);
+        deg,
+        pchar.firstChar(),
+        mchar.firstChar(),
+        buffer,
+      );
       return buffer.toDartString();
     });
   }

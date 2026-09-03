@@ -7,8 +7,6 @@ Future<FfiHelper> loadSwephLibrary(String? modulePath) async {
       if (modulePath == null) LoadOption.isFfiPlugin,
       LoadOption.isStandaloneWasm,
     },
-    overrides: {
-      if (modulePath != null) appType: modulePath,
-    },
+    overrides: {if (modulePath != null) appType: modulePath},
   );
 }

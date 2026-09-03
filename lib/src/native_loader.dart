@@ -16,30 +16,21 @@ Future<FfiHelper> loadSwephLibrary(String? modulePath) async {
   try {
     return await FfiHelper.load(
       'sweph',
-      options: {
-        LoadOption.isFfiPlugin,
-        LoadOption.isStandaloneWasm,
-      },
+      options: {LoadOption.isFfiPlugin, LoadOption.isStandaloneWasm},
     );
   } catch (error) {
     // 2. Check if symbols are available in the current process (e.g. iOS static linking or SwiftPM static library).
     try {
       final process = DynamicLibrary.process();
       process.lookup('swe_version');
-      return await FfiHelper.load(
-        '',
-        options: {LoadOption.isStaticallyLinked},
-      );
+      return await FfiHelper.load('', options: {LoadOption.isStaticallyLinked});
     } catch (_) {}
 
     // 3. Check environment variable SWEPH_DYLIB_PATH.
     final envPath = Platform.environment['SWEPH_DYLIB_PATH'];
     if (envPath != null && File(envPath).existsSync()) {
       try {
-        return await FfiHelper.load(
-          envPath,
-          overrides: {appType: envPath},
-        );
+        return await FfiHelper.load(envPath, overrides: {appType: envPath});
       } catch (_) {}
     }
 
@@ -62,18 +53,16 @@ Future<FfiHelper> loadSwephLibrary(String? modulePath) async {
 
 List<String> _findCandidateLibraryPaths() {
   final candidates = <String>[];
-  final searchDirs = <Directory>[
-    Directory.current,
-    Directory.current.parent,
-  ];
+  final searchDirs = <Directory>[Directory.current, Directory.current.parent];
 
   for (final base in searchDirs) {
     if (!base.existsSync()) continue;
     if (Platform.isMacOS) {
       final productDirs = [
         Directory(p.join(base.path, 'build', 'macos', 'Build', 'Products')),
-        Directory(p.join(
-            base.path, 'example', 'build', 'macos', 'Build', 'Products')),
+        Directory(
+          p.join(base.path, 'example', 'build', 'macos', 'Build', 'Products'),
+        ),
       ];
       for (final macosBuildProducts in productDirs) {
         if (macosBuildProducts.existsSync()) {
@@ -81,8 +70,9 @@ List<String> _findCandidateLibraryPaths() {
             for (final entity in macosBuildProducts.listSync(recursive: true)) {
               if (entity is File &&
                   (entity.path.endsWith('sweph.framework/sweph') ||
-                      entity.path
-                          .endsWith('sweph.framework/Versions/A/sweph'))) {
+                      entity.path.endsWith(
+                        'sweph.framework/Versions/A/sweph',
+                      ))) {
                 candidates.add(entity.path);
               }
             }
@@ -92,17 +82,55 @@ List<String> _findCandidateLibraryPaths() {
       candidates.add(p.join(base.path, 'libsweph.dylib'));
       candidates.add(p.join(base.path, 'native', 'libsweph.dylib'));
     } else if (Platform.isLinux) {
-      candidates.add(p.join(base.path, 'build', 'linux', 'x64', 'debug',
-          'bundle', 'lib', 'libsweph.so'));
-      candidates.add(p.join(base.path, 'build', 'linux', 'x64', 'release',
-          'bundle', 'lib', 'libsweph.so'));
+      candidates.add(
+        p.join(
+          base.path,
+          'build',
+          'linux',
+          'x64',
+          'debug',
+          'bundle',
+          'lib',
+          'libsweph.so',
+        ),
+      );
+      candidates.add(
+        p.join(
+          base.path,
+          'build',
+          'linux',
+          'x64',
+          'release',
+          'bundle',
+          'lib',
+          'libsweph.so',
+        ),
+      );
       candidates.add(p.join(base.path, 'libsweph.so'));
       candidates.add(p.join(base.path, 'native', 'libsweph.so'));
     } else if (Platform.isWindows) {
-      candidates.add(p.join(base.path, 'build', 'windows', 'x64', 'runner',
-          'Debug', 'sweph.dll'));
-      candidates.add(p.join(base.path, 'build', 'windows', 'x64', 'runner',
-          'Release', 'sweph.dll'));
+      candidates.add(
+        p.join(
+          base.path,
+          'build',
+          'windows',
+          'x64',
+          'runner',
+          'Debug',
+          'sweph.dll',
+        ),
+      );
+      candidates.add(
+        p.join(
+          base.path,
+          'build',
+          'windows',
+          'x64',
+          'runner',
+          'Release',
+          'sweph.dll',
+        ),
+      );
       candidates.add(p.join(base.path, 'sweph.dll'));
       candidates.add(p.join(base.path, 'native', 'sweph.dll'));
     }
