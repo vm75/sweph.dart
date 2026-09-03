@@ -2,14 +2,12 @@ name: Publish Flutter Package
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'pubspec.yaml'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
   workflow_dispatch:
     inputs:
       force:
-        description: 'Force publish regardless of version change detection'
+        description: 'Force publish regardless of tag verification'
         type: boolean
         default: false
 
@@ -22,92 +20,55 @@ permissions:
   id-token: write
 
 jobs:
-  check-and-publish:
-    name: Check Version & Publish
+  publish:
+    name: Publish to pub.dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Detect version modification
-        id: version_check
+      - name: Verify tag matches pubspec version
+        if: github.event_name == 'push'
         run: |
-          CURRENT_VERSION=$(grep '^version:' pubspec.yaml | head -n 1 | awk '{print $2}' | tr -d '\r\n')
-          echo "Current version in pubspec.yaml: $CURRENT_VERSION"
-          echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
-            echo "Workflow triggered manually with force=true."
-            echo "should_publish=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          PREV_VERSION=$(git show HEAD~1:pubspec.yaml 2>/dev/null | grep '^version:' | head -n 1 | awk '{print $2}' | tr -d '\r\n' || echo "")
-          echo "Previous version in HEAD~1: $PREV_VERSION"
-
-          if [ -n "$PREV_VERSION" ] && [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
-            # Check if this version is already published on pub.dev
-            PUB_RESPONSE=$(curl -s "https://pub.dev/api/packages/sweph" || echo "{}")
-            if echo "$PUB_RESPONSE" | grep -q "\"version\":\"$CURRENT_VERSION\""; then
-              echo "Version $CURRENT_VERSION is already published on pub.dev. Skipping publication."
-              echo "should_publish=false" >> "$GITHUB_OUTPUT"
-            else
-              echo "Version changed from $PREV_VERSION to $CURRENT_VERSION and is not yet published on pub.dev."
-              echo "should_publish=true" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "Version was not modified in pubspec.yaml. Skipping publication."
-            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PUBSPEC_VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | tr -d '\r\n')
+          echo "Tag version:     $TAG_VERSION"
+          echo "Pubspec version: $PUBSPEC_VERSION"
+          if [ "$TAG_VERSION" != "$PUBSPEC_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match pubspec.yaml version ($PUBSPEC_VERSION)."
+            exit 1
           fi
 
       - name: Set up Flutter
-        if: steps.version_check.outputs.should_publish == 'true'
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
       - name: Set up Dart (OIDC authentication)
-        if: steps.version_check.outputs.should_publish == 'true'
         uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
 
       - name: Install dependencies
-        if: steps.version_check.outputs.should_publish == 'true'
         run: flutter pub get
 
       - name: Run code analyzer
-        if: steps.version_check.outputs.should_publish == 'true'
         run: flutter analyze
 
       - name: Run tests
-        if: steps.version_check.outputs.should_publish == 'true'
         run: flutter test
 
       - name: Verify publish dry run
-        if: steps.version_check.outputs.should_publish == 'true'
         run: dart pub publish --dry-run
 
       - name: Publish to pub.dev
-        if: steps.version_check.outputs.should_publish == 'true'
         run: dart pub publish --force
 
-      - name: Create Git Tag and GitHub Release
-        if: steps.version_check.outputs.should_publish == 'true'
+      - name: Create GitHub Release
+        if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version_check.outputs.current_version }}
         run: |
-          TAG_NAME="v$VERSION"
-          echo "Creating tag $TAG_NAME"
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-            git push origin "$TAG_NAME" || echo "Could not push tag; may already exist on remote."
-          fi
-          if command -v gh >/dev/null 2>&1; then
-            gh release create "$TAG_NAME" --title "$TAG_NAME" --generate-notes || echo "Release already exists or gh error."
-          fi
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
