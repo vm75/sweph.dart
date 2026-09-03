@@ -5,7 +5,7 @@ Everything you need to create Astrology and Astronomy applications with Dart and
 
 * 100% API coverage
 * Dart friendly parameters and return values
-* Supported on all platforms. Uses ffi for non-Web platforms and [wasm_ffi](https://pub.dev/packages/wasm_ffi) for Web
+* Supported on all platforms. Uses `dart:ffi` for non-Web platforms and [universal_ffi](https://pub.dev/packages/universal_ffi) / [wasm_ffi](https://pub.dev/packages/wasm_ffi) for Web
 * Original Swiss Ephemeris version used as build number for reference
 
 References:
@@ -103,7 +103,7 @@ Sweph supports all Flutter platforms:
 * **macOS & iOS**: Fully supports both **Swift Package Manager** (default in Flutter 3.44+) and **CocoaPods**. `Package.swift` manifests are included for each platform, compiling the canonical C sources cleanly as dynamic frameworks.
 * **Android**: Modernized Gradle build supporting 16 KB page sizes with NDK r28 and compileSdk 36.
 * **Linux & Windows**: CMake-based native library compilation.
-* **Web**: Compiled to WebAssembly using Emscripten and standalone Wasm, loaded via `wasm_ffi` and compatible with both `dart2js` and `dart2wasm`.
+* **Web**: Compiled to WebAssembly using Emscripten and standalone Wasm, loaded via `universal_ffi` / `wasm_ffi`, and fully supported under both `dart2js` (normal Flutter Web) and `dart2wasm` (Flutter Web with `--wasm`).
 
 ### Native Library Loading
 
@@ -134,7 +134,7 @@ These are cached in \<ApplicationSupportDirectory\>/ephe_files folder. First loa
 Async methods `swe_set_ephe_path` & `swe_set_jpl_file` could be called to set new ephe files.
 If file already present, it is not overwritten, unless `forceOverwrite` is true.
 ### Web
-`Sweph.init` is the only way to provide ephe files, and they are loaded into memory. This is a limitation of the Web plugin.
+`Sweph.init` is the only way to provide ephe files, and they are loaded into Wasm memory during initialization. This is a limitation of the Web plugin.
 Calls to `swe_set_ephe_path` have no effect on Web. Only the loaded assets are used.
 If custom JPL files are needed, they need to be loaded with the name "jpl_file.eph" during init and `swe_set_jpl_file` could be called.
 
